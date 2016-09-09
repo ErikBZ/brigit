@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Tests.cs" />
     <Compile Include="Dom.cs" />
     <Compile Include="GoodSortedList.cs" />
     <Compile Include="Parser.cs" />

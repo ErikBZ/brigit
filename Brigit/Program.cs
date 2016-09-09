@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
+using System.IO;
 
 namespace Brigit
 {
@@ -11,27 +12,33 @@ namespace Brigit
     {
         static void Main(string[] args)
         {
-            GoodSortedList test = new GoodSortedList();
-
-            test.Add("hi", 0);
-            test.Add("how", 1);
-            test.Add("hello", 4);
-            test.Add("asdfasdf", 3);
-            test.Add("somethign", 1);
-            test.Add("else", 2);
-            test.Add("hi", 5);
-
-            for(int i=0; i<test.Count;i++)
+            string path = @".\scripts\script_test.txt";
+            string toParse = string.Empty;
+            if(File.Exists(path))
             {
-                ArrayList t = test.GetListAtDepth(i);
-                for(int j=0;j<t.Count;j++)
+                toParse = File.ReadAllText(path);
+            }
+
+            Queue<string> que = new Queue<string>();
+            Eater muncher = new Eater(toParse);
+
+            while (!muncher.Complete())
+            {
+                if(Char.IsLetter(muncher.SniffChar()))
                 {
-                    if(t[j] is string)
-                    {
-                        Console.Write((string)t[j]);
-                    }
+                    que.Enqueue(muncher.SpitUpAlpha());
                 }
-                Console.WriteLine();
+                else
+                {
+                    // Should eat chars that are not letters
+                    muncher.EatWhile(
+                        delegate (char c)
+                        { return !Char.IsLetter(c);});
+                }
+            }
+            while(que.Count != 0)
+            {
+                Console.WriteLine(que.Dequeue());
             }
 
             Console.ReadLine();

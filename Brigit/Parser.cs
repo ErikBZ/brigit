@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Text;
 
 /// <summary>
 /// Summary description for Class1
@@ -9,9 +11,6 @@ namespace Brigit
     {
 	    public Parser()
 	    {
-		    //
-		    // TODO: Add constructor logic here
-		    //
 	    }
     }
 
@@ -23,12 +22,26 @@ namespace Brigit
         string data;
         int pos;
 
+        public Eater(string data)
+        {
+            this.data = data;
+            pos = 0;
+        }
+
+        public bool Complete()
+        {
+            return pos >= data.Length;
+        }
+
         /// <summary>
         /// Peeks at the current char
         /// </summary>
         /// <returns>Returns the current char</returns>
         public char SniffChar()
         {
+            // if pos is greater than the string length return the null terminator
+            if (pos >= data.Length)
+                return '\0';
             return data[pos];
         }
 
@@ -70,6 +83,32 @@ namespace Brigit
         {
             Func<char, bool> p = delegate (char c) { return Char.IsWhiteSpace(c); };
             EatWhile(p);
+        }
+
+        /// <summary>
+        /// Consumes a string of characters then spits them back up
+        /// </summary>
+        /// <param name="pred">A predicate that will test a char</param>
+        /// <returns>Returns a string fufilling the predicate</returns>
+        public string SpitUpWhile(Func<char, bool> pred)
+        {
+            StringBuilder sb = new StringBuilder();
+            while(pred(SniffChar()))
+            {
+                sb.Append(SpitChar());
+            }
+
+            return sb.ToString();   
+        }
+
+        /// <summary>
+        /// Eats only letters and then spits them back up
+        /// </summary>
+        /// <returns>A string of letters</returns>
+        public string SpitUpAlpha()
+        {
+            Func<char, bool> p = delegate (char c) { return Char.IsLetter(c); };
+            return SpitUpWhile(p);
         }
     }
 }
