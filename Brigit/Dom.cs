@@ -16,6 +16,11 @@ namespace Brigit
         /// </summary>
         DomNode head;
 
+        /// <summary>
+        /// The list of characters that will be in this Scene
+        /// </summary>
+        Character[] chars;
+
         public DomTree()
         {
         }
@@ -220,6 +225,17 @@ namespace Brigit
         {
             name = n;
             picLocation = p;
+        }
+        
+        public Character(string n)
+        {
+            name = n;
+            picLocation = string.Empty;
+        }
+
+        public override string ToString()
+        {
+            return name;
         }
     }
 }

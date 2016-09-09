@@ -9,9 +9,24 @@ namespace Brigit
 {
     public class Parser
     {
+        Eater muncher;
+
+        /// <summary>
+        /// Creates a new parser
+        /// </summary>
 	    public Parser()
 	    {
+            muncher = new Eater();
 	    }
+
+        /// <summary>
+        /// Creates a new parser settings Eater.data to the given string
+        /// </summary>
+        /// <param name="data">Data is the string that Eater will eat</param>
+        public Parser(string data)
+        {
+            muncher = new Eater(data);
+        }
     }
 
     /// <summary>
@@ -21,6 +36,10 @@ namespace Brigit
     {
         string data;
         int pos;
+
+        public Eater():this(string.Empty)
+        {
+        }
 
         public Eater(string data)
         {
@@ -51,6 +70,15 @@ namespace Brigit
         public void ConsumeChar()
         {
             pos++;
+        }
+
+        /// <summary>
+        /// Steps forware by x in the string
+        /// </summary>
+        /// <param name="x">Skip x chars</param>
+        public void ConsumeChar(int x)
+        {
+            pos += x;
         }
 
         /// <summary>
@@ -109,6 +137,22 @@ namespace Brigit
         {
             Func<char, bool> p = delegate (char c) { return Char.IsLetter(c); };
             return SpitUpWhile(p);
+        }
+
+        /// <summary>
+        /// Checks to see if the string, starting at pos, has the string "s"
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public bool StartsWith(string s)
+        {
+            bool b = true;
+            for(int i= pos;i<s.Length;i++)
+            {
+                if (data[pos + i] != s[i])
+                    b = false;
+            }
+            return b;
         }
     }
 }
