@@ -17,35 +17,36 @@ namespace Brigit
         public static DomTree ParseBrigitText(string data)
         {
             muncher = new Eater(data);
-            return new DomTree();    
+            DomTree tree = ParseLoadTag();
+            return tree;    
         }
 
-        private static DomTree ParseTag()
+        public static DomNode ParseTag()
         {
-            DomTree tree = new DomTree();
             // Eat the fluff in front until muncher sees a open bracket
             muncher.EatWhiteSpace();
             if (muncher.CheckChar('['))
             {
                 muncher.ConsumeChar();
-                // parsing a special one off tag
-                if (muncher.StartsWith("load"))
-                {
-                    tree = ParseLoadTag();
-                }
                 // parsing a pair of tag that must be closed out
+                /*
                 else
                 {
-
+                // TODO add code here pls
                 }
+                */
             }
             else
             {
                 throw new Exception("Malformed txt file, no free characters allowed");
             }
-            return tree;
+            return new DomNode();
         }
 
+        /// <summary>
+        /// Parses the 
+        /// </summary>
+        /// <returns></returns>
         public static DomTree ParseLoadTag()
         {
             DomTree returnDom = new DomTree();
@@ -56,22 +57,25 @@ namespace Brigit
             {
                 muncher.EatWhiteSpace();
                 string argument = muncher.SpitUpAlpha();
-                muncher.CheckChar(':');
-                string[] set = ParseSetOfStrings();
-                switch(argument)
+                if(muncher.CheckChar(':'))
                 {
-                    case "char":
-                        returnDom.SetCharacterDict(set);
-                        break;
-                    case "background":
-                        returnDom.SetBackgrounds(set);
-                        break;
-                    default:
-                        break;
+                    muncher.ConsumeChar();
+                    string[] set = ParseSetOfStrings();
+                    switch(argument)
+                    {
+                        case "char":
+                            returnDom.SetCharacterDict(set);
+                            break;
+                        case "background":
+                            returnDom.SetBackgrounds(set);
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
 
-            return new DomTree();
+            return returnDom;
         }
 
         // what should the regex for this be?
