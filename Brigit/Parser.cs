@@ -74,7 +74,6 @@ namespace Brigit
                     }
                 }
             }
-
             return returnDom;
         }
 
