@@ -14,17 +14,58 @@ namespace Brigit
         /// <summary>
         /// The beginning of the script
         /// </summary>
-        DomNode head;
+        public DomNode head;
 
         /// <summary>
         /// The list of characters that will be in this Scene
         /// </summary>
-        Character[] chars;
+        Dictionary<string, Character> chars = new Dictionary<string, Character>();
+
+        Dictionary<string, Background> backgrounds = new Dictionary<string, Background>();
 
         public DomTree()
         {
+            head = null;
+            chars = new Dictionary<string, Character>();
         }
-        
+
+        public DomTree(Dictionary<string, Character>  cArray)
+        {
+            head = null;
+            chars = cArray;
+        }
+
+        /// <summary>
+        /// Sets the dictionary of characters for this tree
+        /// </summary>
+        /// <param name="chars"></param>
+        public void SetCharacterDict(Dictionary<string, Character> chars)
+        {
+            this.chars = chars;
+        }
+
+        /// <summary>
+        /// Looks up the given character names and creates a dictionary using
+        /// the names as a key
+        /// </summary>
+        /// <param name="charNames"></param>
+        // TODO right now this is just a place holder
+        public void SetCharacterDict(string[] charNames)
+        {
+            for(int i=0;i<charNames.Length;i++)
+            {
+                chars.Add(charNames[i], new Character(charNames[i]));
+            }
+        }
+
+        public void SetBackgrounds(string[] bckNames)
+        {
+            for(int i=0;i<bckNames.Length;i++)
+            {
+                backgrounds.Add(bckNames[i], new Background(bckNames[i]));
+            }
+        }
+
         /// <summary>
         /// Super costly, returns a formatted version of the Dom Tree
         /// </summary>
@@ -231,6 +272,30 @@ namespace Brigit
         {
             name = n;
             picLocation = string.Empty;
+        }
+
+        public override string ToString()
+        {
+            return name;
+        }
+    }
+
+    /// <summary>
+    /// contains info for the background that can be set
+    /// </summary>
+    // TODO add more shit to this
+    public class Background
+    {
+        string name;
+
+        public Background()
+        {
+            name = string.Empty;
+        }
+
+        public Background(string name)
+        {
+            this.name = name;
         }
 
         public override string ToString()

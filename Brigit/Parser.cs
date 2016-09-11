@@ -1,36 +1,103 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Collections.Generic;
+using System.Collections;
 
 /// <summary>
 /// Summary description for Class1
 /// </summary>
 namespace Brigit
 {
+    // static class
     public class Parser
     {
-        Eater muncher;
+        public static Eater muncher;
 
-        /// <summary>
-        /// Creates a new parser
-        /// </summary>
-	    public Parser()
-	    {
-            muncher = new Eater();
-	    }
-
-        /// <summary>
-        /// Creates a new parser settings Eater.data to the given string
-        /// </summary>
-        /// <param name="data">Data is the string that Eater will eat</param>
-        public Parser(string data)
+        public static DomTree ParseBrigitText(string data)
         {
             muncher = new Eater(data);
+            return new DomTree();    
+        }
+
+        private static DomTree ParseTag()
+        {
+            DomTree tree = new DomTree();
+            // Eat the fluff in front until muncher sees a open bracket
+            muncher.EatWhiteSpace();
+            if (muncher.CheckChar('['))
+            {
+                muncher.ConsumeChar();
+                // parsing a special one off tag
+                if (muncher.StartsWith("load"))
+                {
+                    tree = ParseLoadTag();
+                }
+                // parsing a pair of tag that must be closed out
+                else
+                {
+
+                }
+            }
+            else
+            {
+                throw new Exception("Malformed txt file, no free characters allowed");
+            }
+            return tree;
+        }
+
+        public static DomTree ParseLoadTag()
+        {
+            DomTree returnDom = new DomTree();
+            // consume the tag
+            muncher.ConsumeChar(4);
+
+            while(muncher.SniffChar() != ']')
+            {
+                muncher.EatWhiteSpace();
+                string argument = muncher.SpitUpAlpha();
+                muncher.CheckChar(':');
+                string[] set = ParseSetOfStrings();
+                switch(argument)
+                {
+                    case "char":
+                        returnDom.SetCharacterDict(set);
+                        break;
+                    case "background":
+                        returnDom.SetBackgrounds(set);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            return new DomTree();
+        }
+
+        // what should the regex for this be?
+        public static string[] ParseSetOfStrings()
+        {
+            Queue<string> que = new Queue<string>();
+            while (muncher.SniffChar() != ';')
+            {
+                muncher.EatWhiteSpace();
+                char ch = muncher.SniffChar();
+                if (!Char.IsLetterOrDigit(ch) || ch == '_' || ch == '-' || ch == '.')
+                    throw new Exception("Malformed set, sets can only consits of . - _ and letters and numbers");
+
+                que.Enqueue(muncher.SpitUpWhile(delegate (char c)
+                {
+                    return Char.IsLetterOrDigit(c) || c == '_' || c == '-' || c == '.';
+                }));
+            }
+            // eating up the ';'
+            muncher.ConsumeChar();
+            return que.ToArray();
         }
     }
 
     /// <summary>
-    /// A class that steps through 
+    /// A class that steps through a string to parse it
     /// </summary>
     public class Eater
     {
@@ -50,6 +117,16 @@ namespace Brigit
         public bool Complete()
         {
             return pos >= data.Length;
+        }
+
+        /// <summary>
+        /// Checks to see if a the char at pos is equal to the given char
+        /// </summary>
+        /// <param name="c">A Char</param>
+        /// <returns>True or False</returns>
+        public bool CheckChar(char c)
+        {
+            return data[pos] == c;
         }
 
         /// <summary>
