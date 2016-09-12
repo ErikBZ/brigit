@@ -14,7 +14,7 @@ namespace Brigit
         /// <summary>
         /// The beginning of the script
         /// </summary>
-        public DomNode head;
+        DomNode head;
 
         /// <summary>
         /// The list of characters that will be in this Scene
@@ -22,6 +22,26 @@ namespace Brigit
         Dictionary<string, Character> chars = new Dictionary<string, Character>();
 
         Dictionary<string, Background> backgrounds = new Dictionary<string, Background>();
+        
+        // properties
+        public DomNode Head
+        {
+            get { return head; }
+            set { head = value; }
+        }
+
+        public Dictionary<string, Character> Characaters
+        {
+            get { return chars; }
+            set { chars = value; }
+        }
+
+        public Dictionary<string, Background> Background
+        {
+            get { return backgrounds; }
+            set { backgrounds = value; }
+        }
+
 
         public DomTree()
         {
@@ -152,6 +172,31 @@ namespace Brigit
         /// </summary>
         Character character;
 
+        // settings up the properties
+        public DomNode[] Children
+        {
+            get { return children; }
+            set { children = value; }
+        }
+
+        public Dictionary<string, bool> Flags
+        {
+            get { return flags; }
+            set { flags = value; }
+        }
+
+        public Dictionary<string, bool> FlagToggles
+        {
+            get { return flagSets; }
+            set { flagSets = value; }
+        }
+
+        public Character Character
+        {
+            get { return character; }
+            set { character = value; }
+        }
+
         /// <summary>
         /// Default constructor, creates a Dom Node with no indeces.
         /// </summary>
@@ -195,6 +240,19 @@ namespace Brigit
             return "Dom Node";
         }
 
+        /// <summary>
+        /// Set the possible branches for this node
+        /// </summary>
+        /// <param name="next"></param>
+        public void SetChildren(DomNode[] next)
+        {
+            children = next;
+        }
+
+        /// <summary>
+        /// Get all the children of this node
+        /// </summary>
+        /// <returns></returns>
         public DomNode[] GetChildren()
         {
             return children;
@@ -203,7 +261,14 @@ namespace Brigit
 
     public class Response : DomNode
     {
-        string response;
+        public string response;
+
+        public string Text
+        {
+            get { return response; }
+            set { response = value; }
+        }
+
 
         // i'll add the other ones later
         public Response():
@@ -228,6 +293,13 @@ namespace Brigit
     public class Reply : DomNode
     {
         string[] replies;
+
+        // properties
+        public string[] Replies
+        {
+            get { return replies; }
+            set { replies = value; }
+        }
 
         // once again i'll add the other ones later
         public Reply() :
@@ -256,6 +328,19 @@ namespace Brigit
     {
         string name;
         string picLocation;
+
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+
+        public string PictureLocal
+        {
+            get { return picLocation; }
+            set { picLocation = value; }
+        }
+
 
         /// <summary>
         /// Creates a new Character
@@ -287,6 +372,13 @@ namespace Brigit
     public class Background
     {
         string name;
+
+        // properties
+        public string Name
+        {
+            get { return Name; }
+            set { name = value; }
+        }
 
         public Background()
         {

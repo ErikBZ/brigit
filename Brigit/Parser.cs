@@ -17,6 +17,10 @@ namespace Brigit
         public static DomTree ParseBrigitText(string data)
         {
             muncher = new Eater(data);
+            if (muncher.SniffChar() != '[')
+                throw new Exception("brigit txt must start with [load] tag");
+            else
+                muncher.ConsumeChar();
             DomTree tree = ParseLoadTag();
             return tree;    
         }
@@ -44,9 +48,9 @@ namespace Brigit
         }
 
         /// <summary>
-        /// Parses the 
+        /// Parses the load tag which must be set at the beginning of the file
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns a new DomTree that will be used as the base</returns>
         public static DomTree ParseLoadTag()
         {
             DomTree returnDom = new DomTree();
@@ -75,6 +79,43 @@ namespace Brigit
                 }
             }
             return returnDom;
+        }
+
+        public static DomNode ParseResTag()
+        {
+            Response node = new Response();
+            // eating the tag, "res"
+            muncher.ConsumeChar(3);
+            Dictionary<string, string[]> arguments = ParseArgumentSetPairs();
+            foreach(KeyValuePair<string, string[]> entry in arguments)
+            {
+
+            }
+            return node;
+        }
+
+        /// <summary>
+        /// parses an entire tag of arguments for any tag
+        /// </summary>
+        /// <returns></returns>
+        public static Dictionary<string, string[]> ParseArgumentSetPairs()
+        {
+            Dictionary<string, string[]> arguments = new Dictionary<string, string[]>();
+            while (muncher.SniffChar() != ']')
+            {
+                muncher.EatWhiteSpace();
+                string argument = muncher.SpitUpAlpha();
+                string[] set = null;
+
+                if (muncher.CheckChar(':'))
+                {
+                    muncher.ConsumeChar();
+                    set = ParseSetOfStrings();
+                }
+
+                arguments.Add(argument, set);
+            }
+            return arguments;
         }
 
         // what should the regex for this be?
