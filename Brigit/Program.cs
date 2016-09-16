@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace Brigit
 {
@@ -18,9 +19,7 @@ namespace Brigit
             {
                 toParse = File.ReadAllText(path);
             }
-
             DomTree tree = Parser.ParseBrigitText(toParse);
-
             Console.ReadLine();
         }
     }

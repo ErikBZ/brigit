@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Collections;
 
 /// <summary>
@@ -14,6 +15,14 @@ namespace Brigit
     {
         public static Eater muncher;
 
+        /// <summary>
+        /// Creates a DOM structure for a Brigit Text File
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        // This is where most of the logic for creating the actuall
+        // structure will be. This isn't an ordinary DOM since this struct
+        // can have nodes with more than 1 parent
         public static DomTree ParseBrigitText(string data)
         {
             muncher = new Eater(data);
@@ -22,6 +31,8 @@ namespace Brigit
             else
                 muncher.ConsumeChar();
             DomTree tree = ParseLoadTag();
+            muncher.EatWhiteSpace();
+            tree.Head = ParseResTag();
             return tree;    
         }
 
@@ -57,25 +68,19 @@ namespace Brigit
             // consume the tag
             muncher.ConsumeChar(4);
 
-            while(muncher.SniffChar() != ']')
+            Dictionary<string, string[]> argumentSet = ParseArgumentSetPairs();
+            foreach(KeyValuePair<string, string[]> kvPiar in argumentSet)
             {
-                muncher.EatWhiteSpace();
-                string argument = muncher.SpitUpAlpha();
-                if(muncher.CheckChar(':'))
+                switch(kvPiar.Key)
                 {
-                    muncher.ConsumeChar();
-                    string[] set = ParseSetOfStrings();
-                    switch(argument)
-                    {
-                        case "char":
-                            returnDom.SetCharacterDict(set);
-                            break;
-                        case "background":
-                            returnDom.SetBackgrounds(set);
-                            break;
-                        default:
-                            break;
-                    }
+                    case "char":
+                        returnDom.SetCharacterDict(kvPiar.Value);
+                        break;
+                    case "background":
+                        returnDom.SetBackgrounds(kvPiar.Value);
+                        break;
+                    default:
+                        break;
                 }
             }
             return returnDom;
@@ -84,14 +89,63 @@ namespace Brigit
         public static DomNode ParseResTag()
         {
             Response node = new Response();
+            if(muncher.SniffChar() == '[')
+            {
+                muncher.ConsumeChar();
+            }
             // eating the tag, "res"
             muncher.ConsumeChar(3);
+            // Parsing the tag [] and it's parameters
             Dictionary<string, string[]> arguments = ParseArgumentSetPairs();
             foreach(KeyValuePair<string, string[]> entry in arguments)
             {
-
+                if(entry.Key == "char" || entry.Key == "background")
+                {
+                    if(entry.Value.Length > 1)
+                    {
+                        throw new Exception("char and background cannot have more than one set");
+                    }
+                }
+                switch(entry.Key)
+                {
+                    case "char":
+                        node.Character = new Character(entry.Value[0]);
+                        break;
+                    case "background":
+                        node.Background = new Background(entry.Value[0]);
+                        break;
+                    default:
+                        Console.WriteLine("RES does not have a solution for the {0} tag", entry.Key);
+                        break;
+                }
             }
+            // throwing out all the carriages and spaces before the text
+            // actually starts
+            muncher.EatWhiteSpace();
+            // parsing the actual text
+            string text = ParseParagraphs();
+            node.Text = text;
+            // eating up the [*] ending tag
+            muncher.ConsumeChar(3);
             return node;
+        }
+
+        /// <summary>
+        /// Parses a section of text to be used for dialog, usually.
+        /// </summary>
+        /// <returns>
+        ///     Returns a string where return carriages are replaced
+        ///     with spaces
+        /// </returns>
+        public static string ParseParagraphs()
+        {
+            string str = string.Empty;
+            str = muncher.SpitUpWhile(delegate (char c)
+            {
+                return c != '[';
+            });
+            str = Regex.Replace(str, @"\r\n?\n", " ");
+            return str;
         }
 
         /// <summary>
@@ -115,6 +169,16 @@ namespace Brigit
 
                 arguments.Add(argument, set);
             }
+
+            if (muncher.CheckChar(']'))
+            {
+                muncher.ConsumeChar();
+            }
+            else
+            {
+                throw new Exception("End of tag not found after arguments were parsed");
+            }
+
             return arguments;
         }
 
@@ -122,7 +186,7 @@ namespace Brigit
         public static string[] ParseSetOfStrings()
         {
             Queue<string> que = new Queue<string>();
-            while (muncher.SniffChar() != ';')
+            while (!(muncher.SniffChar() == ';' || muncher.SniffChar() == ']'))
             {
                 muncher.EatWhiteSpace();
                 char ch = muncher.SniffChar();
@@ -135,7 +199,10 @@ namespace Brigit
                 }));
             }
             // eating up the ';'
-            muncher.ConsumeChar();
+            if(muncher.SniffChar() == ';')
+            {
+                muncher.ConsumeChar();
+            }
             return que.ToArray();
         }
     }
@@ -242,7 +309,7 @@ namespace Brigit
         public string SpitUpWhile(Func<char, bool> pred)
         {
             StringBuilder sb = new StringBuilder();
-            while(pred(SniffChar()))
+            while(pred(SniffChar()) && pos < data.Length)
             {
                 sb.Append(SpitChar());
             }

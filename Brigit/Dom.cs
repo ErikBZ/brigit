@@ -172,6 +172,12 @@ namespace Brigit
         /// </summary>
         Character character;
 
+        /// <summary>
+        /// The background for the character. Will usually not change, so the first
+        /// node can have the background set and all other nodes will inherit it
+        /// </summary>
+        Background background;
+
         // settings up the properties
         public DomNode[] Children
         {
@@ -195,6 +201,12 @@ namespace Brigit
         {
             get { return character; }
             set { character = value; }
+        }
+
+        public Background Background
+        {
+            get { return background; }
+            set { background = value; }
         }
 
         /// <summary>

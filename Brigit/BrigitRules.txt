@@ -3,6 +3,10 @@
 * Documentation Start! *
 >Tags<
 load:
+	exmpl: [load char: person1 person2; background: thingy;]
+	the last semicolon is optional and the tag will parse just fine
+	without it
+
 	This tag must be set in the beginning of the document. It tells the
 	parser to load the required resources for the scene. Resources such
 	as characters, backgrounds and some other stuff that I might add later

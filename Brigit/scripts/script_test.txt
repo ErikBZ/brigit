@@ -9,8 +9,7 @@ blha sflka jdflksajdflkj
 [*]
 
 [rep char:person3;]
-[r] dslfkjas dlkfj asldfkj asldkf [*r]
-[r] sadflk aldkdkdkdkdkdk [*r]
-[r] asdlkj sdlkfj ldfzixucyiuxyc [*r]
+    [r] dslfkjas dlkfj asldfkj asldkf [*r]
+    [r] sadflk aldkdkdkdkdkdk [*r]
+    [r] asdlkj sdlkfj ldfzixucyiuxyc [*r]
 [*]
-

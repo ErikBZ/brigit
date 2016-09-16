@@ -1,1 +1,6 @@
-[load char:person1 person2 person3; background:mountain;]
+[load char:person1]
+
+[res char:person1]
+hello how are you doing today this is character person1
+talking about stuff yayyy
+[*]
