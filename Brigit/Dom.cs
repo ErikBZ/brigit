@@ -47,6 +47,7 @@ namespace Brigit
         {
             head = null;
             chars = new Dictionary<string, Character>();
+            backgrounds = new Dictionary<string, Background>();
         }
 
         public DomTree(Dictionary<string, Character>  cArray)

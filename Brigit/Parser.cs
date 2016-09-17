@@ -4,6 +4,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Collections;
+using System.Diagnostics;
 
 /// <summary>
 /// Summary description for Class1
@@ -13,8 +14,8 @@ namespace Brigit
     // static class
     public class Parser
     {
-        public static Eater muncher;
-
+        public Eater muncher;
+        
         /// <summary>
         /// Creates a DOM structure for a Brigit Text File
         /// </summary>
@@ -23,46 +24,75 @@ namespace Brigit
         // This is where most of the logic for creating the actuall
         // structure will be. This isn't an ordinary DOM since this struct
         // can have nodes with more than 1 parent
-        public static DomTree ParseBrigitText(string data)
+        public DomTree ParseBrigitText()
         {
-            muncher = new Eater(data);
             if (muncher.SniffChar() != '[')
                 throw new Exception("brigit txt must start with [load] tag");
             else
                 muncher.ConsumeChar();
             DomTree tree = ParseLoadTag();
-            muncher.EatWhiteSpace();
-            tree.Head = ParseResTag();
+            DomNode oldNode = null;
+            while(!muncher.Complete())
+            {
+                DomNode[] children = ParseNode();
+                if(tree.Head == null)
+                {
+                    if(children.Length != 1)
+                    {
+                        // TODO, create empty node
+                    }
+                    else
+                    {
+                        tree.Head = children[0];
+                        oldNode = tree.Head;
+                    }
+                }
+                else if(oldNode != null)
+                {
+                    oldNode.Children = children;
+                    oldNode = children[0];
+                }
+            }
+
             return tree;    
         }
 
-        public static DomNode ParseTag()
+        /// <summary>
+        /// Generic Parser which will choose which method to call
+        /// depending on the tag it finds
+        /// </summary>
+        /// <returns></returns>
+        public DomNode[] ParseNode()
         {
+            DomNode[] node = null;
             // Eat the fluff in front until muncher sees a open bracket
             muncher.EatWhiteSpace();
             if (muncher.CheckChar('['))
             {
                 muncher.ConsumeChar();
-                // parsing a pair of tag that must be closed out
-                /*
-                else
+                if (muncher.StartsWith("res"))
                 {
-                // TODO add code here pls
+                    node = new DomNode[] { ParseResTag() };
                 }
-                */
+                else if (muncher.StartsWith("rep"))
+                { }
+                else
+                { }
             }
             else
             {
-                throw new Exception("Malformed txt file, no free characters allowed");
+                Console.WriteLine("Something went wrong");
             }
-            return new DomNode();
+            // Eating awy until the next tag
+            muncher.EatWhiteSpace();
+            return node;
         }
 
         /// <summary>
         /// Parses the load tag which must be set at the beginning of the file
         /// </summary>
         /// <returns>Returns a new DomTree that will be used as the base</returns>
-        public static DomTree ParseLoadTag()
+        public DomTree ParseLoadTag()
         {
             DomTree returnDom = new DomTree();
             // consume the tag
@@ -86,7 +116,12 @@ namespace Brigit
             return returnDom;
         }
 
-        public static DomNode ParseResTag()
+        /// <summary>
+        /// Parses an entire Response tag all the way until after the 
+        /// final ']'
+        /// </summary>
+        /// <returns></returns>
+        public DomNode ParseResTag()
         {
             Response node = new Response();
             if(muncher.SniffChar() == '[')
@@ -137,7 +172,7 @@ namespace Brigit
         ///     Returns a string where return carriages are replaced
         ///     with spaces
         /// </returns>
-        public static string ParseParagraphs()
+        public string ParseParagraphs()
         {
             string str = string.Empty;
             str = muncher.SpitUpWhile(delegate (char c)
@@ -152,7 +187,7 @@ namespace Brigit
         /// parses an entire tag of arguments for any tag
         /// </summary>
         /// <returns></returns>
-        public static Dictionary<string, string[]> ParseArgumentSetPairs()
+        public Dictionary<string, string[]> ParseArgumentSetPairs()
         {
             Dictionary<string, string[]> arguments = new Dictionary<string, string[]>();
             while (muncher.SniffChar() != ']')
@@ -183,7 +218,7 @@ namespace Brigit
         }
 
         // what should the regex for this be?
-        public static string[] ParseSetOfStrings()
+        public string[] ParseSetOfStrings()
         {
             Queue<string> que = new Queue<string>();
             while (!(muncher.SniffChar() == ';' || muncher.SniffChar() == ']'))
@@ -213,7 +248,23 @@ namespace Brigit
     public class Eater
     {
         string data;
+        // the overall position of the eater
         int pos;
+        // The actual line and position of the character
+        int lineNum;
+        int posNum;
+
+        public string Text
+        {
+            get { return data; }
+            set { data = value; }
+        }
+
+        public int Position
+        {
+            get { return pos; }
+            set { pos = value; }
+        }
 
         public Eater():this(string.Empty)
         {
@@ -225,10 +276,21 @@ namespace Brigit
             pos = 0;
         }
 
+        /// <summary>
+        /// Checks if the eater has reached the EOF
+        /// </summary>
+        /// <returns></returns>
         public bool Complete()
         {
             return pos >= data.Length;
         }
+
+        /// <summary>
+        /// Gets the remaining string to be parsed
+        /// </summary>
+        /// <returns></returns>
+        public string GetRemainingString() => data.Substring(pos);
+
 
         /// <summary>
         /// Checks to see if a the char at pos is equal to the given char
@@ -237,7 +299,12 @@ namespace Brigit
         /// <returns>True or False</returns>
         public bool CheckChar(char c)
         {
-            return data[pos] == c;
+            bool b = false;
+            if(!Complete())
+            {
+                b = c == data[pos];
+            }
+            return b;
         }
 
         /// <summary>

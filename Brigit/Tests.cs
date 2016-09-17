@@ -88,8 +88,9 @@ namespace Brigit
                 toParse = File.ReadAllText(path);
             }
 
-            Parser.muncher = new Eater(toParse);
-            string[] people = Parser.ParseSetOfStrings();
+            Parser thing = new Parser();
+            thing.muncher = new Eater(toParse);
+            string[] people = thing.ParseSetOfStrings();
             for (int i = 0; i < people.Length; i++)
             {
                 Console.WriteLine(people[i]);

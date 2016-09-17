@@ -4,3 +4,7 @@
 hello how are you doing today this is character person1
 talking about stuff yayyy
 [*]
+
+[res char:person1]
+blah blah blah
+[*]

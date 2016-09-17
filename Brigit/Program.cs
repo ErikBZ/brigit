@@ -19,7 +19,9 @@ namespace Brigit
             {
                 toParse = File.ReadAllText(path);
             }
-            DomTree tree = Parser.ParseBrigitText(toParse);
+            Parser p = new Parser();
+            p.muncher = new Eater(toParse);
+            DomTree tree = p.ParseBrigitText();
             Console.ReadLine();
         }
     }
