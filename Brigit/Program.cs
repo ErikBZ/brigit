@@ -14,14 +14,22 @@ namespace Brigit
         static void Main(string[] args)
         {
             string path = @"..\..\scripts\script_test_2.txt";
-            string toParse = string.Empty;
+            string[] toParse = null;
             if (File.Exists(path))
             {
-                toParse = File.ReadAllText(path);
+                toParse = File.ReadAllLines(path);
             }
-            Parser p = new Parser();
-            p.muncher = new Eater(toParse);
-            DomTree tree = p.ParseBrigitText();
+
+            Eater muncher = new Eater(toParse);
+            string s = muncher.SpitUpWhile(delegate (char c)
+            {
+                return c != 'y';
+            });
+
+            Console.WriteLine(s);
+            Console.WriteLine();
+            Console.WriteLine(muncher.GetRemainingString());
+            Console.WriteLine(muncher.Position);
             Console.ReadLine();
         }
     }

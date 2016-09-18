@@ -247,6 +247,7 @@ namespace Brigit
     /// </summary>
     public class Eater
     {
+        string[] all_text;
         string data;
         // the overall position of the eater
         int pos;
@@ -254,16 +255,25 @@ namespace Brigit
         int lineNum;
         int posNum;
 
-        public string Text
+        public override string ToString()
         {
-            get { return data; }
-            set { data = value; }
+            StringBuilder sb = new StringBuilder();
+            foreach(string s in all_text)
+            {
+                sb.Append(s);
+            }
+            return sb.ToString();
         }
 
-        public int Position
+        public string Position
         {
-            get { return pos; }
-            set { pos = value; }
+            // the plus 1 is to normalize it
+            get { return $"Line: {lineNum+1}, Position: {posNum+1}"; }
+        }
+
+        public char CurrentChar
+        {
+            get { return all_text[lineNum][posNum]; }
         }
 
         public Eater():this(string.Empty)
@@ -275,6 +285,13 @@ namespace Brigit
             this.data = data;
             pos = 0;
         }
+        public Eater(string[] text)
+        {
+            all_text = text;
+            data = all_text[0];
+            lineNum = 0;
+            posNum = 0;
+        }
 
         /// <summary>
         /// Checks if the eater has reached the EOF
@@ -282,15 +299,31 @@ namespace Brigit
         /// <returns></returns>
         public bool Complete()
         {
-            return pos >= data.Length;
+            return lineNum == all_text.Length;
         }
 
         /// <summary>
         /// Gets the remaining string to be parsed
         /// </summary>
         /// <returns></returns>
-        public string GetRemainingString() => data.Substring(pos);
+        public string GetRemainingString()
+        {
+            StringBuilder sb = new StringBuilder();
+            for(int i=lineNum;i<all_text.Length;i++)
+            {
+                if (i == lineNum)
+                {
+                    sb.Append(all_text[lineNum].Substring(posNum));
+                }
+                else
+                {
+                    sb.Append(all_text[i]);
+                }
+                sb.Append("\n");
+            }
 
+            return sb.ToString();
+        }
 
         /// <summary>
         /// Checks to see if a the char at pos is equal to the given char
@@ -302,7 +335,7 @@ namespace Brigit
             bool b = false;
             if(!Complete())
             {
-                b = c == data[pos];
+                b = c == all_text[lineNum][posNum];
             }
             return b;
         }
@@ -314,9 +347,11 @@ namespace Brigit
         public char SniffChar()
         {
             // if pos is greater than the string length return the null terminator
-            if (pos >= data.Length)
+            if (Complete())
                 return '\0';
-            return data[pos];
+            if (all_text[lineNum] == string.Empty)
+                return ' ';
+            return all_text[lineNum][posNum];
         }
 
         /// <summary>
@@ -324,16 +359,37 @@ namespace Brigit
         /// </summary>
         public void ConsumeChar()
         {
-            pos++;
+            // The eater has already reached the end
+            if (lineNum >= all_text.Length)
+            {
+                Console.WriteLine("Reached end of file cannot eat anymore");
+            }
+            else if (all_text[lineNum].Length - 1 == posNum || all_text[lineNum] == string.Empty)
+            {
+                posNum = 0;
+                lineNum++;
+            }
+            else
+            {
+                posNum++;
+            }
         }
 
         /// <summary>
         /// Steps forware by x in the string
         /// </summary>
         /// <param name="x">Skip x chars</param>
+        // Slower but safer
         public void ConsumeChar(int x)
         {
-            pos += x;
+            for(int i=0;i<x && !Complete();i++)
+            {
+                ConsumeChar();
+            }
+            if(Complete())
+            {
+                Console.WriteLine("Reached EOF cannot eat anymore");
+            }
         }
 
         /// <summary>
@@ -401,12 +457,8 @@ namespace Brigit
         /// <returns></returns>
         public bool StartsWith(string s)
         {
-            bool b = true;
-            for(int i= pos;i<s.Length;i++)
-            {
-                if (data[pos + i] != s[i])
-                    b = false;
-            }
+            String sub = all_text[lineNum].Substring(posNum);
+            bool b = sub.StartsWith(s);
             return b;
         }
     }
