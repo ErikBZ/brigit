@@ -16,6 +16,11 @@ namespace Brigit
     {
         public Eater muncher;
         
+        public Parser(string[] data)
+        {
+            muncher = new Eater(data);
+        }
+
         /// <summary>
         /// Creates a DOM structure for a Brigit Text File
         /// </summary>
@@ -34,6 +39,7 @@ namespace Brigit
             DomNode oldNode = null;
             while(!muncher.Complete())
             {
+                Console.WriteLine("hello");
                 DomNode[] children = ParseNode();
                 if(tree.Head == null)
                 {
@@ -49,11 +55,12 @@ namespace Brigit
                 }
                 else if(oldNode != null)
                 {
-                    oldNode.Children = children;
+                    oldNode.SetChildren(children);
                     oldNode = children[0];
                 }
+                muncher.EatWhiteSpace();
             }
-
+            Console.WriteLine("end reached with no issues");
             return tree;    
         }
 
@@ -138,7 +145,7 @@ namespace Brigit
                 {
                     if(entry.Value.Length > 1)
                     {
-                        throw new Exception("char and background cannot have more than one set");
+                        Console.WriteLine("res tag cannot have more than 1 set per parameter");
                     }
                 }
                 switch(entry.Key)
@@ -179,7 +186,8 @@ namespace Brigit
             {
                 return c != '[';
             });
-            str = Regex.Replace(str, @"\r\n?\n", " ");
+
+            str = Regex.Replace(str, @"\n", " ");
             return str;
         }
 
@@ -190,7 +198,7 @@ namespace Brigit
         public Dictionary<string, string[]> ParseArgumentSetPairs()
         {
             Dictionary<string, string[]> arguments = new Dictionary<string, string[]>();
-            while (muncher.SniffChar() != ']')
+            while (!muncher.CheckChar(']'))
             {
                 muncher.EatWhiteSpace();
                 string argument = muncher.SpitUpAlpha();
@@ -211,7 +219,7 @@ namespace Brigit
             }
             else
             {
-                throw new Exception("End of tag not found after arguments were parsed");
+                Console.WriteLine("end of tag not found");
             }
 
             return arguments;
@@ -226,7 +234,9 @@ namespace Brigit
                 muncher.EatWhiteSpace();
                 char ch = muncher.SniffChar();
                 if (!Char.IsLetterOrDigit(ch) || ch == '_' || ch == '-' || ch == '.')
-                    throw new Exception("Malformed set, sets can only consits of . - _ and letters and numbers");
+                {
+                    Console.WriteLine("Malformed line");
+                }
 
                 que.Enqueue(muncher.SpitUpWhile(delegate (char c)
                 {
@@ -248,9 +258,6 @@ namespace Brigit
     public class Eater
     {
         string[] all_text;
-        string data;
-        // the overall position of the eater
-        int pos;
         // The actual line and position of the character
         int lineNum;
         int posNum;
@@ -271,24 +278,13 @@ namespace Brigit
             get { return $"Line: {lineNum+1}, Position: {posNum+1}"; }
         }
 
-        public char CurrentChar
-        {
-            get { return all_text[lineNum][posNum]; }
-        }
-
-        public Eater():this(string.Empty)
+        public Eater():this(null)
         {
         }
 
-        public Eater(string data)
-        {
-            this.data = data;
-            pos = 0;
-        }
         public Eater(string[] text)
         {
             all_text = text;
-            data = all_text[0];
             lineNum = 0;
             posNum = 0;
         }
@@ -299,6 +295,7 @@ namespace Brigit
         /// <returns></returns>
         public bool Complete()
         {
+            Console.WriteLine(lineNum == all_text.Length);
             return lineNum == all_text.Length;
         }
 
@@ -335,7 +332,7 @@ namespace Brigit
             bool b = false;
             if(!Complete())
             {
-                b = c == all_text[lineNum][posNum];
+                b = c == SniffChar();
             }
             return b;
         }
@@ -351,6 +348,8 @@ namespace Brigit
                 return '\0';
             if (all_text[lineNum] == string.Empty)
                 return ' ';
+            if (all_text[lineNum].Length == posNum)
+                return '\n';
             return all_text[lineNum][posNum];
         }
 
@@ -364,7 +363,7 @@ namespace Brigit
             {
                 Console.WriteLine("Reached end of file cannot eat anymore");
             }
-            else if (all_text[lineNum].Length - 1 == posNum || all_text[lineNum] == string.Empty)
+            else if (all_text[lineNum].Length == posNum || all_text[lineNum] == string.Empty)
             {
                 posNum = 0;
                 lineNum++;
@@ -404,19 +403,21 @@ namespace Brigit
         }
 
         /// <summary>
-        /// Func is pretty cool
+        /// Takes a delegate that returns a bool to keep eating
+        /// until the function returns false.
         /// </summary>
         /// <param name="predicate"></param>
         public void EatWhile(Func<Char, bool> predicate)
         {
-            while(predicate(SniffChar()))
+            while(predicate(SniffChar()) && !Complete())
             {
                 ConsumeChar();
             }
         }
 
         /// <summary>
-        /// I hope I'm using this right
+        /// Only eats whitespace like tabs, spaces and carriage
+        /// returns
         /// </summary>
         public void EatWhiteSpace()
         {
@@ -432,7 +433,7 @@ namespace Brigit
         public string SpitUpWhile(Func<char, bool> pred)
         {
             StringBuilder sb = new StringBuilder();
-            while(pred(SniffChar()) && pos < data.Length)
+            while(pred(SniffChar()) && !Complete())
             {
                 sb.Append(SpitChar());
             }

@@ -20,16 +20,10 @@ namespace Brigit
                 toParse = File.ReadAllLines(path);
             }
 
-            Eater muncher = new Eater(toParse);
-            string s = muncher.SpitUpWhile(delegate (char c)
-            {
-                return c != 'y';
-            });
+            Parser p = new Parser(toParse);
+            DomTree domT = p.ParseBrigitText();
 
-            Console.WriteLine(s);
-            Console.WriteLine();
-            Console.WriteLine(muncher.GetRemainingString());
-            Console.WriteLine(muncher.Position);
+            Console.WriteLine("hi");
             Console.ReadLine();
         }
     }

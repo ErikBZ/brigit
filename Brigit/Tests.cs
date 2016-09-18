@@ -41,6 +41,7 @@ namespace Brigit
             Console.ReadLine();
         }
 
+        /*
         /// <summary>
         /// Testing the eater class from Parser
         /// </summary>
@@ -98,5 +99,6 @@ namespace Brigit
 
             Console.Read();
         }
+        */
     }
 }
