@@ -13,11 +13,22 @@ load:
 	on. Characters, Backgrounds and basically anything must be loaded before
 	being used or else the parser will throw an error.
 res:
-	A simple response, IE one speech bubble of a conversation. takes a couple
+	empl:	[res char:person1 background: thingy]
+				stuff goes here
+			[*]
+	A simple response node, IE one speech bubble of a conversation. takes a couple
 	of arguments such as char. If char is not set for that response it will
 	default to the char set by the res before it.
 rep:
-	A reply. This requires user input to make a choice. Can take in char as
+	empl: 	[rep char:person1]
+				[r] stuff [*]
+				[r] more stuff
+					to choose from
+				[*]
+				[r]
+					yurp[*]
+			[*]
+	A reply node. This requires user input to make a choice. Can take in char as
 	an argument. Both RES and REP will take background as an argument as well.
 r:
 	A single reply. Must be used within the rep tag.
