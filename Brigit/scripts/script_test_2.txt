@@ -19,3 +19,14 @@ gotta more stuff and shit
 [res char:person1]
 saying more stuff and shit
 [*]
+
+[rep char:person2]
+	[r] soemthinasdf sadflkj [*]
+	[r] i'm saying something [*]
+	[r] blah blah blah	     [*]
+[*]
+
+[rep]
+	[r] something [*]
+	[r] something else[*]
+[*]

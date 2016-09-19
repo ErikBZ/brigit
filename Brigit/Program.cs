@@ -21,9 +21,9 @@ namespace Brigit
             }
 
             Parser p = new Parser(toParse);
-            DomTree domT = p.ParseBrigitText();
+            DomTree domTree = p.ParseBrigitText();
 
-            Console.WriteLine(domT.ToString());
+            Console.WriteLine(domTree);
             Console.ReadLine();
         }
     }

@@ -1,15 +1,5 @@
-[load char:person1 person2 person3; background:mountain;]
-
-[res char:person1;]
-lkjASD KJHSD FKJASHD lkasdjfj sk skklj sadfl j sdflkjsfasd fsadf sdf sdfsdf
-[*]
-
-[res char:person2;]
-blha sflka jdflksajdflkj
-[*]
-
-[rep char:person3;]
-    [r] dslfkjas dlkfj asldfkj asldkf [*r]
-    [r] sadflk aldkdkdkdkdkdk [*r]
-    [r] asdlkj sdlkfj ldfzixucyiuxyc [*r]
+[rep char:person1]	
+	[r]thing1[*]
+	[r]thing2[*]
+	[r]thing3[*]
 [*]

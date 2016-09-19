@@ -81,7 +81,9 @@ namespace Brigit
                     node = new DomNode[] { ParseResTag() };
                 }
                 else if (muncher.StartsWith("rep"))
-                { }
+                {
+                    node = new DomNode[] { ParseRepTag() };
+                }
                 else
                 { }
             }
@@ -147,6 +149,8 @@ namespace Brigit
                         Console.WriteLine("res tag cannot have more than 1 set per parameter");
                     }
                 }
+                // place holder for now
+                // this will not keep creating different characters
                 switch(entry.Key)
                 {
                     case "char":
@@ -174,10 +178,62 @@ namespace Brigit
         public DomNode ParseRepTag()
         {
             Reply rep = new Reply();
+            if (muncher.SniffChar() == '[')
+            {
+                muncher.ConsumeChar();
+            }
+            // eating the tag, "res"
+            muncher.ConsumeChar(3);
             Dictionary<string, string[]> arguments = ParseArgumentSetPairs();
+            foreach(KeyValuePair<string, string[]> kvp in arguments)
+            {
+                if(kvp.Key == "char" || kvp.Key == "background")
+                {
+                    if(kvp.Value.Length > 1)
+                    {
+                        Console.WriteLine("REP tag cannot have more then 1 set per parameters char and background");
+                    }
+                }
 
-
+                switch(kvp.Key)
+                {
+                    case "char":
+                        rep.Character = new Character(kvp.Value[0]);
+                        break;
+                    case "background":
+                        rep.Background = new Background(kvp.Value[0]);
+                        break;
+                    default:
+                        Console.WriteLine("No solution for argument {0}", kvp.Key);
+                        break;
+                }
+            }
+            muncher.EatWhiteSpace();
+            // eating each of the R tags
+            string[] replies = ParseReplies();
+            rep.Replies = replies;
+            ParseEndOfNode();
             return rep;
+        }
+
+        public string[] ParseReplies()
+        {
+            muncher.EatWhiteSpace();
+            Queue<string> strQueue = new Queue<string>();
+            while(muncher.StartsWith("[r]"))
+            {
+                // eating the [r]
+                muncher.ConsumeChar(3);
+                strQueue.Enqueue(muncher.SpitUpWhile(delegate (char c)
+                {
+                    return muncher.SniffChar() != '[';
+                }));
+                // parsing the [*x] of the node
+                ParseEndOfNode();
+                // looking to hit the next [r] tag
+                muncher.EatWhiteSpace();
+            }
+            return strQueue.ToArray();
         }
 
         /// <summary>
@@ -485,8 +541,13 @@ namespace Brigit
         /// <returns></returns>
         public bool StartsWith(string s)
         {
-            String sub = all_text[lineNum].Substring(posNum);
-            bool b = sub.StartsWith(s);
+            string sub = string.Empty;
+            bool b = false;
+            if(!Complete())
+            {
+                sub = all_text[lineNum].Substring(posNum);
+                b = sub.StartsWith(s);
+            }
             return b;
         }
     }
