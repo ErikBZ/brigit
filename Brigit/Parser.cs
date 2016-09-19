@@ -174,6 +174,8 @@ namespace Brigit
         public DomNode ParseRepTag()
         {
             Reply rep = new Reply();
+            Dictionary<string, string[]> arguments = ParseArgumentSetPairs();
+
 
             return rep;
         }
