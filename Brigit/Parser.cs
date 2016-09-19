@@ -166,8 +166,25 @@ namespace Brigit
             // parsing the actual text
             string text = ParseParagraphs();
             node.Text = text;
+
+            // TODO add eat tag to Eater and give it more versatility
             // eating up the [*] ending tag
-            muncher.ConsumeChar(3);
+            if(muncher.StartsWith("[*]"))
+            {
+                muncher.ConsumeChar(3);
+            }
+            else
+            {
+                Console.WriteLine("RES tag did not end properly");
+                muncher.EatWhile(delegate (char c)
+                {
+                    return c != ']';
+                });
+            }
+            if(muncher.SniffChar() == ']')
+            {
+                muncher.ConsumeChar();
+            }
             return node;
         }
 
