@@ -23,7 +23,7 @@ namespace Brigit
             Parser p = new Parser(toParse);
             DomTree domT = p.ParseBrigitText();
 
-            Console.WriteLine("hi");
+            Console.WriteLine(domT.ToString());
             Console.ReadLine();
         }
     }

@@ -39,7 +39,6 @@ namespace Brigit
             DomNode oldNode = null;
             while(!muncher.Complete())
             {
-                Console.WriteLine("hello");
                 DomNode[] children = ParseNode();
                 if(tree.Head == null)
                 {
@@ -295,7 +294,6 @@ namespace Brigit
         /// <returns></returns>
         public bool Complete()
         {
-            Console.WriteLine(lineNum == all_text.Length);
             return lineNum == all_text.Length;
         }
 

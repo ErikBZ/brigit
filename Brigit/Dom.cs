@@ -8,7 +8,6 @@ using System.Text;
 /// </summary>
 namespace Brigit
 {
-
     public class DomTree
     {
         /// <summary>
@@ -101,7 +100,7 @@ namespace Brigit
                 ArrayList l = list.GetListAtDepth(i);
                 if(l != null)
                 {
-                    for(int j=0;j<list.Count;j++)
+                    for(int j=0;j<l.Count;j++)
                     {
                         sb.Append('(');
                         sb.Append(GetObjectType(l[j]));
@@ -138,7 +137,7 @@ namespace Brigit
             DomNode[] ch = d.GetChildren();
             for(int i = 0;i<ch.Length;i++)
             {
-                AddDomNode(l, d, depth + 1);
+                AddDomNode(l, ch[i], depth + 1);
             }
         }
 

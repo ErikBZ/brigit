@@ -11,3 +11,11 @@ hopefully this works.
 blah blah blah blah blah
 blah blah blah
 [*]
+
+[res char:person1]
+gotta more stuff and shit
+[*]
+
+[res char:person1]
+saying more stuff and shit
+[*]

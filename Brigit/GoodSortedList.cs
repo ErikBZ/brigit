@@ -39,6 +39,7 @@ namespace Brigit
             }
 
             array[depth].Add(data);
+            Count++;
         }
 
         public ArrayList GetListAtDepth(int depth)
