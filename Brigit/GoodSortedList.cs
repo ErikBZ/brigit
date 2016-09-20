@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 /// </summary>
 namespace Brigit
 {
-    class GoodSortedList
+    public class GoodSortedList
     {
         public int Count {get; private set;}
         ArrayList[] array;

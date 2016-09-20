@@ -2,14 +2,36 @@
 using System.Collections.Generic;
 using System.Collections;
 using System.Text;
+using System.IO;
 
 /// <summary>
 /// Summary description for Class1
 /// </summary>
 namespace Brigit
 {
+    /// <summary>
+    /// Static class for loading and writing
+    /// DomTree's and lists of DomTrees maybe even Characters
+    /// </summary>
+    public class DomAdmin
+    {
+        /// <summary>
+        /// Writes a single tree into a binary file
+        /// </summary>
+        /// <param name="tree"></param>
+        public static void WriteDomTree(DomTree tree)
+        {
+            string folderPath = @"..\..\doms" + tree.Name;
+            FileStream binaryDom = File.Open(folderPath, FileMode.OpenOrCreate);
+        }
+    }
     public class DomTree
     {
+        /// <summary>
+        /// The DomTree's name
+        /// </summary>
+        string name;
+
         /// <summary>
         /// The beginning of the script
         /// </summary>
@@ -23,6 +45,11 @@ namespace Brigit
         Dictionary<string, Background> backgrounds = new Dictionary<string, Background>();
         
         // properties
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
         public DomNode Head
         {
             get { return head; }
@@ -124,7 +151,7 @@ namespace Brigit
             return s;
         }
 
-        private GoodSortedList GetSortedDomNodes()
+        public GoodSortedList GetSortedDomNodes()
         {
             GoodSortedList list = new GoodSortedList();
             AddDomNode(list, head, 0);

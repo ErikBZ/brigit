@@ -36,6 +36,7 @@ namespace Brigit
             else
                 muncher.ConsumeChar();
             DomTree tree = ParseLoadTag();
+            tree.Name = "test.ctom";
             DomNode oldNode = null;
             while(!muncher.Complete())
             {

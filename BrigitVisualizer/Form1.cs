@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Brigit;
 
 namespace BrigitVisualizer
 {
@@ -15,22 +16,26 @@ namespace BrigitVisualizer
         public Form1()
         {
             InitializeComponent();
+            this.AutoScroll = true;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        protected override void OnPaint(PaintEventArgs e)
         {
-            Draw();
+            base.OnPaint(e);
         }
 
-        /// <summary>
-        /// Draws an arc and rectanlge
-        /// </summary>
-        public void Draw()
+        private void bufferedPanel1_Paint(object sender, PaintEventArgs e)
         {
-            Graphics graphics = this.CreateGraphics();
-            Rectangle rect = new Rectangle(50, 100, 150, 150);
-            graphics.DrawArc(Pens.Black, rect, 0.5f, 0f);
-            graphics.DrawRectangle(Pens.Red, rect);
+            e.Graphics.TranslateTransform(bufferedPanel1.AutoScrollPosition.X, bufferedPanel1.AutoScrollPosition.Y);
+            bufferedPanel1.Height = 2000;
+            bufferedPanel1.Width = 2000;
+            Rectangle rect = new Rectangle(40, 40, 100, 1000);
+            e.Graphics.DrawRectangle(Pens.Black, rect);
+        }
+
+        private GoodSortedList GetDomSortedList()
+        {
+            return null;
         }
     }
 }
