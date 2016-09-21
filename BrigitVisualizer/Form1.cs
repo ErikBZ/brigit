@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Windows.Forms;
 using Brigit;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 namespace BrigitVisualizer
 {
@@ -19,8 +22,6 @@ namespace BrigitVisualizer
         {
             InitializeComponent();
             this.AutoScroll = true;
-            Process.Start("explorer.exe", "/select C:\\Users\\ERik\\Documents");
-            tree = DomAdmin.ReadDomTree(@"..\..\..\Brigit\doms\test.ctom");
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -32,7 +33,10 @@ namespace BrigitVisualizer
         {
             e.Graphics.TranslateTransform(bufferedPanel1.AutoScrollPosition.X, bufferedPanel1.AutoScrollPosition.Y);
             float midX = bufferedPanel1.Width / 2;
-            e.Graphics.DrawString("Something", this.Font, Brushes.Black, midX, 0);
+            if(tree != null)
+            {
+                e.Graphics.DrawString(tree.Name, this.Font, Brushes.Black, midX, 0);
+            }
         }
 
         private GoodSortedList GetDomSortedList()
@@ -43,8 +47,43 @@ namespace BrigitVisualizer
         private DomTree OpenTreeFromDialog()
         {
             DomTree tree = null;
-
+            Stream stream = null;
+            IFormatter iformat = new BinaryFormatter();
+            OpenFileDialog openFile = new OpenFileDialog();
+            openFile.InitialDirectory = @"..\..\Brigit\doms";
+            openFile.Filter = "ctom files (*.ctom)|*.ctom|All files (*.*)|*.*";
+            openFile.FilterIndex = 2;
+            openFile.RestoreDirectory = true;
+            if(openFile.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    if ((stream = openFile.OpenFile()) != null)
+                    {
+                        using (stream)
+                        {
+                            tree = (DomTree)iformat.Deserialize(stream);
+                            return tree;
+                        }
+                    }
+                }
+                catch(Exception e)
+                {
+                    MessageBox.Show("Error could not open file from disk. {0}", e.ToString());
+                }
+            }
             return tree;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            tree = OpenTreeFromDialog();
+            bufferedPanel1.Invalidate();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
