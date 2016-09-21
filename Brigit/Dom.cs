@@ -48,6 +48,13 @@ namespace Brigit
             }
             return null;
         }
+
+        public static DomTree ReadDomFromDialog()
+        {
+            // Create an instance of the file open dialog
+
+            return null;
+        }
     }
 
     [Serializable]

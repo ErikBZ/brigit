@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 using System.Windows.Forms;
 using Brigit;
 
@@ -18,6 +19,7 @@ namespace BrigitVisualizer
         {
             InitializeComponent();
             this.AutoScroll = true;
+            Process.Start("explorer.exe", "/select C:\\Users\\ERik\\Documents");
             tree = DomAdmin.ReadDomTree(@"..\..\..\Brigit\doms\test.ctom");
         }
 
@@ -30,12 +32,19 @@ namespace BrigitVisualizer
         {
             e.Graphics.TranslateTransform(bufferedPanel1.AutoScrollPosition.X, bufferedPanel1.AutoScrollPosition.Y);
             float midX = bufferedPanel1.Width / 2;
-            e.Graphics.DrawString(tree.Name, this.Font, Brushes.Black, midX, 0);
+            e.Graphics.DrawString("Something", this.Font, Brushes.Black, midX, 0);
         }
 
         private GoodSortedList GetDomSortedList()
         {
             return null;
+        }
+
+        private DomTree OpenTreeFromDialog()
+        {
+            DomTree tree = null;
+
+            return tree;
         }
     }
 }

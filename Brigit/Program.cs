@@ -21,6 +21,8 @@ namespace Brigit
             }
 
             Parser p = new Parser(toParse);
+            DomTree writeTree = p.ParseBrigitText();
+            DomAdmin.WriteDomTree(writeTree);
             DomTree domTree = DomAdmin.ReadDomTree(@"..\..\doms\test.ctom");
 
             Console.WriteLine(domTree);
