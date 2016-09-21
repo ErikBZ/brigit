@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Text;
 using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 /// <summary>
 /// Summary description for Class1
@@ -21,10 +23,34 @@ namespace Brigit
         /// <param name="tree"></param>
         public static void WriteDomTree(DomTree tree)
         {
-            string folderPath = @"..\..\doms" + tree.Name;
-            FileStream binaryDom = File.Open(folderPath, FileMode.OpenOrCreate);
+            IFormatter iformatter = new BinaryFormatter();
+            string folderPath = @"..\..\doms\" + tree.Name;
+            Console.WriteLine(folderPath);
+            Stream stream = new FileStream(folderPath, FileMode.Create,
+                FileAccess.Write, FileShare.None);
+            iformatter.Serialize(stream, tree);
+            stream.Close();
+        }
+
+        /// <summary>
+        /// Loads a DOM Tree from the disk
+        /// </summary>
+        /// <param name="path"></param>
+        public static DomTree ReadDomTree(string path)
+        {
+            IFormatter iformatter = new BinaryFormatter();
+            if(File.Exists(path))
+            {
+                Stream stream = new FileStream(path, FileMode.Open,
+                    FileAccess.Read, FileShare.Read);
+                DomTree tree = (DomTree)iformatter.Deserialize(stream);
+                return tree;
+            }
+            return null;
         }
     }
+
+    [Serializable]
     public class DomTree
     {
         /// <summary>
@@ -176,6 +202,7 @@ namespace Brigit
         }
     }
 
+    [Serializable]
     public class DomNode
     {
         /// <summary>
@@ -298,6 +325,7 @@ namespace Brigit
         }
     }
 
+    [Serializable]
     public class Response : DomNode
     {
         public string response;
@@ -329,6 +357,7 @@ namespace Brigit
         }
     }
 
+    [Serializable]
     public class Reply : DomNode
     {
         string[] replies;
@@ -363,6 +392,7 @@ namespace Brigit
     /// <summary>
     /// Contains character info such as portrait location and well that's basicaly it I guess
     /// </summary>
+    [Serializable]
     public class Character
     {
         string name;
@@ -408,6 +438,7 @@ namespace Brigit
     /// contains info for the background that can be set
     /// </summary>
     // TODO add more shit to this
+    [Serializable]
     public class Background
     {
         string name;
