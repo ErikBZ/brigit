@@ -7,7 +7,8 @@
 *.userosscache
 *.sln.docstates
 *.swo
-*.*.swp
+*.swp
+*.ctom
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
