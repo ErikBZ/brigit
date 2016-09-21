@@ -13,10 +13,12 @@ namespace BrigitVisualizer
 {
     public partial class Form1 : Form
     {
+        DomTree tree;
         public Form1()
         {
             InitializeComponent();
             this.AutoScroll = true;
+            tree = DomAdmin.ReadDomTree(@"..\..\..\Brigit\doms\test.ctom");
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -27,10 +29,8 @@ namespace BrigitVisualizer
         private void bufferedPanel1_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.TranslateTransform(bufferedPanel1.AutoScrollPosition.X, bufferedPanel1.AutoScrollPosition.Y);
-            bufferedPanel1.Height = 2000;
-            bufferedPanel1.Width = 2000;
-            Rectangle rect = new Rectangle(40, 40, 100, 1000);
-            e.Graphics.DrawRectangle(Pens.Black, rect);
+            float midX = bufferedPanel1.Width / 2;
+            e.Graphics.DrawString(tree.Name, this.Font, Brushes.Black, midX, 0);
         }
 
         private GoodSortedList GetDomSortedList()
