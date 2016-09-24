@@ -48,9 +48,9 @@ namespace BrigitVisualizer
             // 
             // bufferedPanel1
             // 
-            this.bufferedPanel1.Location = new System.Drawing.Point(12, 65);
+            this.bufferedPanel1.Location = new System.Drawing.Point(12, 64);
             this.bufferedPanel1.Name = "bufferedPanel1";
-            this.bufferedPanel1.Size = new System.Drawing.Size(977, 458);
+            this.bufferedPanel1.Size = new System.Drawing.Size(977, 459);
             this.bufferedPanel1.TabIndex = 0;
             this.bufferedPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.bufferedPanel1_Paint);
             // 
@@ -61,7 +61,7 @@ namespace BrigitVisualizer
             this.ClientSize = new System.Drawing.Size(1001, 535);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.bufferedPanel1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.Text = "Brigit Visualizer";
             this.Load += new System.EventHandler(this.Form1_Load);
