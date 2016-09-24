@@ -1,4 +1,4 @@
-#Putting the rules for Brigit here... later
+# Putting the rules for Brigit here... later
 A brigit text file is calle a .tome and compiled brigit file
 is called a .ctom
 
