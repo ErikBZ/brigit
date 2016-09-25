@@ -8,7 +8,7 @@ namespace BrigitVisualizer
 {
     class Point
     {
-        private const int size = 50;
+        public const int Size = 50;
         // the point in pixels
         private int x = 0;
         private int y = 0;
@@ -23,14 +23,24 @@ namespace BrigitVisualizer
         // actual pixel values
         public int X
         {
-            get { return x * size;  }
-            set { x = size * value; }
+            get { return x * Size;  }
+            set { x = Size * value; }
         }
 
         public int Y
         {
-            get { return y * size; }
-            set { y = size * value; }
+            get { return y * Size; }
+            set { y = Size * value; }
+        }
+
+        public int PixelX
+        {
+            get { return x; }
+        }
+
+        public int PixelY
+        {
+            get { return y; }
         }
 
         // the setter changes depending the type of
@@ -110,6 +120,26 @@ namespace BrigitVisualizer
                 i++;
             }
             return list;
+        }
+
+        /// <summary>
+        /// Draws the list of points to a panel
+        /// </summary>
+        /// <param name="list"></param>
+        public static void DrawPiontList(List<Point> list, PaintEventArgs e)
+        {
+            Rectangle rect = new Rectangle();
+        }
+
+        /// <summary>
+        /// Draws one single point to the screen
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="e"></param>
+        public static void DrawPoint(Point p, PaintEventArgs e)
+        {
+            Rectangle rect = new Rectangle(p.PixelX, p.PixelX, Point.Size, Point.Size);
+            e.Graphics.DrawRectangle(Pens.Black, rect);
         }
     }
 }
