@@ -8,7 +8,7 @@ namespace BrigitVisualizer
 {
     class Point
     {
-        public const int Size = 50;
+        public const int Size = 100;
         // the point in pixels
         private int x = 0;
         private int y = 0;
@@ -41,6 +41,19 @@ namespace BrigitVisualizer
         public int PixelY
         {
             get { return y; }
+        }
+
+        public Point()
+        {
+            x = 0;
+            y = 0;
+            text = string.Empty;
+        }
+        public Point(int x, int y, string text)
+        {
+            X = x;
+            Y = y;
+            this.text = text;
         }
 
         // the setter changes depending the type of
@@ -140,6 +153,14 @@ namespace BrigitVisualizer
         {
             Rectangle rect = new Rectangle(p.PixelX, p.PixelX, Point.Size, Point.Size);
             e.Graphics.DrawRectangle(Pens.Black, rect);
+
+            // ohh fun using statement
+            using (Font f = new Font("Arial", 10, FontStyle.Regular, GraphicsUnit.Point))
+            {
+                TextFormatFlags flags = TextFormatFlags.WordBreak;
+                TextRenderer.DrawText(e.Graphics, p.Text, f, rect, Color.Black, flags);
+                e.Graphics.DrawRectangle(Pens.Red, rect);
+            }
         }
     }
 }
