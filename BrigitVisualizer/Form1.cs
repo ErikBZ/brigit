@@ -33,9 +33,11 @@ namespace BrigitVisualizer
         {
             e.Graphics.TranslateTransform(bufferedPanel1.AutoScrollPosition.X, bufferedPanel1.AutoScrollPosition.Y);
             float midX = bufferedPanel1.Width / 2;
-            bufferedPanel1.Height = 700;
-            Point p = new Point(4, 5, "hello this is a text box yay");
-            BrigitDrawer.DrawPoint(p, e);
+            if(tree != null)
+            {
+                bufferedPanel1.Height = 700;
+                BrigitDrawer.DrawTree(tree, e);
+            }
         }
 
         private DomTree OpenTreeFromDialog()

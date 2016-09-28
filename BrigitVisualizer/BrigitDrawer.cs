@@ -23,13 +23,13 @@ namespace BrigitVisualizer
         // actual pixel values
         public int X
         {
-            get { return x * Size;  }
+            get { return x / Size;  }
             set { x = Size * value; }
         }
 
         public int Y
         {
-            get { return y * Size; }
+            get { return y / Size; }
             set { y = Size * value; }
         }
 
@@ -68,8 +68,24 @@ namespace BrigitVisualizer
             get { return childPoints; }
         }
 
+        public void SetDomNodeText(DomNode node)
+        {
+            if(node is Response)
+            {
+                this.SetResponseText((Response)node);
+            }
+            else if(node is Reply)
+            {
+                this.SetReplyText((Reply)node);
+            }
+            else
+            {
+                throw new System.Exception("Node type not recognized");
+            }
+        }
+
         // Differnt setters for different nodes
-        public void SetResponseText(Response node)
+        private void SetResponseText(Response node)
         {
             // for now i'm just going to print the
             // type of node it is with the text that is all
@@ -81,7 +97,7 @@ namespace BrigitVisualizer
         }
 
         // settings a reply node
-        public void SetReplyText(Reply node)
+        private void SetReplyText(Reply node)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(node.ToString());
@@ -107,6 +123,11 @@ namespace BrigitVisualizer
         {
             childPoints.Add(p);
         }
+
+        public override string ToString()
+        {
+            return $"X: {this.x} Y: {this.y}";
+        }
     }
 
     /// <summary>
@@ -114,6 +135,16 @@ namespace BrigitVisualizer
     /// </summary>
     static class BrigitDrawer
     {
+        /// <summary>
+        /// Draws the tree into a nice picture
+        /// </summary>
+        /// <param name="dom"></param>
+        public static void DrawTree(DomTree dom, PaintEventArgs e)
+        {
+            List<Point> list = CreatePointList(dom);
+            DrawPiontList(list, e);
+        }
+
         // this is the actual structure that will be used to draw
         /// <summary>
         /// Creates a list of points which are properly formatted for drawing
@@ -126,11 +157,23 @@ namespace BrigitVisualizer
             List<Point> list = new List<Point>();
             DomNode node = tree.Head;
             int i = 1;              // the depth tracker
+            int j = 3;              // the cneter
             while(node != null)
             {
-                Point p = new Point();
-                node = node.Children[0];
-                i++;
+                if(node.Children.Length > 0)
+                {
+                    node = node.Children[0];
+                    Point p = new Point();
+                    p.X = j;
+                    p.Y = i;
+                    p.SetDomNodeText(node);
+                    list.Add(p);
+                    i++;
+                }
+                else
+                {
+                    node = null;
+                }
             }
             return list;
         }
@@ -139,9 +182,12 @@ namespace BrigitVisualizer
         /// Draws the list of points to a panel
         /// </summary>
         /// <param name="list"></param>
-        public static void DrawPiontList(List<Point> list, PaintEventArgs e)
+        private static void DrawPiontList(List<Point> list, PaintEventArgs e)
         {
-            Rectangle rect = new Rectangle();
+            foreach(Point p in list)
+            {
+                DrawPoint(p, e);
+            }
         }
 
         /// <summary>
@@ -149,9 +195,9 @@ namespace BrigitVisualizer
         /// </summary>
         /// <param name="p"></param>
         /// <param name="e"></param>
-        public static void DrawPoint(Point p, PaintEventArgs e)
+        private static void DrawPoint(Point p, PaintEventArgs e)
         {
-            Rectangle rect = new Rectangle(p.PixelX, p.PixelX, Point.Size, Point.Size);
+            Rectangle rect = new Rectangle(p.PixelX, p.PixelY, Point.Size, Point.Size);
             e.Graphics.DrawRectangle(Pens.Black, rect);
 
             // ohh fun using statement
