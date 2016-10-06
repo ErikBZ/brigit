@@ -10,6 +10,7 @@
 *.swp
 *.ctom
 LogoSketches/
+math/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
