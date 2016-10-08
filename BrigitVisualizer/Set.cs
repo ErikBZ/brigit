@@ -14,50 +14,33 @@ namespace BrigitVisualizer
      * just makes it easier to understand in may opinion
      */
     public enum NodeType { StartNode, EndNode, ObjNode };
-    
+
     /*
      * These nodes are temporary. Just trying to test
      * my algorithmn and then i'll try implementing it with TOME nodes
      *
      */
-     /// <summary>
-     /// abstract class to inherit from
-     /// </summary>
+
     public class Node
     {
-        int cycle;
+        string someData;
         NodeType type;
-        Node[] children;
 
         public NodeType Type
         {
             get { return type; }
-            set { type = value; }
+        }
+   
+        // Constructors
+        public Node(NodeType type)
+        {
+            this.type = type;
         }
 
-        public Node()
+        public Node(NodeType type, string data)
         {
-            cycle = 0;
-            type = NodeType.StartNode;
-            children = new Node[0];
-        }
-        
-        public void SetChildren(Node[] NewChildren)
-        {
-            children = NewChildren;
-        }
-    }
-
-    public class ObjectNode: Node
-    {
-        string someData;
-
-        // just some random ass data to use for
-        // now. Could repalce this with a dom node later
-        // Object domNode. like that
-        public ObjectNode() : base()
-        {
-            Type = NodeType.ObjNode;
+            this.type = type;
+            someData = data;
         }
 
         public string Data
@@ -67,45 +50,38 @@ namespace BrigitVisualizer
         }
     }
 
-    static class Tester
-    {
-        public static Node CreateRandomTree()
-        {
-            ObjectNode head = new ObjectNode();
-            head.Data = "head";
-            Node[] nodes = CreateChildren();
-            head.SetChildren(nodes);
-
-            return head;  
-        }
-
-        public static Node[] CreateChildren()
-        {
-            Random rnd = new Random();
-            int rand = rnd.Next() % 5 + 1;
-            Node[] nArray = new Node[rand];
-            for(int i=0; i<rand; i++)
-            {
-                nArray[i] = new ObjectNode();
-                ((ObjectNode)nArray[i]).Data = i.ToString();
-            }
-            return nArray;
-        }
-    }
-
-    class BrigitSet
+    /// <summary>
+    /// A set of BranchSets or nodes
+    /// </summary>
+    public class StraightSet
     {
         int width;
         int center;
         // needs to be able to add all objects
         // these objects will only be BrigitSets
         // and Nodes
-        ArrayList list = new ArrayList();
+        ArrayList list;
 
+        // Constructors
+        public StraightSet()
+        {
+            width = 0;
+            center = 0;
+            list = new ArrayList();
+        }
+
+        // Properties
+        /// <summary>
+        /// The width of the widest branch in the set
+        /// </summary>
         public int Width
         {
             get { return width; }
-            set { width = value; }
+        }
+
+        public int Count
+        {
+            get { return list.Count; }
         }
 
         public int Center
@@ -125,11 +101,79 @@ namespace BrigitVisualizer
         /// <param name="obj"></param>
         public void AddToSet(object obj)
         {
+            if(obj is BranchSet)
+            {
+                if(width < ((BranchSet)obj).Width)
+                {
+                    width = ((BranchSet)obj).Width;
+                }
+            }
+
             list.Add(obj);
         }
-        public void GetObjAt(int x)
-        {
 
+        /// <summary>
+        /// Returns the obj found at index x
+        /// </summary>
+        /// <param name="x"></param>
+        
+        //TODO chage this to some abstract Node later
+        public Object GetObjAt(int x)
+        {
+            return list[x];
         }
     }
+
+    /// <summary>
+    /// A set of straight sets
+    /// </summary>
+    public class BranchSet
+    {
+        // it is the sum of all the widths of the child sets
+        // of this set minus the number of sets
+        // Sigma(list) - list.length
+        int widthSum;
+        ArrayList list;
+
+        // Constructors
+        public BranchSet()
+        {
+            widthSum = 0;
+            list = new ArrayList();
+        }
+
+        // Properties 
+        public int Width
+        {
+            get { return widthSum - list.Count; }
+            set { widthSum = value; }
+        }
+
+        public int Count
+        {
+            get { return list.Count; }
+        }
+
+        public ArrayList List
+        {
+            get { return list; }
+        }
+
+        // Methods
+        /// <summary>
+        /// Add straight set to the list
+        /// </summary>
+        /// <param name="obj"></param>
+        public void AddToSet(StraightSet obj)
+        {
+            widthSum += obj.Width;
+            list.Add(obj);
+        }
+
+        public Object GetObjAt(int x)
+        {
+            return list[x];
+        }
+    }
+
 }
