@@ -13,20 +13,7 @@ namespace Brigit
     {
         static void Main(string[] args)
         {
-            string path = @"..\..\scripts\script_test_2.txt";
-            string[] toParse = null;
-            if (File.Exists(path))
-            {
-                toParse = File.ReadAllLines(path);
-            }
 
-            Parser p = new Parser(toParse);
-            DomTree writeTree = p.ParseBrigitText();
-            DomAdmin.WriteDomTree(writeTree);
-            DomTree domTree = DomAdmin.ReadDomTree(@"..\..\doms\test.ctom");
-
-            Console.WriteLine(domTree);
-            Console.ReadLine();
         }
     }
 }

@@ -42,64 +42,22 @@ namespace Brigit
             Console.ReadLine();
         }
 
-        /*
-        /// <summary>
-        /// Testing the eater class from Parser
-        /// </summary>
-        public static void TestEaterClass()
+        public void SomeTest()
         {
-            string path = @".\scripts\script_test.txt";
-            string toParse = string.Empty;
+            string path = @"..\..\scripts\script_test_2.txt";
+            string[] toParse = null;
             if (File.Exists(path))
             {
-                toParse = File.ReadAllText(path);
+                toParse = File.ReadAllLines(path);
             }
 
-                Queue<string> que = new Queue<string>();
-            Eater muncher = new Eater(toParse);
+            Parser p = new Parser(toParse);
+            DomTree writeTree = p.ParseBrigitText();
+            DomAdmin.WriteDomTree(writeTree);
+            DomTree domTree = DomAdmin.ReadDomTree(@"..\..\doms\test.ctom");
 
-            while (!muncher.Complete())
-            {
-                if (Char.IsLetter(muncher.SniffChar()))
-                {
-                    que.Enqueue(muncher.SpitUpAlpha());
-                }
-                else
-                {
-                    // Should eat chars that are not letters
-                    muncher.EatWhile(
-                        delegate (char c)
-                        { return !Char.IsLetter(c); });
-                }
-            }
-            while (que.Count != 0)
-            {
-                Console.WriteLine(que.Dequeue());
-            }
-
+            Console.WriteLine(domTree);
             Console.ReadLine();
         }
-
-        public static void ParserParseSet()
-        {
-            // gettings the script test
-            string path = @".\scripts\script_test.txt";
-            string toParse = string.Empty;
-            if (File.Exists(path))
-            {
-                toParse = File.ReadAllText(path);
-            }
-
-            Parser thing = new Parser();
-            thing.muncher = new Eater(toParse);
-            string[] people = thing.ParseSetOfStrings();
-            for (int i = 0; i < people.Length; i++)
-            {
-                Console.WriteLine(people[i]);
-            }
-
-            Console.Read();
-        }
-        */
     }
 }

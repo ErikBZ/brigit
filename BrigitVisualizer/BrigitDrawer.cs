@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections;
 using System.Text;
 using Brigit;
 using System.Windows.Forms;
@@ -119,7 +120,7 @@ namespace BrigitVisualizer
         /// IE this point is the parent of these points
         /// </summary>
         /// <param name="p"></param>
-        public void AddToPointList(Point p)
+        public void AddToChildList(Point p)
         {
             childPoints.Add(p);
         }
@@ -175,6 +176,29 @@ namespace BrigitVisualizer
                     node = null;
                 }
             }
+            return list;
+        }
+
+        /// <summary>
+        /// Goes through a set of sets and creates a list of points
+        /// to draw
+        /// </summary>
+        /// <param name="set"></param>
+        /// <returns></returns>
+        public static List<Point> CreatePointList(StraightSet set)
+        {
+            List<Point> list = new List<Point>();
+            int center = 0;
+
+            // gets the first node IE the head of the graph
+            Queue que = new Queue();
+            que.Enqueue(set.GetObjAt(0));
+
+            while (que.Count != 0)
+            {
+
+            }
+
             return list;
         }
 

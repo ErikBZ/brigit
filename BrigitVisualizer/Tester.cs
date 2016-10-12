@@ -23,6 +23,27 @@ namespace BrigitVisualizer
             Node d3 = new Node(NodeType.ObjNode, "d3");
             Node d4 = new Node(NodeType.ObjNode, "d4");
             Node f = new Node(NodeType.ObjNode, "f");
+
+            StraightSet D4 = new StraightSet(d4);
+            StraightSet D3 = new StraightSet(d3);
+            BranchSet D3_4 = new BranchSet(D3, D4);
+            StraightSet B3 = new StraightSet(b3, c4, D3_4);
+            StraightSet C4 = new StraightSet(c4);
+            StraightSet C3 = new StraightSet(c3);
+            BranchSet C3_4 = new BranchSet(C3, C4);
+            StraightSet B2 = new StraightSet(b2, C3_4, d2);
+            StraightSet B1 = new StraightSet(b1, c1, d1);
+            BranchSet B1_2_3 = new BranchSet(B1, B2, B3);
+            StraightSet BaseSet = new StraightSet(a, B1_2_3, f);
+
+            StringBuilder str = new StringBuilder();
+            StraightSet.CenterSet(BaseSet);
+            str.Append(BaseSet.Width);
+
+            string output = str.ToString();
+
+            Console.Write("hello");
+            Console.WriteLine("Ho yah doing");
         }
     }
 }
