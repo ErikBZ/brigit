@@ -182,7 +182,7 @@ namespace BrigitVisualizer
                     for(int j=0; j<bSet.Count; j++)
                     {
                         // the left most node
-                        int leftMost = this.center - this.width+ / 2;
+                        int leftMost = this.center - this.width / 2;
                         StraightSet strChildSet = bSet.GetObjAt(j);
                         strChildSet.center = oldWidth / 2 + leftMost + strChildSet.width / 2 + 0;
                         // now that the center for this has been calculated, we can calculate it's
