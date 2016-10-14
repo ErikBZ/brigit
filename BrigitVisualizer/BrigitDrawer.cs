@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System;
 using System.Collections;
 using System.Text;
 using Brigit;
@@ -185,19 +186,32 @@ namespace BrigitVisualizer
         /// </summary>
         /// <param name="set"></param>
         /// <returns></returns>
+        
+        // this will need to be a recursive function
         public static List<Point> CreatePointList(StraightSet set)
         {
+            StraightSet.CenterSet(set);
             List<Point> list = new List<Point>();
-            int center = 0;
 
-            // gets the first node IE the head of the graph
-            Queue que = new Queue();
-            que.Enqueue(set.GetObjAt(0));
+            Node oldNode = null;
 
-            while (que.Count != 0)
+            for(int i=0;i<set.Count;i++)
             {
+                object elem = set.GetObjAt(i);
+                if(elem is BranchSet)
+                {
 
+                }
+                else if(elem is Node)
+                {
+
+                }
+                else
+                {
+                    throw new Exception("Straight set cannot have non Node or BranchSet elements");
+                }
             }
+
 
             return list;
         }

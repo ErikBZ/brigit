@@ -199,6 +199,18 @@ namespace BrigitVisualizer
             }
         }
 
+        // by my rules, straight set must have a beginning node and an ending node
+        // they can be empty and will be stated as such using the node-type enum
+        public Node GetFirst()
+        {
+            return (Node)this.GetObjAt(0);
+        }
+
+        public Node GetLast()
+        {
+            return (Node)this.GetObjAt(this.Count - 1);
+        }
+
         // overring Object functions
         public override string ToString()
         {
@@ -271,6 +283,17 @@ namespace BrigitVisualizer
         public StraightSet GetObjAt(int x)
         {
             return (StraightSet)list[x];
+        }
+
+        public Node[] GetFirstElementsInSet()
+        {
+            Node[] nodes = new Node[this.Count];
+            for(int i=0;i<this.Count;i++)
+            {
+                object obj = list[i];
+                nodes[i] = ((StraightSet)obj).GetFirst();
+            }
+            return nodes;
         }
 
         // overriding Object functions

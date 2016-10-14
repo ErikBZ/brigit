@@ -20,7 +20,7 @@ namespace BrigitVisualizer
             Application.Run(new Form1());
             */
 
-            Tester.SetRepresentationTest();
+            Tester.TestGetFirstMethod();
         }
     }
 }
