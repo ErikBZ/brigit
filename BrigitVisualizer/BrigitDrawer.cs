@@ -21,11 +21,14 @@ namespace BrigitVisualizer
         // points to draw lines to
         List<Point> childPoints = new List<Point>();
 
+        // points to the parent to draw a line to
+        Point[] parents;
+
         // properties to easily use i, j "block" ints into
         // actual pixel values
         public int X
         {
-            get { return x / Size;  }
+            get { return x / Size; }
             set { x = Size * value; }
         }
 
@@ -70,13 +73,20 @@ namespace BrigitVisualizer
             get { return childPoints; }
         }
 
+        // the parents of this point
+        public Point[] Parents
+        {
+            get { return parents; }
+            set { parents = value; }
+        }
+
         public void SetDomNodeText(DomNode node)
         {
-            if(node is Response)
+            if (node is Response)
             {
                 this.SetResponseText((Response)node);
             }
-            else if(node is Reply)
+            else if (node is Reply)
             {
                 this.SetReplyText((Reply)node);
             }
@@ -84,6 +94,11 @@ namespace BrigitVisualizer
             {
                 throw new System.Exception("Node type not recognized");
             }
+        }
+
+        public void SetNodeText(Node node)
+        {
+            text = node.ToString();
         }
 
         // Differnt setters for different nodes
@@ -204,7 +219,7 @@ namespace BrigitVisualizer
                 }
                 else if(elem is Node)
                 {
-
+                     
                 }
                 else
                 {
@@ -214,6 +229,96 @@ namespace BrigitVisualizer
 
 
             return list;
+        }
+
+        // recrusive to add things to a point listd
+        /// <summary>
+        /// Recursively adds points to the point list while traversing the graph
+        /// </summary>
+        /// <param name="parents"></param>
+        /// <param name="list"></param>
+        /// <param name="set"></param>
+        /// <returns>The parent nodes for the next element</returns>
+        private static Point[] AddToList(Point[] parents, List<Point> list, StraightSet set)
+        {
+            for (int i = 0; i < set.Count; i++)
+            {
+                object elem = set.GetObjAt(i);
+                if (elem is BranchSet)
+                {
+                    // will get cast to an array
+                    List<Point> nextParents = new List<Point>();
+                    BranchSet branch = (BranchSet)elem;
+                    for(int j=0;j<branch.Count;j++)
+                    {
+                        Point[] points = AddToList(parents, list, branch.GetObjAt(j));
+                        // add points to list
+                        parents = nextParents.ToArray();
+                    }
+
+                }
+                else if(elem is Node)
+                {
+                    Point newPoint = null;
+                    if(parents == null)
+                    {
+                        newPoint = NodeToPoint((Node)elem, 0, set.Center);
+                    }
+                    else
+                    {
+                        int maxDepth = GetMaxDepth(parents);
+                        newPoint = NodeToPoint((Node)elem, maxDepth, set.Center);
+                        newPoint.Parents = parents;
+                    }
+                    parents = new Point[]{ newPoint };
+                }
+                else
+                {
+                    throw new Exception("Straight set cannot have non Node or BranchSet elements");
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Creates a point out of node. Needs the parent with the max depth to 
+        /// calculate its depth
+        /// </summary>
+        /// <param name="n"></param>
+        /// <param name="maxParent"></param>
+        /// <returns></returns>
+        private static Point NodeToPoint(Node n, int depth, int center)
+        {
+            Point p = new Point();
+            p.X = center;
+            p.Y = depth+ 1;
+            p.SetNodeText(n);
+            return p;
+        }
+
+        /// <summary>
+        /// Gets the max depths from an array of points
+        /// </summary>
+        /// <param name="points"></param>
+        /// <returns></returns>
+        private static int GetMaxDepth(Point[] points)
+        {
+            int max = 0;
+            if(points == null)
+            {
+                max = 0;
+            }
+            else
+            {
+                foreach(Point p in points)
+                {
+                    if(p.Y > max)
+                    {
+                        max = p.Y;
+                    }
+                }
+            }
+            return max;
         }
 
         /// <summary>
