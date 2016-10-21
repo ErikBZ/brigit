@@ -184,7 +184,7 @@ namespace BrigitVisualizer
                         // the left most node
                         int leftMost = this.center - this.width / 2;
                         StraightSet strChildSet = bSet.GetObjAt(j);
-                        strChildSet.center = oldWidth / 2 + leftMost + strChildSet.width / 2 + 0;
+                        strChildSet.center = oldWidth / 2 + leftMost + strChildSet.width / 2 + oldCenter;
                         // now that the center for this has been calculated, we can calculate it's
                         // child sets if it has one
                         if(strChildSet.containsBranches)
@@ -236,6 +236,16 @@ namespace BrigitVisualizer
             list = new ArrayList();
         }
 
+        public BranchSet(params Node[] elements):
+            this()
+        {
+            for(int i=0;i<elements.Length;i++)
+            {
+                AddToSet(new StraightSet(elements[i]));
+            }
+        }
+
+        // can have as many params as needed
         public BranchSet(params StraightSet[] elements):
             this()
         {

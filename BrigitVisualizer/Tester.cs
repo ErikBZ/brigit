@@ -8,6 +8,12 @@ namespace BrigitVisualizer
 {
     static class Tester
     {
+        public static List<Point> TestPointListCreator()
+        {
+            StraightSet set = EasyBaseSet();
+            List<Point> list = BrigitDrawer.CreatePointList(set);
+            return list;
+        }
         public static void TestGetFirstMethod()
         {
             StraightSet set = GetTestBaseTest();
@@ -21,6 +27,15 @@ namespace BrigitVisualizer
             }
         }
 
+        public static StraightSet EasyBaseSet()
+        {
+            Node a = new Node(NodeType.ObjNode, "a");
+            Node b1 = new Node(NodeType.ObjNode, "b1");
+            Node b2 = new Node(NodeType.ObjNode, "b2");
+            Node c = new Node(NodeType.ObjNode, "c");
+            BranchSet B = new BranchSet(b1, b2);
+            return new StraightSet(a, B, c);
+        }
         public static StraightSet GetTestBaseTest()
         {
             Node a = new Node(NodeType.ObjNode, "a");

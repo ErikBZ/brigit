@@ -143,7 +143,7 @@ namespace BrigitVisualizer
 
         public override string ToString()
         {
-            return $"X: {this.x} Y: {this.y}";
+            return $"X: {this.x} Y: {this.y}, {this.text}";
         }
     }
 
@@ -159,7 +159,7 @@ namespace BrigitVisualizer
         public static void DrawTree(DomTree dom, PaintEventArgs e)
         {
             List<Point> list = CreatePointList(dom);
-            DrawPiontList(list, e);
+            DrawPointList(list, e);
         }
 
         // this is the actual structure that will be used to draw
@@ -242,9 +242,8 @@ namespace BrigitVisualizer
                         {
                             nextParents.Add(p);
                         }
-                        parents = nextParents.ToArray();
                     }
-
+                    parents = nextParents.ToArray();
                 }
                 // converts Node to a point, adds it to the list, and sets the point 
                 // as "old" or "parent" point to be the parent of the next node
@@ -273,6 +272,7 @@ namespace BrigitVisualizer
                         newPoint.Parents = parents;
                     }
                     parents = new Point[]{ newPoint };
+                    list.Add(newPoint);
                 }
                 else
                 {
@@ -327,7 +327,7 @@ namespace BrigitVisualizer
         /// Draws the list of points to a panel
         /// </summary>
         /// <param name="list"></param>
-        private static void DrawPiontList(List<Point> list, PaintEventArgs e)
+        public static void DrawPointList(List<Point> list, PaintEventArgs e)
         {
             foreach(Point p in list)
             {

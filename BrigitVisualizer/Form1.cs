@@ -18,6 +18,8 @@ namespace BrigitVisualizer
     public partial class Form1 : Form
     {
         DomTree tree;
+        List<Point> pointList;
+
         public Form1()
         {
             InitializeComponent();
@@ -38,8 +40,14 @@ namespace BrigitVisualizer
                 bufferedPanel1.Height = 700;
                 BrigitDrawer.DrawTree(tree, e);
             }
+            if(pointList != null)
+            {
+                BrigitDrawer.DrawPointList(pointList, e);
+            }
         }
 
+        // will be using this but once i'm able to convert graphs
+        // to sets correctly. that is my next task
         private DomTree OpenTreeFromDialog()
         {
             DomTree tree = null;
@@ -71,9 +79,11 @@ namespace BrigitVisualizer
             return tree;
         }
 
+        // for now i'm just testing the drawing of sets
         private void button1_Click(object sender, EventArgs e)
         {
-            tree = OpenTreeFromDialog();
+            //tree = OpenTreeFromDialog();
+            pointList = BrigitDrawer.CreatePointList(Tester.EasyBaseSet());
             bufferedPanel1.Invalidate();
         }
 
