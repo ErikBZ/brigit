@@ -207,26 +207,12 @@ namespace BrigitVisualizer
         {
             StraightSet.CenterSet(set);
             List<Point> list = new List<Point>();
+            Point[] parents = null;
 
-            Node oldNode = null;
+            AddToList(parents, list, set);
 
-            for(int i=0;i<set.Count;i++)
-            {
-                object elem = set.GetObjAt(i);
-                if(elem is BranchSet)
-                {
-
-                }
-                else if(elem is Node)
-                {
-                     
-                }
-                else
-                {
-                    throw new Exception("Straight set cannot have non Node or BranchSet elements");
-                }
-            }
-
+            // list should not be a list of points that can draw a set
+            // Time for testing yay!
 
             return list;
         }
@@ -252,11 +238,16 @@ namespace BrigitVisualizer
                     for(int j=0;j<branch.Count;j++)
                     {
                         Point[] points = AddToList(parents, list, branch.GetObjAt(j));
-                        // add points to list
+                        foreach(Point p in points)
+                        {
+                            nextParents.Add(p);
+                        }
                         parents = nextParents.ToArray();
                     }
 
                 }
+                // converts Node to a point, adds it to the list, and sets the point 
+                // as "old" or "parent" point to be the parent of the next node
                 else if(elem is Node)
                 {
                     Point newPoint = null;
@@ -267,6 +258,17 @@ namespace BrigitVisualizer
                     else
                     {
                         int maxDepth = GetMaxDepth(parents);
+                        if(parents.Length > 1)
+                        {
+                            foreach(Point p in parents)
+                            {
+                                p.Y = maxDepth;
+                            }
+                        }
+                        else if(parents.Length == 0)
+                        {
+                            throw new Exception("Parent list is somehow empty but not null");
+                        }
                         newPoint = NodeToPoint((Node)elem, maxDepth, set.Center);
                         newPoint.Parents = parents;
                     }
@@ -277,7 +279,7 @@ namespace BrigitVisualizer
                     throw new Exception("Straight set cannot have non Node or BranchSet elements");
                 }
             }
-            return null;
+            return parents;
         }
 
         /// <summary>
