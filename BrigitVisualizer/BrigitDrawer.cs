@@ -8,6 +8,11 @@ using System.Drawing;
 
 namespace BrigitVisualizer
 {
+    struct ListAndDepth
+    {
+        public List<Point> Points;
+        public int MaxDepths;
+    }
     class Point
     {
         public const int Size = 100;
@@ -203,21 +208,22 @@ namespace BrigitVisualizer
         /// <returns></returns>
         
         // this will need to be a recursive function
-        public static List<Point> CreatePointList(StraightSet set)
+        public static ListAndDepth CreatePointList(StraightSet set)
         {
+            ListAndDepth lAndDepth;
             StraightSet.CenterSet(set);
-            List<Point> list = new List<Point>();
+            lAndDepth.Points = new List<Point>();
             Point[] parents = null;
 
-            AddToList(parents, list, set);
+            Point[] lastNodes = AddToList(parents, lAndDepth.Points, set);
 
             // list should not be a list of points that can draw a set
             // Time for testing yay!
-
-            return list;
+            lAndDepth.MaxDepths = lastNodes[0].PixelY;
+            return lAndDepth;
         }
 
-        // recrusive to add things to a point listd
+        // recrusive to add things to a point list
         /// <summary>
         /// Recursively adds points to the point list while traversing the graph
         /// </summary>
@@ -324,15 +330,22 @@ namespace BrigitVisualizer
         }
 
         /// <summary>
-        /// Draws the list of points to a panel
+        /// Draws the list of points to a panel and returns
+        /// the furtherest node to the right
         /// </summary>
         /// <param name="list"></param>
-        public static void DrawPointList(List<Point> list, PaintEventArgs e)
+        public static int DrawPointList(List<Point> list, PaintEventArgs e)
         {
+            int max = 0;
             foreach(Point p in list)
             {
-                DrawPoint(p, e);
+                int num = DrawPoint(p, e);
+                if(num > max)
+                {
+                    max = num;
+                }
             }
+            return max;
         }
 
         /// <summary>
@@ -340,7 +353,7 @@ namespace BrigitVisualizer
         /// </summary>
         /// <param name="p"></param>
         /// <param name="e"></param>
-        private static void DrawPoint(Point p, PaintEventArgs e)
+        private static int DrawPoint(Point p, PaintEventArgs e)
         {
             Rectangle rect = new Rectangle(p.PixelX, p.PixelY, Point.Size, Point.Size);
             e.Graphics.DrawRectangle(Pens.Black, rect);
@@ -352,6 +365,7 @@ namespace BrigitVisualizer
                 TextRenderer.DrawText(e.Graphics, p.Text, f, rect, Color.Black, flags);
                 e.Graphics.DrawRectangle(Pens.Red, rect);
             }
+            return p.X;
         }
     }
 }

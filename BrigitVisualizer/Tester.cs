@@ -11,7 +11,7 @@ namespace BrigitVisualizer
         public static List<Point> TestPointListCreator()
         {
             StraightSet set = EasyBaseSet();
-            List<Point> list = BrigitDrawer.CreatePointList(set);
+            List<Point> list = BrigitDrawer.CreatePointList(set).Points;
             return list;
         }
         public static void TestGetFirstMethod()
@@ -36,6 +36,32 @@ namespace BrigitVisualizer
             BranchSet B = new BranchSet(b1, b2);
             return new StraightSet(a, B, c);
         }
+
+        public static StraightSet BaseSetTest_2()
+        {
+            Node a = new Node(NodeType.ObjNode, "a");
+            Node b1 = new Node(NodeType.ObjNode, "b1");
+            Node b2 = new Node(NodeType.ObjNode, "b2");
+            Node b3 = new Node(NodeType.ObjNode, "b3");
+            Node c = new Node(NodeType.ObjNode, "c");
+            Node d = new Node(NodeType.ObjNode, "a");
+            BranchSet B = new BranchSet(b1, b2, b3);
+            return new StraightSet(a, B, c, d);
+        }
+
+        public static StraightSet BaseSetTest_3()
+        {
+            Node a = new Node(NodeType.ObjNode, "a");
+            Node b1 = new Node(NodeType.ObjNode, "b1");
+            Node b2 = new Node(NodeType.ObjNode, "b2");
+            Node b3 = new Node(NodeType.ObjNode, "b3");
+            Node b4 = new Node(NodeType.ObjNode, "b4");
+            Node c = new Node(NodeType.ObjNode, "c");
+            Node d = new Node(NodeType.ObjNode, "a");
+            BranchSet B = new BranchSet(b1, b2, b3, b4);
+            return new StraightSet(a, B, c, d);
+        }
+
         public static StraightSet GetTestBaseTest()
         {
             Node a = new Node(NodeType.ObjNode, "a");
@@ -56,10 +82,10 @@ namespace BrigitVisualizer
             StraightSet D3 = new StraightSet(d3);
             BranchSet D3_4 = new BranchSet(D3, D4);
             StraightSet B3 = new StraightSet(b3, c4, D3_4);
-            StraightSet C4 = new StraightSet(c4);
             StraightSet C3 = new StraightSet(c3);
-            BranchSet C3_4 = new BranchSet(C3, C4);
-            StraightSet B2 = new StraightSet(b2, C3_4, d2);
+            StraightSet C2 = new StraightSet(c2);
+            BranchSet C2_3 = new BranchSet(C2, C3);
+            StraightSet B2 = new StraightSet(b2, C2_3, d2);
             StraightSet B1 = new StraightSet(b1, c1, d1);
             BranchSet B1_2_3 = new BranchSet(B1, B2, B3);
             StraightSet BaseSet = new StraightSet(a, B1_2_3, f);
@@ -86,10 +112,10 @@ namespace BrigitVisualizer
             StraightSet D3 = new StraightSet(d3);
             BranchSet D3_4 = new BranchSet(D3, D4);
             StraightSet B3 = new StraightSet(b3, c4, D3_4);
-            StraightSet C4 = new StraightSet(c4);
             StraightSet C3 = new StraightSet(c3);
-            BranchSet C3_4 = new BranchSet(C3, C4);
-            StraightSet B2 = new StraightSet(b2, C3_4, d2);
+            StraightSet C2 = new StraightSet(c2);
+            BranchSet C2_3 = new BranchSet(C2, C3);
+            StraightSet B2 = new StraightSet(b2, C2_3, d2);
             StraightSet B1 = new StraightSet(b1, c1, d1);
             BranchSet B1_2_3 = new BranchSet(B1, B2, B3);
             StraightSet BaseSet = new StraightSet(a, B1_2_3, f);

@@ -185,9 +185,17 @@ namespace BrigitVisualizer
                         int leftMost = this.center - this.width / 2;
                         StraightSet strChildSet = bSet.GetObjAt(j);
                         strChildSet.center = oldWidth / 2 + leftMost + strChildSet.width / 2 + oldCenter;
+                        if(oldCenter != 0)
+                        {
+                            strChildSet.center = oldWidth / 2 + oldCenter + strChildSet.width / 2;
+                        }
+                        else
+                        {
+                            strChildSet.center = oldWidth / 2 + leftMost + strChildSet.width / 2;
+                        }
                         // now that the center for this has been calculated, we can calculate it's
                         // child sets if it has one
-                        if(strChildSet.containsBranches)
+                        if (strChildSet.containsBranches)
                         {
                             strChildSet.CenterChildSets();
                         }

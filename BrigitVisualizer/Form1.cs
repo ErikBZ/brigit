@@ -42,7 +42,8 @@ namespace BrigitVisualizer
             }
             if(pointList != null)
             {
-                BrigitDrawer.DrawPointList(pointList, e);
+                int maxWidth = BrigitDrawer.DrawPointList(pointList, e);
+                bufferedPanel1.Width = (maxWidth + 3) * 100;
             }
         }
 
@@ -83,7 +84,9 @@ namespace BrigitVisualizer
         private void button1_Click(object sender, EventArgs e)
         {
             //tree = OpenTreeFromDialog();
-            pointList = BrigitDrawer.CreatePointList(Tester.EasyBaseSet());
+            ListAndDepth pointsAndDepth = BrigitDrawer.CreatePointList(Tester.GetTestBaseTest());
+            pointList = pointsAndDepth.Points;
+            bufferedPanel1.Height = pointsAndDepth.MaxDepths + 200;
             bufferedPanel1.Invalidate();
         }
 
