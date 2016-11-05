@@ -12,6 +12,8 @@ blah blah blah blah blah
 blah blah blah
 [*]
 
+# comment here #
+
 [res char:person1]
 gotta more stuff and shit
 [*]

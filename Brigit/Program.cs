@@ -13,7 +13,17 @@ namespace Brigit
     {
         static void Main(string[] args)
         {
+            string path = @"..\..\scripts\comment_test.tome";
+            string[] toParse = null;
+            if (File.Exists(path))
+            {
+                toParse = File.ReadAllLines(path);
+            }
 
+            Parser p = new Parser(toParse);
+            p.ParseComment();
+
+            Console.ReadLine();
         }
     }
 }

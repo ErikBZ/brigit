@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brigit", "Brigit\Brigit.csproj", "{7B4F47AE-3FEB-4BD6-921A-C647BAD1C26C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrigitVisualizer", "BrigitVisualizer\BrigitVisualizer.csproj", "{A4A7991C-751E-4DA2-BC2B-516C9272603D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8ABB0F39-CF19-433C-853D-A4CFC4344087}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

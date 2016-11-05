@@ -335,6 +335,32 @@ namespace Brigit
                 muncher.ConsumeChar();
             }
         }
+
+        public void ParseComment()
+        {
+            if (muncher.CheckChar('#'))
+            {
+                muncher.ConsumeChar();
+                muncher.EatWhile((delegate (char c)
+                {
+                    return c != '#';
+                }));
+                if(muncher.Complete())
+                {
+                    throw new ParserExceptions.NoCommentEndException(
+                        $"The comment started {muncher.Position}at was never ended");
+                }
+                else
+                {
+                    // eating the last hash
+                    muncher.ConsumeChar();
+                }
+            }
+            else
+            {
+                throw new ParserExceptions.NoCommnetExsistsException($"There was no comment at {muncher.Position}");
+            }
+        }
     }
 
     /// <summary>
