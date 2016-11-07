@@ -37,5 +37,38 @@ namespace Brigit
             {
             }
         }
+
+        public class BranchTagExpectedException : Exception
+        {
+            public BranchTagExpectedException()
+            {
+            }
+
+            public BranchTagExpectedException(string message) :
+                base(message)
+            {
+            }
+
+            public BranchTagExpectedException(string message, Exception inner) :
+                base(message, inner)
+            {
+            }
+        }
+        public class TagDoesNotExistException : Exception
+        {
+            public TagDoesNotExistException()
+            {
+            }
+
+            public TagDoesNotExistException(string message) :
+                base(message)
+            {
+            }
+
+            public TagDoesNotExistException(string message, Exception inner) :
+                base(message, inner)
+            {
+            }
+        }
     }
 }

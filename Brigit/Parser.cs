@@ -31,6 +31,8 @@ namespace Brigit
         // can have nodes with more than 1 parent
         public DomTree ParseBrigitText()
         {
+            ParseComment();
+
             if (muncher.SniffChar() != '[')
                 throw new Exception("brigit txt must start with [load] tag");
             else
@@ -40,6 +42,14 @@ namespace Brigit
             DomNode oldNode = null;
             while(!muncher.Complete())
             {
+                // not really "children" more like "start and end node
+                // the only parse that will return more than 1 nodes
+                // in the array will be ParseBranch where [0] is the head
+                // and [1] is the end
+
+                // can comment before the 
+                ParseComment();
+
                 DomNode[] children = ParseNode();
                 if(tree.Head == null)
                 {
@@ -85,8 +95,15 @@ namespace Brigit
                 {
                     node = new DomNode[] { ParseRepTag() };
                 }
+                else if(muncher.StartsWith("branch"))
+                {
+                    node = ParseBranches();
+                }
                 else
-                { }
+                {
+                    throw new ParserExceptions.TagDoesNotExistException(
+                        $"Given tag found at { muncher.Position } does not exist");
+                }
             }
             else
             {
@@ -336,10 +353,16 @@ namespace Brigit
             }
         }
 
+        /// <summary>
+        /// Used for parsing comments
+        /// </summary>
+        // Comments can only exist outside of nodes, everything
+        // inside the nodes will be considered part of the dialogue
         public void ParseComment()
         {
             if (muncher.CheckChar('#'))
             {
+                string commentStart = muncher.Position;
                 muncher.ConsumeChar();
                 muncher.EatWhile((delegate (char c)
                 {
@@ -348,7 +371,7 @@ namespace Brigit
                 if(muncher.Complete())
                 {
                     throw new ParserExceptions.NoCommentEndException(
-                        $"The comment started {muncher.Position}at was never ended");
+                        $"The comment started { commentStart } at was never ended");
                 }
                 else
                 {
@@ -358,8 +381,45 @@ namespace Brigit
             }
             else
             {
-                throw new ParserExceptions.NoCommnetExsistsException($"There was no comment at {muncher.Position}");
+                // do nothing, there was no comment so move on until the next
+                // tag or syntax thingy shows up
             }
+        }
+
+        // Parsing branches and stuff
+        /// <summary>
+        /// Returns a DomNode array of size 2, where [0] is the head
+        /// of the branch and [1] is the end, they may be fake nodes
+        /// used to notate the start and end of branch if the given branch
+        /// does not start or end with one node
+        /// </summary>
+        /// <returns></returns>
+        public DomNode[] ParseBranches()
+        {
+            DomNode[] startAndEndNode = new DomNode[2];
+            // will keep track of the branch ID to nodes
+            Dictionary<string, DomNode[]> branchIDToNodes = new Dictionary<string, DomNode[]>();
+
+            // first need to parse the IDs
+            // assuming we start at the '[' of [branch
+            // also checks for a space after the space so that
+            // branchsdfsldfj isn't accepted as a legal tag
+            if(muncher.StartsWith("branch "))
+            {
+                muncher.ConsumeChar(7);
+                muncher.EatWhiteSpace();
+            }
+            else
+            {
+                throw new ParserExceptions.BranchTagExpectedException(
+                    "A branch tag was expeceted but the tag is malformed");
+            }
+
+            Dictionary<string, string[]> argumentsAndBranchIds = this.ParseArgumentSetPairs();
+
+            // then parse the branches
+
+            return startAndEndNode;
         }
     }
 

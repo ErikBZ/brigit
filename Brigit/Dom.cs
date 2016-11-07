@@ -11,6 +11,16 @@ using System.Runtime.Serialization.Formatters.Binary;
 /// </summary>
 namespace Brigit
 {
+    /*
+     * EndNode may not be necessary since if a set has
+     * a startNode then the the Node after the last MUST
+     * be an EndNode and can be assumed, denoting this node
+     * just makes it easier to understand in may opinion
+     * I'm probably gonna put this somewhere else and I have
+     * to create a good namespace structure
+     */
+    public enum NodeType { StartNode, EndNode, DualNode, ObjNode };
+
     /// <summary>
     /// Static class for loading and writing
     /// DomTree's and lists of DomTrees maybe even Characters
@@ -239,6 +249,8 @@ namespace Brigit
         /// </summary>
         Background background;
 
+        NodeType type;
+
         // settings up the properties
         public DomNode[] Children
         {
@@ -268,6 +280,12 @@ namespace Brigit
         {
             get { return background; }
             set { background = value; }
+        }
+
+        public NodeType Type
+        {
+            get { return type; }
+            set { type = value; }
         }
 
         /// <summary>
