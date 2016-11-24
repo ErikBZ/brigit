@@ -54,6 +54,7 @@ namespace Brigit
             {
             }
         }
+
         public class TagDoesNotExistException : Exception
         {
             public TagDoesNotExistException()

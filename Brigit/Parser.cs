@@ -155,7 +155,15 @@ namespace Brigit
                 muncher.ConsumeChar();
             }
             // eating the tag, "res"
-            muncher.ConsumeChar(3);
+            if(muncher.StartsWith("res ") || muncher.StartsWith("res]"))
+            {
+                muncher.ConsumeChar(3);
+            }
+            else
+            {
+                throw new ParserExceptions.TagDoesNotExistException(
+                    $"Response tag was expected but is malformed. {muncher.Position}");
+            }
             // Parsing the tag [] and it's parameters
             Dictionary<string, string[]> arguments = ParseArgumentSetPairs();
             foreach(KeyValuePair<string, string[]> entry in arguments)
@@ -201,7 +209,16 @@ namespace Brigit
                 muncher.ConsumeChar();
             }
             // eating the tag, "res"
-            muncher.ConsumeChar(3);
+            if(muncher.StartsWith("rep ") || muncher.StartsWith("res]"))
+            {
+                muncher.ConsumeChar(3);
+            }
+            else
+            {
+                throw new ParserExceptions.TagDoesNotExistException(
+                    $"Reply was expected but was not malformed. {muncher.Position}");
+            }
+
             Dictionary<string, string[]> arguments = ParseArgumentSetPairs();
             foreach(KeyValuePair<string, string[]> kvp in arguments)
             {
