@@ -71,5 +71,21 @@ namespace Brigit
             {
             }
         }
+        public class BranchIdDoesNotMatchException : Exception
+        {
+            public BranchIdDoesNotMatchException()
+            {
+            }
+
+            public BranchIdDoesNotMatchException(string message) :
+                base(message)
+            {
+            }
+
+            public BranchIdDoesNotMatchException(string message, Exception inner) :
+                base(message, inner)
+            {
+            }
+        }
     }
 }

@@ -1,0 +1,20 @@
+# 3 branches with names b1 b2 b3 #
+[branch ids:b1 b2 b3; def:b1]
+    [b1]
+        [res]
+        Hello :)
+        [*]
+    [*]
+
+    [b2]
+        [res]
+        How you doing?
+        [*]
+    [*]
+
+    [b3]
+        [res]
+        Wubalubadubdub
+        [*]
+    [*]
+[*]

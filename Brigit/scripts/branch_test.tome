@@ -1,11 +1,11 @@
 [load char:person1; background:bck1; flags:thing;]
 
 [res char:person1]
-Hello this is the first node
+    Hello this is the first node
 [*]
 
 [res char:person1]
-This is another response by person1
+    This is another response by person1
 [*]
 
 [branch ids:b1 b2]
@@ -16,17 +16,13 @@ This is another response by person1
     #
     [b1]
         [res char:person1]
-        
-        Hello branch1
-        
+            Hello branch1    
         [*]
     [* b1]
 
     [b2 flags: thing]
         [res char:person1]
-        
-        Hello there in branch2
-        
+            Hello there in branch2
         [*]
     [* b2]
 [*]

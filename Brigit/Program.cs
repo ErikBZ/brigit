@@ -20,8 +20,23 @@ namespace Brigit
                 toParse = File.ReadAllLines(path);
             }
 
-            Parser p = new Parser(toParse);
-            p.ParseComment();
+            BrigitParser p = new BrigitParser(toParse);
+            Dictionary<string, string[]> arguments = new Dictionary<string, string[]>();
+            arguments.Add("ids", new string[] { "hello", "hi" });
+            arguments.Add("def", new string[] { "hello", "hi" });
+            arguments.Add("char", new string[] { "hello", "hi" });
+            try
+            {
+                if (p.RequireArguments(arguments, "derp"))
+                {
+                    Console.WriteLine("Hey it worked!");
+                }
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Environment.Exit(1);
+            }
 
             Console.ReadLine();
         }

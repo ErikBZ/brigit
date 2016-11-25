@@ -12,11 +12,11 @@ using System.Diagnostics;
 namespace Brigit
 {
     // static class
-    public class Parser
+    public class BrigitParser
     {
         public Eater muncher;
         
-        public Parser(string[] data)
+        public BrigitParser(string[] data)
         {
             muncher = new Eater(data);
         }
@@ -75,7 +75,7 @@ namespace Brigit
         }
 
         /// <summary>
-        /// Generic Parser which will choose which method to call
+        /// Generic BrigitParser which will choose which method to call
         /// depending on the tag it finds
         /// </summary>
         /// <returns></returns>
@@ -405,12 +405,9 @@ namespace Brigit
 
         // Parsing branches and stuff
         /// <summary>
-        /// Returns a DomNode array of size 2, where [0] is the head
-        /// of the branch and [1] is the end, they may be fake nodes
-        /// used to notate the start and end of branch if the given branch
-        /// does not start or end with one node
+        /// Manages the parsing of the branches and the branch id
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A list of all the ends of the branch node</returns>
         public DomNode[] ParseBranches()
         {
             DomNode[] startAndEndNode = new DomNode[2];
@@ -418,7 +415,7 @@ namespace Brigit
             Dictionary<string, DomNode[]> branchIDToNodes = new Dictionary<string, DomNode[]>();
 
             // first need to parse the IDs
-            // assuming we start at the '[' of [branch
+            // assuming we start after we've eaten the '[' of [branch
             // also checks for a space after the space so that
             // branchsdfsldfj isn't accepted as a legal tag
             if(muncher.StartsWith("branch "))
@@ -433,10 +430,85 @@ namespace Brigit
             }
 
             Dictionary<string, string[]> argumentsAndBranchIds = this.ParseArgumentSetPairs();
-
+            // checking to make sure the required arguments are present and set
+            try
+            {
+                RequireArguments(argumentsAndBranchIds, "def", "ids");
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            
             // then parse the branches
 
             return startAndEndNode;
+        }
+
+        /// <summary>
+        /// Parses a single branch given an array of id names
+        /// </summary>
+        /// <returns>The start DomNode of the branch and the last DomNode of the Branch</returns>
+        public DomNode[] ParseBranch(params String[] idsToParse)
+        {
+            muncher.EatWhiteSpace();
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < idsToParse.Length; i++)
+            {
+                if(i != idsToParse.Length)
+                {
+                    sb.Append(idsToParse[i] + " ");
+                }
+                else
+                {
+                    sb.Append(idsToParse);
+                }
+            }
+            string ids = sb.ToString();
+
+            if (muncher.StartsWith($"[{ids}"))
+            {
+                muncher.ConsumeChar(1 + ids.Length);
+            }
+            else
+            {
+                throw new ParserExceptions.BranchIdDoesNotMatchException(
+                    $"The branch ids do not match at {muncher.Position}");
+            }
+
+            // parses set pairs the id tags
+            Dictionary<string, string[]> arguementSetPairs = this.ParseArgumentSetPairs();
+            return null;
+        }
+
+        /// <summary>
+        /// Checks if the arguement set pairs that were parsed have the required
+        /// arguments
+        /// </summary>
+        /// <param name="arguments">The dictionary that was just parsed</param>
+        /// <param name="required">The arguments that need to be checked</param>
+        /// <returns>True if it has passed, otherwise throw an exception</returns>
+        public bool RequireArguments(Dictionary<string, string[]> arguments, params string[] required)
+        {
+            foreach(string s in required)
+            {
+                if (arguments.ContainsKey(s))
+                {
+                    string[] pairs = arguments[s];
+                    if(pairs.Length < 1)
+                    {
+                        throw new Exception($"Required arguement, {s}, is not set at {muncher.Position}");
+                    }
+                }
+                else
+                {
+                    throw new Exception($"Required argument, {s}, is not present for tag at {muncher.Position}");               
+                }
+            }
+            // if it's false then it should throw an exception but just to make sure i'll
+            // also return a false just incase the exception isn't thrown for whatever reason
+            return true;
         }
     }
 

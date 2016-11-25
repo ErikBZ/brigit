@@ -43,11 +43,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ParserExceptions.cs" />
+    <Compile Include="Parser\ParserExceptions.cs" />
+    <Compile Include="Parser\StringParser.cs" />
     <Compile Include="Tests.cs" />
     <Compile Include="Dom.cs" />
     <Compile Include="GoodSortedList.cs" />
-    <Compile Include="Parser.cs" />
+    <Compile Include="Parser\Parser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
