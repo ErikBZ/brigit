@@ -13,7 +13,7 @@ namespace Brigit
     {
         static void Main(string[] args)
         {
-            string path = @"..\..\scripts\comment_test.tome";
+            string path = @"..\..\scripts\branch_test_only.tome";
             string[] toParse = null;
             if (File.Exists(path))
             {
@@ -21,21 +21,15 @@ namespace Brigit
             }
 
             BrigitParser p = new BrigitParser(toParse);
-            Dictionary<string, string[]> arguments = new Dictionary<string, string[]>();
-            arguments.Add("ids", new string[] { "hello", "hi" });
-            arguments.Add("def", new string[] { "hello", "hi" });
-            arguments.Add("char", new string[] { "hello", "hi" });
+
             try
             {
-                if (p.RequireArguments(arguments, "derp"))
-                {
-                    Console.WriteLine("Hey it worked!");
-                }
+                p.ParseComment();
+                DomNode[] nodes = p.ParseBranches();
             }
             catch(Exception e)
             {
                 Console.WriteLine(e.Message);
-                Environment.Exit(1);
             }
 
             Console.ReadLine();

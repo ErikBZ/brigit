@@ -1,20 +1,14 @@
-# 3 branches with names b1 b2 b3 #
+# this is a commment yay!!!#
 [branch ids:b1 b2 b3; def:b1]
     [b1]
-        [res]
-        Hello :)
-        [*]
+    #comments only here for now#
     [*]
 
     [b2]
-        [res]
-        How you doing?
-        [*]
+    #ayy baby#
     [*]
 
     [b3]
-        [res]
-        Wubalubadubdub
-        [*]
+    #wubalabdubdub#
     [*]
 [*]

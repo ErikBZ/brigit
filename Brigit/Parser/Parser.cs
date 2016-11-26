@@ -377,6 +377,7 @@ namespace Brigit
         // inside the nodes will be considered part of the dialogue
         public void ParseComment()
         {
+            muncher.EatWhiteSpace();
             if (muncher.CheckChar('#'))
             {
                 string commentStart = muncher.Position;
@@ -395,11 +396,13 @@ namespace Brigit
                     // eating the last hash
                     muncher.ConsumeChar();
                 }
+                muncher.EatWhiteSpace();
             }
             else
             {
                 // do nothing, there was no comment so move on until the next
                 // tag or syntax thingy shows up
+                muncher.EatWhiteSpace();
             }
         }
 
@@ -418,15 +421,22 @@ namespace Brigit
             // assuming we start after we've eaten the '[' of [branch
             // also checks for a space after the space so that
             // branchsdfsldfj isn't accepted as a legal tag
-            if(muncher.StartsWith("branch "))
+            if(muncher.StartsWith("branch ") || muncher.StartsWith("[branch "))
             {
-                muncher.ConsumeChar(7);
+                if(muncher.SniffChar() == '[')
+                {
+                    muncher.ConsumeChar(8);
+                }
+                else
+                {
+                    muncher.ConsumeChar(7);
+                }
                 muncher.EatWhiteSpace();
             }
             else
             {
                 throw new ParserExceptions.BranchTagExpectedException(
-                    "A branch tag was expeceted but the tag is malformed");
+                    $"A branch tag was expeceted but the tag is malformed at {muncher.Position}");
             }
 
             Dictionary<string, string[]> argumentsAndBranchIds = this.ParseArgumentSetPairs();
@@ -439,10 +449,68 @@ namespace Brigit
             {
                 Console.WriteLine(e.Message);
             }
-            
-            // then parse the branches
 
+            // then parse the branches
+            // the branches end with "[*...]" but the
+            // parse branch method will take care of those cases
+            while (!muncher.StartsWith("[*"))
+            {
+                // also eats whitespace
+                ParseComment();
+
+                if (muncher.StartsWith("["))
+                {
+                    muncher.ConsumeChar();
+                }
+                else
+                {
+                    // have some error here since it's made properly
+                }
+
+                string[] branchesToOpen = ParseSetOfStrings();
+                if (muncher.SniffChar() == ']')
+                {
+                    muncher.ConsumeChar();
+                }
+
+                try
+                {
+                   BranchesAreValid(branchesToOpen, argumentsAndBranchIds["ids"]);            
+                }
+                catch(ParserExceptions.BranchIdDoesNotMatchException e)
+                {
+                    Console.WriteLine(e.Message);
+                    Environment.Exit(1);
+                }
+            }
             return startAndEndNode;
+        }
+
+        public bool BranchesAreValid(string[] branches, string[] possibleBranches)
+        {
+            Dictionary<string, int> combonationHits = new Dictionary<string, int>();
+            foreach(string s in possibleBranches)
+            {
+                combonationHits.Add(s, 0);
+            }
+            foreach (string s in branches)
+            {
+                if(!combonationHits.ContainsKey(s))
+                {
+                    throw new ParserExceptions.BranchIdDoesNotMatchException(
+                        $"{muncher.Position}, Tag does not contain possible branch for split.");
+                }
+                if (combonationHits[s] == 0)
+                {
+                    combonationHits[s]++;
+                }
+                else
+                {
+                    throw new ParserExceptions.BranchIdDoesNotMatchException(
+                        $"{muncher.Position}, Tag contains a branch ID more than once.");
+                }
+            }
+            return true;
         }
 
         /// <summary>
@@ -451,34 +519,7 @@ namespace Brigit
         /// <returns>The start DomNode of the branch and the last DomNode of the Branch</returns>
         public DomNode[] ParseBranch(params String[] idsToParse)
         {
-            muncher.EatWhiteSpace();
-
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < idsToParse.Length; i++)
-            {
-                if(i != idsToParse.Length)
-                {
-                    sb.Append(idsToParse[i] + " ");
-                }
-                else
-                {
-                    sb.Append(idsToParse);
-                }
-            }
-            string ids = sb.ToString();
-
-            if (muncher.StartsWith($"[{ids}"))
-            {
-                muncher.ConsumeChar(1 + ids.Length);
-            }
-            else
-            {
-                throw new ParserExceptions.BranchIdDoesNotMatchException(
-                    $"The branch ids do not match at {muncher.Position}");
-            }
-
-            // parses set pairs the id tags
-            Dictionary<string, string[]> arguementSetPairs = this.ParseArgumentSetPairs();
+            ParseComment();
             return null;
         }
 
