@@ -13,25 +13,16 @@ namespace Brigit
     {
         static void Main(string[] args)
         {
-            string path = @"..\..\scripts\branch_test_only.tome";
+            string path = @"..\..\scripts\syntax_test.tome";
             string[] toParse = null;
             if (File.Exists(path))
             {
                 toParse = File.ReadAllLines(path);
             }
 
-            BrigitParser p = new BrigitParser(toParse);
-
-            try
-            {
-                p.ParseComment();
-                DomNode[] nodes = p.ParseBranches();
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
+            Parser.TomeParser tp = new Parser.TomeParser(toParse);
+            string parsedText = tp.ParseDialogEntry();
+            Console.WriteLine(parsedText);
             Console.ReadLine();
         }
     }

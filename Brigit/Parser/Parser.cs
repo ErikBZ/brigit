@@ -11,7 +11,7 @@ using System.Diagnostics;
 /// </summary>
 namespace Brigit
 {
-    // static class
+
     public class BrigitParser
     {
         public Eater muncher;

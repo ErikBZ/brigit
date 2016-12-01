@@ -32,3 +32,39 @@ saying more stuff and shit
 	[r] something [*]
 	[r] something else[*]
 [*]
+
+[load char:person1; background:bck1]
+# instead of using a [res] tag maybe I can do something else like
+# a single context
+[dialog background:thing]
+	character:
+		saying osemt askdjf alsdkf jlaskdjf ldf*
+		
+		saying osemthing else
+		blah blah 
+		balh*
+
+		lsdfjaslkdfjlkasjdf*
+		; # ended by a semi colon?
+	
+	character:
+		blah blah
+		;
+	
+	@another:
+		omething else
+		;
+
+	#quick reply to a player choice
+	@player choice -> character:
+		says somehthing
+		(set flag bool) 
+		;
+	$another choice -> (set true:flags false:flags)
+	;
+	@another choice -> ;
+[*]
+
+[branch ids:t1 t2 t3]
+	[t1 flags:things]
+[*]

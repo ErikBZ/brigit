@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Parser\ParserExceptions.cs" />
-    <Compile Include="Parser\StringParser.cs" />
+    <Compile Include="Parser\TomeParser.cs" />
     <Compile Include="Tests.cs" />
     <Compile Include="Dom.cs" />
     <Compile Include="GoodSortedList.cs" />

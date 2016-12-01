@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 // TODO add some more tests
+
 namespace Brigit
 {
     class Tester
@@ -90,4 +91,5 @@ namespace Brigit
             Console.ReadLine();
         }
     }
+
 }
