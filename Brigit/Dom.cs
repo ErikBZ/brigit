@@ -12,14 +12,19 @@ using System.Runtime.Serialization.Formatters.Binary;
 namespace Brigit
 {
     /*
-     * EndNode may not be necessary since if a set has
+     * End may not be necessary since if a set has
      * a startNode then the the Node after the last MUST
-     * be an EndNode and can be assumed, denoting this node
+     * be an End and can be assumed, denoting this node
      * just makes it easier to understand in may opinion
      * I'm probably gonna put this somewhere else and I have
      * to create a good namespace structure
      */
-    public enum NodeType { StartNode, EndNode, DualNode, ObjNode };
+    public enum NodeType { Start, End, Dual, Object, Empty };
+    /*
+     * If a tree is an inner type tree then it only
+     * needs to have tails and head correctly tracked
+     */
+    public enum TreeType { Outer, Inner };
 
     /// <summary>
     /// Static class for loading and writing
@@ -81,10 +86,25 @@ namespace Brigit
         DomNode head;
 
         /// <summary>
+        /// Keeps track of the end of the list
+        /// </summary>
+        DomNode[] tail;
+
+        /// <summary>
+        /// Trees can have multiple inner trees but
+        /// only one outer tree
+        /// </summary>
+        TreeType type;
+
+        // I may turn these into Lists since it'll be up to the runtime to determine what they map to
+        /// <summary>
         /// The list of characters that will be in this Scene
         /// </summary>
         Dictionary<string, Character> chars = new Dictionary<string, Character>();
 
+        /// <summary>
+        /// A dictionary of all the Backgrounds possible
+        /// </summary>
         Dictionary<string, Background> backgrounds = new Dictionary<string, Background>();
         
         // properties
@@ -111,6 +131,11 @@ namespace Brigit
             set { backgrounds = value; }
         }
 
+        public TreeType Type
+        {
+            get { return type; }
+        }
+
 
         public DomTree()
         {
@@ -123,6 +148,70 @@ namespace Brigit
         {
             head = null;
             chars = cArray;
+        }
+
+        // Actual useful functions are here
+        // I don't know why I didn't have tree methods to help with branching
+        // until just now
+
+        /// <summary>
+        /// Adds ALL nodes that were passed to the method to all
+        /// tail nodes at the end of the tree
+        /// </summary>
+        /// <param name="nodes"></param>
+        public void Add(params DomNode[] nodes)
+        {
+            foreach(DomNode t in tail)
+            {
+                t.SetChildren(nodes);
+            }
+        }
+
+        public void Add(DomTree tree)
+        {
+            // add the head node
+            this.Add(tree.head);
+            this.tail = tree.tail;
+            // tree has now been added to this tree!
+        }
+
+        public void Add(params DomTree[] trees)
+        {
+            DomTree connectedTrees = ConnectTrees(trees);
+            this.Add(connectedTrees);
+            // all those treees have now been added to the tree!
+        }
+
+        /// <summary>
+        /// Connects trees by giving them the same Head, an empty head
+        /// and setting the "tail" to the tails of both trees
+        /// </summary>
+        /// <param name="trees"></param>
+        public DomTree ConnectTrees(params DomTree[] trees)
+        {
+            DomTree newTree = new DomTree();
+            newTree.type = TreeType.Inner;
+            newTree.head = new DomNode();
+            newTree.head.Type = NodeType.Empty;
+
+            List<DomNode> nodeHeads = new List<DomNode>();
+            List<DomNode> nodeTails = new List<DomNode>();
+
+            // finds the heads of the trees
+            // and the tails
+            foreach (DomTree t in trees)
+            {
+                nodeHeads.Add(t.Head);
+                foreach (DomNode tl in t.tail)
+                {
+                    nodeTails.Add(tl);
+                }
+            }
+
+            // new tree head is empty.
+            newTree.Add(nodeHeads.ToArray());
+            newTree.tail = nodeTails.ToArray();
+            return newTree;
         }
 
         /// <summary>
@@ -337,6 +426,11 @@ namespace Brigit
         /// <param name="next"></param>
         public void SetChildren(DomNode[] next)
         {
+            if(next.Length == 1 && next[0].type == NodeType.Empty)
+            {
+                // set this nodes children to the children of the empty node
+                SetChildren(next[0].Children);
+            }
             children = next;
         }
 

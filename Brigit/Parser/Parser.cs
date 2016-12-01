@@ -450,6 +450,19 @@ namespace Brigit
                 Console.WriteLine(e.Message);
             }
 
+            // settings up the dictionary that tracks the head and end nodes of the branches
+            foreach(string s in argumentsAndBranchIds["ids"])
+            {
+                if(branchIDToNodes.ContainsKey(s))
+                {
+                    throw new ParserExceptions.BranchIdDoesNotMatchException(
+                        $"{muncher.Position}, cannot have duplicate Ids in branch tag");
+                }
+                branchIDToNodes.Add(s, new DomNode[2]);
+                branchIDToNodes[s][0] = null;
+                branchIDToNodes[s][1] = null;
+            }
+
             // then parse the branches
             // the branches end with "[*...]" but the
             // parse branch method will take care of those cases
