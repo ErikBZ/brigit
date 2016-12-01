@@ -8,17 +8,23 @@ using System.Threading.Tasks;
 // Rename BrigitParser to BrigitParser
 namespace Brigit.Parser
 {
+
+    /// <summary>
+    /// Parses a tome document into a DOM data structure
+    /// </summary>
     public class TomeParser
     {
         // MUNCHER LIVES ON
         TomeReader muncher;
-        
+        List<String> characters;
+
         /// <summary>
         /// Don't use this
         /// </summary>
         public TomeParser()
         {
-            muncher = new TomeReader();
+            muncher = null;
+            characters = null;
         }
 
         /// <summary>
@@ -28,6 +34,7 @@ namespace Brigit.Parser
         public TomeParser(string[] textToParse)
         {
             muncher = new TomeReader(textToParse);
+            characters = new List<string>();
         }
 
         /// <summary>
@@ -36,21 +43,35 @@ namespace Brigit.Parser
         /// A character can have multiple entries
         /// </summary>
         /// <returns></returns>
-        public string ParseDialogEntry()
+        private string ParseSingleDialog()
         {
             string entry = muncher.SpitUpWhile(delegate (char c)
             {
-                if(muncher.StartsWith("\\*") || muncher.StartsWith("\\;"))
+                if (muncher.StartsWith("\\*") || muncher.StartsWith("\\;"))
                 {
                     muncher.ConsumeChar();
                     return true;
                 }
                 else
                 {
-                    return c != '*' && c != ';' ;
+                    return c != '*' && c != ';';
                 }
             });
             return entry;
+        }
+
+        public DomNode[] ParseCharacterDialog()
+        {
+            muncher.EatWhiteSpace();
+            string character = muncher.SpitUpAlpha();
+            if(!characters.Contains(character))
+            {
+                // print exception and exit
+            }
+
+            // parse attributes like expression?
+
+            return null;
         }
     }
     
