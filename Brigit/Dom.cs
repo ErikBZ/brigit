@@ -100,7 +100,7 @@ namespace Brigit
         /// <summary>
         /// The list of characters that will be in this Scene
         /// </summary>
-        Dictionary<string, Character> chars = new Dictionary<string, Character>();
+        Dictionary<string, string> chars = new Dictionary<string, string>();
 
         /// <summary>
         /// A dictionary of all the Backgrounds possible
@@ -119,7 +119,7 @@ namespace Brigit
             set { head = value; }
         }
 
-        public Dictionary<string, Character> Characaters
+        public Dictionary<string, string> Characaters
         {
             get { return chars; }
             set { chars = value; }
@@ -140,11 +140,11 @@ namespace Brigit
         public DomTree()
         {
             head = null;
-            chars = new Dictionary<string, Character>();
+            chars = new Dictionary<string, string>();
             backgrounds = new Dictionary<string, Background>();
         }
 
-        public DomTree(Dictionary<string, Character>  cArray)
+        public DomTree(Dictionary<string, string>  cArray)
         {
             head = null;
             chars = cArray;
@@ -161,9 +161,26 @@ namespace Brigit
         /// <param name="nodes"></param>
         public void Add(params DomNode[] nodes)
         {
-            foreach(DomNode t in tail)
+            if(head == null && nodes.Length == 1)
             {
-                t.SetChildren(nodes);
+                head = nodes[0];
+                tail = nodes;
+            }
+            else
+            {
+                // there wasn't a head before
+                if(head == null)
+                {
+                    head = new DomNode();
+                    head.Type = NodeType.Empty;
+                    tail = new DomNode[] { head };
+                }
+                // now that we have either a "empty node" or
+                // actual nodes in tail
+                foreach (DomNode t in tail)
+                {
+                    t.SetChildren(nodes);
+                }
             }
         }
 
@@ -218,22 +235,22 @@ namespace Brigit
         /// Sets the dictionary of characters for this tree
         /// </summary>
         /// <param name="chars"></param>
-        public void SetCharacterDict(Dictionary<string, Character> chars)
+        public void SetCharacterDict(Dictionary<string, string> chars)
         {
             this.chars = chars;
         }
 
         /// <summary>
-        /// Looks up the given character names and creates a dictionary using
-        /// the names as a key
+        /// do not use
         /// </summary>
         /// <param name="charNames"></param>
         // TODO right now this is just a place holder
+        // isn't needed anymore
         public void SetCharacterDict(string[] charNames)
         {
             for(int i=0;i<charNames.Length;i++)
             {
-                chars.Add(charNames[i], new Character(charNames[i]));
+                chars.Add(charNames[i], charNames[i]);
             }
         }
 
@@ -275,10 +292,10 @@ namespace Brigit
         private string GetObjectType(Object obj)
         {
             string s = string.Empty;
-            if (obj is Reply)
-                s = ((Reply)obj).ToString();
-            else if (obj is Response)
-                s = ((Response)obj).ToString();
+            if (obj is Choice)
+                s = ((Choice)obj).ToString();
+            else if (obj is Dialog)
+                s = ((Dialog)obj).ToString();
 
             return s;
         }
@@ -330,7 +347,7 @@ namespace Brigit
         /// <summary>
         /// The character that "owns" this node, IE the character who said this
         /// </summary>
-        Character character;
+        string character;
 
         /// <summary>
         /// The background for the character. Will usually not change, so the first
@@ -359,7 +376,7 @@ namespace Brigit
             set { flagSets = value; }
         }
 
-        public Character Character
+        public string Character
         {
             get { return character; }
             set { character = value; }
@@ -407,7 +424,7 @@ namespace Brigit
         }
 
         public DomNode(DomNode[] children, Dictionary<string, bool> flags,
-            Dictionary<string, bool> flagSets, Character character)
+            Dictionary<string, bool> flagSets, string character)
         {
             this.children = children;
             this.flags = flags;
@@ -445,7 +462,7 @@ namespace Brigit
     }
 
     [Serializable]
-    public class Response : DomNode
+    public class Dialog : DomNode
     {
         public string response;
 
@@ -457,14 +474,14 @@ namespace Brigit
 
 
         // i'll add the other ones later
-        public Response():
+        public Dialog():
             base()
         {
             this.response = string.Empty;
         }
 
-        public Response(DomNode[] children, Dictionary<string, bool> flags,
-            Dictionary<string, bool> flagSets, Character character, string response):
+        public Dialog(DomNode[] children, Dictionary<string, bool> flags,
+            Dictionary<string, bool> flagSets, string character, string response):
             base(children, flags, flagSets, character)
         {
             this.response = response;
@@ -472,12 +489,12 @@ namespace Brigit
 
         public override string ToString()
         {
-            return "Response";
+            return "Dialog";
         }
     }
 
     [Serializable]
-    public class Reply : DomNode
+    public class Choice : DomNode
     {
         string[] replies;
 
@@ -489,14 +506,14 @@ namespace Brigit
         }
 
         // once again i'll add the other ones later
-        public Reply() :
+        public Choice() :
             base()
         {
             this.replies = new string[0];
         }
 
-        public Reply(DomNode[] children, Dictionary<string, bool> flags,
-            Dictionary<string, bool> flagSets, Character character, string[] replies):
+        public Choice(DomNode[] children, Dictionary<string, bool> flags,
+            Dictionary<string, bool> flagSets, string character, string[] replies):
             base(children, flags, flagSets, character)
         {
             this.replies= replies;
@@ -504,52 +521,7 @@ namespace Brigit
 
         public override string ToString()
         {
-            return "Reply";
-        }
-    }
-
-    /// <summary>
-    /// Contains character info such as portrait location and well that's basicaly it I guess
-    /// </summary>
-    [Serializable]
-    public class Character
-    {
-        string name;
-        string picLocation;
-
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
-
-        public string PictureLocal
-        {
-            get { return picLocation; }
-            set { picLocation = value; }
-        }
-
-
-        /// <summary>
-        /// Creates a new Character
-        /// </summary>
-        /// <param name="n">The characters name</param>
-        /// <param name="p">The location where the portrait is located</param>
-        public Character(string n, string p)
-        {
-            name = n;
-            picLocation = p;
-        }
-        
-        public Character(string n)
-        {
-            name = n;
-            picLocation = string.Empty;
-        }
-
-        public override string ToString()
-        {
-            return name;
+            return "Choice";
         }
     }
 

@@ -87,13 +87,13 @@ namespace BrigitVisualizer
 
         public void SetDomNodeText(DomNode node)
         {
-            if (node is Response)
+            if (node is Dialog)
             {
-                this.SetResponseText((Response)node);
+                this.SetResponseText((Dialog)node);
             }
-            else if (node is Reply)
+            else if (node is Choice)
             {
-                this.SetReplyText((Reply)node);
+                this.SetReplyText((Choice)node);
             }
             else
             {
@@ -107,7 +107,7 @@ namespace BrigitVisualizer
         }
 
         // Differnt setters for different nodes
-        private void SetResponseText(Response node)
+        private void SetResponseText(Dialog node)
         {
             // for now i'm just going to print the
             // type of node it is with the text that is all
@@ -119,7 +119,7 @@ namespace BrigitVisualizer
         }
 
         // settings a reply node
-        private void SetReplyText(Reply node)
+        private void SetReplyText(Choice node)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(node.ToString());

@@ -16,7 +16,8 @@ namespace Brigit.Parser
     {
         // MUNCHER LIVES ON
         TomeReader muncher;
-        List<String> characters;
+        // leaving this public for testing purposes
+        public List<String> characters;
 
         /// <summary>
         /// Don't use this
@@ -38,40 +39,108 @@ namespace Brigit.Parser
         }
 
         /// <summary>
-        /// Parses what a single thing a character says. The end of
-        /// an entry is noted by an asterisk *
-        /// A character can have multiple entries
+        /// Parses the text of what a character says
         /// </summary>
         /// <returns></returns>
-        private string ParseSingleDialog()
+        private string ParseSpeechText()
         {
             string entry = muncher.SpitUpWhile(delegate (char c)
             {
-                if (muncher.StartsWith("\\*") || muncher.StartsWith("\\;"))
+                if (muncher.StartsWith("\\*") || muncher.StartsWith("\\}"))
                 {
                     muncher.ConsumeChar();
                     return true;
                 }
                 else
                 {
-                    return c != '*' && c != ';';
+                    return c != '*' && c != '}';
                 }
             });
             return entry;
         }
 
-        public DomNode[] ParseCharacterDialog()
+        /// <summary>
+        /// Parses the speech of character and the attributes if there are any
+        /// </summary>
+        /// <returns></returns>
+        private Dialog ParseSingleDialog()
         {
             muncher.EatWhiteSpace();
-            string character = muncher.SpitUpAlpha();
-            if(!characters.Contains(character))
+            Dialog node = new Dialog();
+            string speech = ParseSpeechText();
+            node.Text = speech;
+            node.Type = NodeType.Object;
+            return node;
+        }
+
+        /// <summary>
+        /// Parses a characater name
+        /// </summary>
+        /// <returns></returns>
+        private string ParseCharacterName()
+        {
+            string characterName = muncher.SpitUpWhile(delegate (char c)
+            {
+                if(Char.IsLetterOrDigit(muncher.SniffChar()))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            });
+            return characterName;
+        }
+
+
+        /// <summary>
+        /// Parses and entire dialog set that a character will say
+        /// It is ended by a '}' closing curly brace
+        /// </summary>
+        /// <returns>A DomTree containing the entry nodes for what the character said</returns>
+        // This is looking a lot like a function
+        public DomTree ParseCharacterDialog()
+        {
+            DomTree tree = new DomTree();
+
+            muncher.EatWhiteSpace();
+            string character = ParseCharacterName();
+
+            if (!characters.Contains(character))
             {
                 // print exception and exit
+                Console.WriteLine($"{character} is not character in the scene. Error found at {muncher.Position}");
             }
 
             // parse attributes like expression?
+            // i'll save this for later
 
-            return null;
+            muncher.EatWhiteSpace();
+            char openBracket = muncher.SpitChar();
+            if(openBracket != '{')
+            {
+                Console.WriteLine($"No open bracket for beginning of dialog by character. Error found at {muncher.Position}");
+                // print exception and exit
+            }
+
+            // parsing the actual text
+            while (muncher.SniffChar() != '}')
+            {
+                DomNode newNode = ParseSingleDialog();
+                newNode.Character = character;
+                tree.Add(newNode);
+                char asterisk = muncher.SpitChar();
+                if(asterisk == '*')
+                {
+                    muncher.ConsumeChar();
+                }
+            }
+
+            // eating the '}'
+            muncher.ConsumeChar();
+
+            return tree;
         }
     }
     
@@ -229,7 +298,7 @@ namespace Brigit.Parser
         /// until the function returns false.
         /// </summary>
         /// <param name="predicate"></param>
-        public void EatWhile(Func<Char, bool> predicate)
+        public void EatWhile(Func<char, bool> predicate)
         {
             while (predicate(SniffChar()) && !Complete())
             {
@@ -262,6 +331,17 @@ namespace Brigit.Parser
                 sb.Append(SpitChar());
             }
 
+            return sb.ToString();
+        }
+
+        // overloading SpitUpWhile
+        public string SpitUpWhile(Func<char, StringBuilder, bool> pred)
+        {
+            StringBuilder sb = new StringBuilder();
+            while(!Complete() && pred(SniffChar(), sb))
+            {
+                // all of the required things will be pred?
+            }
             return sb.ToString();
         }
 

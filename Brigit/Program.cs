@@ -21,6 +21,8 @@ namespace Brigit
             }
 
             Parser.TomeParser tp = new Parser.TomeParser(toParse);
+            tp.characters.Add("character");
+            DomTree tree = tp.ParseCharacterDialog();
             Console.ReadLine();
         }
     }

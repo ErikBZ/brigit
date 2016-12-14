@@ -143,13 +143,13 @@ namespace Brigit
         }
 
         /// <summary>
-        /// Parses an entire Response tag all the way until after the 
+        /// Parses an entire Dialog tag all the way until after the 
         /// final ']'
         /// </summary>
         /// <returns></returns>
         public DomNode ParseResTag()
         {
-            Response node = new Response();
+            Dialog node = new Dialog();
             if(muncher.SniffChar() == '[')
             {
                 muncher.ConsumeChar();
@@ -162,7 +162,7 @@ namespace Brigit
             else
             {
                 throw new ParserExceptions.TagDoesNotExistException(
-                    $"Response tag was expected but is malformed. {muncher.Position}");
+                    $"Dialog tag was expected but is malformed. {muncher.Position}");
             }
             // Parsing the tag [] and it's parameters
             Dictionary<string, string[]> arguments = ParseArgumentSetPairs();
@@ -180,7 +180,7 @@ namespace Brigit
                 switch(entry.Key)
                 {
                     case "char":
-                        node.Character = new Character(entry.Value[0]);
+                        node.Character = entry.Value[0];
                         break;
                     case "background":
                         node.Background = new Background(entry.Value[0]);
@@ -203,7 +203,7 @@ namespace Brigit
 
         public DomNode ParseRepTag()
         {
-            Reply rep = new Reply();
+            Choice rep = new Choice();
             if (muncher.SniffChar() == '[')
             {
                 muncher.ConsumeChar();
@@ -216,7 +216,7 @@ namespace Brigit
             else
             {
                 throw new ParserExceptions.TagDoesNotExistException(
-                    $"Reply was expected but was not malformed. {muncher.Position}");
+                    $"Choice was expected but was not malformed. {muncher.Position}");
             }
 
             Dictionary<string, string[]> arguments = ParseArgumentSetPairs();
@@ -233,7 +233,7 @@ namespace Brigit
                 switch(kvp.Key)
                 {
                     case "char":
-                        rep.Character = new Character(kvp.Value[0]);
+                        rep.Character = kvp.Value[0];
                         break;
                     case "background":
                         rep.Background = new Background(kvp.Value[0]);

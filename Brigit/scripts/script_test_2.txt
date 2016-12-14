@@ -37,12 +37,12 @@ saying more stuff and shit
 # instead of using a [res] tag maybe I can do something else like
 # a single context
 [dialog background:thing]
-	character:
+	character expr:thing>
 		saying osemt askdjf alsdkf jlaskdjf ldf*
 		
 		saying osemthing else
 		blah blah 
-		balh*
+		balh* change expression and stuff here
 
 		lsdfjaslkdfjlkasjdf*
 		; # ended by a semi colon?
