@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Xml.Serialization;
 
 /// <summary>
 /// Summary description for Class1
@@ -19,11 +20,13 @@ namespace Brigit
      * I'm probably gonna put this somewhere else and I have
      * to create a good namespace structure
      */
+    [Serializable]
     public enum NodeType { Start, End, Dual, Object, Empty };
     /*
      * If a tree is an inner type tree then it only
      * needs to have tails and head correctly tracked
      */
+    [Serializable]
     public enum TreeType { Outer, Inner };
 
     /// <summary>
@@ -100,12 +103,12 @@ namespace Brigit
         /// <summary>
         /// The list of characters that will be in this Scene
         /// </summary>
-        Dictionary<string, string> chars = new Dictionary<string, string>();
+        List<string> chars = new List<string>();
 
         /// <summary>
         /// A dictionary of all the Backgrounds possible
         /// </summary>
-        Dictionary<string, Background> backgrounds = new Dictionary<string, Background>();
+        List<string> backgrounds = new List<string>();
         
         // properties
         public string Name
@@ -119,13 +122,13 @@ namespace Brigit
             set { head = value; }
         }
 
-        public Dictionary<string, string> Characaters
+        public List<string> Characaters
         {
             get { return chars; }
             set { chars = value; }
         }
 
-        public Dictionary<string, Background> Background
+        public List<string> Background
         {
             get { return backgrounds; }
             set { backgrounds = value; }
@@ -140,11 +143,11 @@ namespace Brigit
         public DomTree()
         {
             head = null;
-            chars = new Dictionary<string, string>();
-            backgrounds = new Dictionary<string, Background>();
+            chars = new List<string>();
+            backgrounds = new List<string>();
         }
 
-        public DomTree(Dictionary<string, string>  cArray)
+        public DomTree(List<string> cArray)
         {
             head = null;
             chars = cArray;
@@ -164,7 +167,6 @@ namespace Brigit
             if(head == null && nodes.Length == 1)
             {
                 head = nodes[0];
-                tail = nodes;
             }
             else
             {
@@ -182,6 +184,7 @@ namespace Brigit
                     t.SetChildren(nodes);
                 }
             }
+            tail = nodes;
         }
 
         public void Add(DomTree tree)
@@ -235,7 +238,7 @@ namespace Brigit
         /// Sets the dictionary of characters for this tree
         /// </summary>
         /// <param name="chars"></param>
-        public void SetCharacterDict(Dictionary<string, string> chars)
+        public void SetCharacterDict(List<string> chars)
         {
             this.chars = chars;
         }
@@ -250,7 +253,7 @@ namespace Brigit
         {
             for(int i=0;i<charNames.Length;i++)
             {
-                chars.Add(charNames[i], charNames[i]);
+                chars.Add(charNames[i]);
             }
         }
 
@@ -258,7 +261,7 @@ namespace Brigit
         {
             for(int i=0;i<bckNames.Length;i++)
             {
-                backgrounds.Add(bckNames[i], new Background(bckNames[i]));
+                backgrounds.Add(bckNames[i]);
             }
         }
 
@@ -353,7 +356,7 @@ namespace Brigit
         /// The background for the character. Will usually not change, so the first
         /// node can have the background set and all other nodes will inherit it
         /// </summary>
-        Background background;
+        string background;
 
         NodeType type;
 
@@ -382,7 +385,7 @@ namespace Brigit
             set { character = value; }
         }
 
-        public Background Background
+        public string Background
         {
             get { return background; }
             set { background = value; }
@@ -464,12 +467,12 @@ namespace Brigit
     [Serializable]
     public class Dialog : DomNode
     {
-        public string response;
+        private string speechText;
 
         public string Text
         {
-            get { return response; }
-            set { response = value; }
+            get { return speechText; }
+            set { speechText = value; }
         }
 
 
@@ -477,51 +480,60 @@ namespace Brigit
         public Dialog():
             base()
         {
-            this.response = string.Empty;
+            this.speechText = string.Empty;
         }
 
         public Dialog(DomNode[] children, Dictionary<string, bool> flags,
             Dictionary<string, bool> flagSets, string character, string response):
             base(children, flags, flagSets, character)
         {
-            this.response = response;
+            this.speechText = response;
         }
 
         public override string ToString()
         {
-            return "Dialog";
+            return this.speechText;
         }
     }
 
     [Serializable]
     public class Choice : DomNode
     {
-        string[] replies;
+        string[] choices;
 
         // properties
         public string[] Replies
         {
-            get { return replies; }
-            set { replies = value; }
+            get { return choices; }
+            set { choices = value; }
         }
 
         // once again i'll add the other ones later
         public Choice() :
             base()
         {
-            this.replies = new string[0];
+            this.choices = new string[0];
         }
 
         public Choice(DomNode[] children, Dictionary<string, bool> flags,
             Dictionary<string, bool> flagSets, string character, string[] replies):
             base(children, flags, flagSets, character)
         {
-            this.replies= replies;
+            this.choices= replies;
         }
 
         public override string ToString()
         {
-            return "Choice";
+            StringBuilder sb = new StringBuilder();
+            for(int i=0;i<choices.Length;i++)
+            {
+                string c = choices[i];
+                sb.Append(i);
+                sb.Append(c);
+                sb.Append('\n');
+            }
+
+            return sb.ToString();
         }
     }
 

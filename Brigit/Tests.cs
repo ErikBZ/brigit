@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Brigit.Parser;
 
 // TODO add some more tests
 
@@ -52,8 +53,8 @@ namespace Brigit
                 toParse = File.ReadAllLines(path);
             }
 
-            BrigitParser p = new BrigitParser(toParse);
-            DomTree writeTree = p.ParseBrigitText();
+            TomeParser p = new TomeParser(toParse);
+            DomTree writeTree = p.ParseCharacterDialog();
             DomAdmin.WriteDomTree(writeTree);
             DomTree domTree = DomAdmin.ReadDomTree(@"..\..\doms\test.ctom");
 
@@ -70,17 +71,17 @@ namespace Brigit
                 toParse = File.ReadAllLines(path);
             }
 
-            BrigitParser p = new BrigitParser(toParse);
+            TomeParser p = new TomeParser(toParse);
             Dictionary<string, string[]> arguments = new Dictionary<string, string[]>();
             arguments.Add("ids", new string[] { "hello", "hi" });
             arguments.Add("def", new string[] { "hello", "hi" });
             arguments.Add("char", new string[] { "hello", "hi" });
             try
             {
-                if (p.RequireArguments(arguments, "derp"))
-                {
-                    Console.WriteLine("Hey it worked!");
-                }
+                //if (p.RequireArguments(arguments, "derp"))
+                //{
+                //    Console.WriteLine("Hey it worked!");
+                //}
             }
             catch (Exception e)
             {

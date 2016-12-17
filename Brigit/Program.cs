@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Collections;
 using System.IO;
 using System.Text.RegularExpressions;
+using static Brigit.IO.BrigitIO;
+using Brigit.Parser;
 
 namespace Brigit
 {
@@ -20,9 +22,11 @@ namespace Brigit
                 toParse = File.ReadAllLines(path);
             }
 
-            Parser.TomeParser tp = new Parser.TomeParser(toParse);
+            TomeParser tp = new TomeParser(toParse);
             tp.characters.Add("character");
             DomTree tree = tp.ParseCharacterDialog();
+            WriteTree(@"..\..\tree.xml", tree);
+            DomTree thing = ReadTree(@"..\..\tree.xml");
             Console.ReadLine();
         }
     }
