@@ -72,7 +72,7 @@ namespace Brigit
             }
 
             TomeParser p = new TomeParser(toParse);
-            Dictionary<string, string[]> arguments = new Dictionary<string, string[]>();
+            System.Collections.Generic.Dictionary<string, string[]> arguments = new System.Collections.Generic.Dictionary<string, string[]>();
             arguments.Add("ids", new string[] { "hello", "hi" });
             arguments.Add("def", new string[] { "hello", "hi" });
             arguments.Add("char", new string[] { "hello", "hi" });

@@ -25,6 +25,9 @@ namespace Brigit
             TomeParser tp = new TomeParser(toParse);
             tp.characters.Add("character");
             DomTree tree = tp.ParseCharacterDialog();
+
+            DomNode node = tree.Head;
+            WriteDomNode(@"..\..\node.xml", node);
             WriteTree(@"..\..\tree.xml", tree);
             DomTree thing = ReadTree(@"..\..\tree.xml");
             Console.ReadLine();

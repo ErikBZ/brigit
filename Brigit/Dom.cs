@@ -6,6 +6,8 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Serialization;
+using System.Xml.Linq;
+using System.Xml;
 
 /// <summary>
 /// Summary description for Class1
@@ -33,7 +35,8 @@ namespace Brigit
     /// Static class for loading and writing
     /// DomTree's and lists of DomTrees maybe even Characters
     /// </summary>
-    public class DomAdmin
+    // this can probably be deleted soon
+    public static class DomAdmin
     {
         /// <summary>
         /// Writes a single tree into a binary file
@@ -75,39 +78,45 @@ namespace Brigit
         }
     }
 
-    [Serializable]
+    [Serializable, DataContract]
     public class DomTree
     {
         /// <summary>
         /// The DomTree's name
         /// </summary>
+        [DataMember]
         string name;
 
         /// <summary>
         /// The beginning of the script
         /// </summary>
+        [DataMember]
         DomNode head;
 
         /// <summary>
         /// Keeps track of the end of the list
         /// </summary>
+        [DataMember]
         DomNode[] tail;
 
         /// <summary>
         /// Trees can have multiple inner trees but
         /// only one outer tree
         /// </summary>
+        [DataMember]
         TreeType type;
 
         // I may turn these into Lists since it'll be up to the runtime to determine what they map to
         /// <summary>
         /// The list of characters that will be in this Scene
         /// </summary>
+        [DataMember]
         List<string> chars = new List<string>();
 
         /// <summary>
-        /// A dictionary of all the Backgrounds possible
+        /// A Dictionary of all the Backgrounds possible
         /// </summary>
+        [DataMember]
         List<string> backgrounds = new List<string>();
         
         // properties
@@ -235,7 +244,7 @@ namespace Brigit
         }
 
         /// <summary>
-        /// Sets the dictionary of characters for this tree
+        /// Sets the Dictionary of characters for this tree
         /// </summary>
         /// <param name="chars"></param>
         public void SetCharacterDict(List<string> chars)
@@ -328,50 +337,46 @@ namespace Brigit
         }
     }
 
-    [Serializable]
+    [Serializable, DataContract]
+    [KnownType(typeof(Dialog))]
+    [KnownType(typeof(Choice))]
     public class DomNode
     {
         /// <summary>
         /// The possible leaves this Node has
         /// </summary>
-        DomNode[] children;
+        [DataMember]
+        public DomNode[] Children { get; set; }
 
         /// <summary>
-        /// The flags required to get this leaf to appear, try avoiding situations where
+        /// The flags required to get this leaf to appear and what
+        /// those flags should evaluate to, try avoiding situations where
         /// more than 1 leaf can be activated by an overlapping set of flags
         /// </summary>
-        Dictionary<string, bool> flags;
+        [DataMember]
+        Dictionary<string, bool> RequiredFlags { get; set; }
 
         /// <summary>
         /// The flags that this Node will set
         /// </summary>
+        [DataMember]
         Dictionary<string, bool> flagSets;
 
         /// <summary>
         /// The character that "owns" this node, IE the character who said this
         /// </summary>
+        [DataMember]
         string character;
 
         /// <summary>
         /// The background for the character. Will usually not change, so the first
         /// node can have the background set and all other nodes will inherit it
         /// </summary>
+        [DataMember]
         string background;
 
+        [DataMember]
         NodeType type;
-
-        // settings up the properties
-        public DomNode[] Children
-        {
-            get { return children; }
-            set { children = value; }
-        }
-
-        public Dictionary<string, bool> Flags
-        {
-            get { return flags; }
-            set { flags = value; }
-        }
 
         public Dictionary<string, bool> FlagToggles
         {
@@ -400,9 +405,9 @@ namespace Brigit
         /// <summary>
         /// Default constructor, creates a Dom Node with no indeces.
         /// </summary>
-        public DomNode() :
-            this(new DomNode[0])
+        public DomNode()
         {
+            Children = null;
         }
 
         /// <summary>
@@ -429,8 +434,8 @@ namespace Brigit
         public DomNode(DomNode[] children, Dictionary<string, bool> flags,
             Dictionary<string, bool> flagSets, string character)
         {
-            this.children = children;
-            this.flags = flags;
+            this.Children = children;
+            this.RequiredFlags = flags;
             this.flagSets = flagSets;
             this.character = character;
         }
@@ -448,26 +453,26 @@ namespace Brigit
         {
             if(next.Length == 1 && next[0].type == NodeType.Empty)
             {
-                // set this nodes children to the children of the empty node
+                // set this nodes Children to the Children of the empty node
                 SetChildren(next[0].Children);
             }
-            children = next;
+            Children = next;
         }
 
         /// <summary>
-        /// Get all the children of this node
+        /// Get all the Children of this node
         /// </summary>
         /// <returns></returns>
         public DomNode[] GetChildren()
         {
-            return children;
+            return Children;
         }
     }
 
     [Serializable]
     public class Dialog : DomNode
     {
-        private string speechText;
+        public string speechText;
 
         public string Text
         {
