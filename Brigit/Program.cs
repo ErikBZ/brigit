@@ -22,14 +22,8 @@ namespace Brigit
                 toParse = File.ReadAllLines(path);
             }
 
-            TomeParser tp = new TomeParser(toParse);
-            tp.characters.Add("character");
-            DomTree tree = tp.ParseCharacterDialog();
-
-            DomNode node = tree.Head;
-            WriteDomNode(@"..\..\node.xml", node);
-            WriteTree(@"..\..\tree.xml", tree);
             DomTree thing = ReadTree(@"..\..\tree.xml");
+            Runtime.BrigitRuntime.Run(thing);
             Console.ReadLine();
         }
     }

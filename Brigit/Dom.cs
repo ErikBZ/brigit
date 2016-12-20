@@ -109,12 +109,14 @@ namespace Brigit
         // I may turn these into Lists since it'll be up to the runtime to determine what they map to
         /// <summary>
         /// The list of characters that will be in this Scene
+        /// Used for asset loading
         /// </summary>
         [DataMember]
         List<string> chars = new List<string>();
 
         /// <summary>
         /// A Dictionary of all the Backgrounds possible
+        /// Used for asset loading
         /// </summary>
         [DataMember]
         List<string> backgrounds = new List<string>();
@@ -201,7 +203,27 @@ namespace Brigit
             // add the head node
             this.Add(tree.head);
             this.tail = tree.tail;
+
+            // adding characters that are in tree but not
+            // in this.tree
+            foreach(string ch in tree.Characaters)
+            {
+                if(!this.Characaters.Contains(ch))
+                {
+                    this.Characaters.Add(ch);
+                }
+            }
+            // adding bakgrounds from tree that are not
+            // already in this.tree
+            foreach(string bq in tree.Background)
+            {
+                if(!this.Background.Contains(bq))
+                {
+                    this.Background.Add(bq);
+                }
+            }
             // tree has now been added to this tree!
+            // wish i could null and free tree
         }
 
         public void Add(params DomTree[] trees)
@@ -216,7 +238,7 @@ namespace Brigit
         /// and setting the "tail" to the tails of both trees
         /// </summary>
         /// <param name="trees"></param>
-        public DomTree ConnectTrees(params DomTree[] trees)
+        public static DomTree ConnectTrees(params DomTree[] trees)
         {
             DomTree newTree = new DomTree();
             newTree.type = TreeType.Inner;
@@ -247,6 +269,7 @@ namespace Brigit
         /// Sets the Dictionary of characters for this tree
         /// </summary>
         /// <param name="chars"></param>
+        [Obsolete("Decepricated can be removed at some point")]
         public void SetCharacterDict(List<string> chars)
         {
             this.chars = chars;
@@ -438,6 +461,23 @@ namespace Brigit
             this.RequiredFlags = flags;
             this.flagSets = flagSets;
             this.character = character;
+        }
+
+        /// <summary>
+        /// Will get you the next node given the context of the scene.
+        /// IE, it will equate the flags and get the next node
+        /// </summary>
+        /// <returns></returns>
+        public DomNode GetNext()
+        {
+            if(Children != null)
+            {
+                return Children[0];
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public override string ToString()

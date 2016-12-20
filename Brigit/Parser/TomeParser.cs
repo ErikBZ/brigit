@@ -39,6 +39,26 @@ namespace Brigit.Parser
         }
 
         /// <summary>
+        /// Parses an entire tome file into a DomTree for writing or 
+        /// </summary>
+        /// <returns>DomTree parsed from a tome file</returns>
+        public DomTree Parse()
+        {
+            DomTree scene = new DomTree();
+            // add stuff for parses things before the actually starts here
+            // idk what but stuff I guess
+
+            muncher.EatWhiteSpace();
+            while(!muncher.Complete())
+            {
+                scene.Add(ParseCharacterDialog());
+                muncher.EatWhiteSpace();
+            }
+
+            return scene;
+        }
+
+        /// <summary>
         /// Parses the text of what a character says
         /// </summary>
         /// <returns></returns>
@@ -49,6 +69,14 @@ namespace Brigit.Parser
                 if (muncher.StartsWith("\\*") || muncher.StartsWith("\\}"))
                 {
                     muncher.ConsumeChar();
+                    return true;
+                }
+                // If there is more than one space or tab that is not delimted
+                // in the string then eat all but one of the spaces
+                else if(muncher.StartsWith("  "))
+                {
+                    muncher.ConsumeChar();
+                    muncher.EatWhiteSpace();
                     return true;
                 }
                 else
@@ -90,6 +118,10 @@ namespace Brigit.Parser
                     return false;
                 }
             });
+            if(!characters.Contains(characterName))
+            {
+                characters.Add(characterName);
+            }
             return characterName;
         }
 
@@ -130,7 +162,7 @@ namespace Brigit.Parser
                 DomNode newNode = ParseSingleDialog();
                 newNode.Character = character;
                 tree.Add(newNode);
-                char asterisk = muncher.SpitChar();
+                char asterisk = muncher.SniffChar();
                 if(asterisk == '*')
                 {
                     muncher.ConsumeChar();
@@ -252,7 +284,7 @@ namespace Brigit.Parser
             // The eater has already reached the end
             if (lineNum >= all_text.Length)
             {
-                Console.WriteLine("Reached end of file cannot eat anymore");
+                throw new Exception($"{Position}, reached the end of the file.");
             }
             else if (all_text[lineNum].Length == posNum || all_text[lineNum] == string.Empty)
             {
