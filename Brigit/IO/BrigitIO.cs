@@ -12,6 +12,11 @@ namespace Brigit.IO
 {
     class BrigitIO
     {
+        /// <summary>
+        /// Reads a domtree from the given file location
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public static DomTree ReadTree(string name)
         {
             DomTree tree;
@@ -23,6 +28,12 @@ namespace Brigit.IO
             }
             return tree;
         }
+        
+        /// <summary>
+        /// Writes a DomTree to a file
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="tree"></param>
         public static void WriteTree(string name, DomTree tree)
         {
             // 5th parameters is the mantain references parameter

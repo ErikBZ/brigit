@@ -50,3 +50,16 @@ flag: loc_flag, glo_flag
 	Toggles a flag. There can be local flags, and global flags. These flags
 	are set in the closing tags, while the opening tags will require the flags
 	be set prior to be an availble path.
+
+Fuck all that shit up there ^^ I changed the syntax and I think it's better because of it. I think
+
+Character names exmpales:
+	something
+	Something
+	Something Someone
+	Some One
+	Some_One
+	Some 1
+	Some_1
+	some_1_one
+	Some one some where	

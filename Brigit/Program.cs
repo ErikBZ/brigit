@@ -15,14 +15,15 @@ namespace Brigit
     {
         static void Main(string[] args)
         {
-            string path = @"..\..\scripts\syntax_test.tome";
+            string path = @"..\..\scripts\syntax_test_2.tome";
             string[] toParse = null;
             if (File.Exists(path))
             {
                 toParse = File.ReadAllLines(path);
             }
 
-            DomTree thing = ReadTree(@"..\..\tree.xml");
+            TomeParser tp = new TomeParser(toParse);
+            DomTree thing = tp.Parse();
             Runtime.BrigitRuntime.Run(thing);
             Console.ReadLine();
         }

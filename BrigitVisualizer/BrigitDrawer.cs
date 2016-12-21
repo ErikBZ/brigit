@@ -125,7 +125,7 @@ namespace BrigitVisualizer
             sb.Append(node.ToString());
             sb.Append('\n');
             int i = 1;
-            foreach(string s in node.Replies)
+            foreach(string s in node.Choices)
             {
                 sb.Append(i);
                 i++;

@@ -10,7 +10,7 @@ namespace Brigit.Runtime
     {
         public static void Run(DomTree tree)
         {
-            Console.SetWindowSize(48, 16);
+            Console.SetWindowSize(60, 32);
             Console.BackgroundColor = ConsoleColor.DarkBlue;
             Console.Clear();
             Console.SetCursorPosition(0, 12);
@@ -22,6 +22,10 @@ namespace Brigit.Runtime
                 {
                     PrintDialog((Dialog)curr);
                 }
+                else if(curr is Choice)
+                {
+                    PrintChoice((Choice)curr);
+                }
                 else
                 {
                     Console.WriteLine("I don't know how to deal with this yet");
@@ -31,7 +35,18 @@ namespace Brigit.Runtime
                 curr = curr.GetNext();
             }
         }
-        public static void PrintDialog(Dialog node)
+
+        private static void PrintChoice(Choice node)
+        {
+            for(int i=0;i<node.Choices.Length;i++)
+            {
+                Console.SetCursorPosition(4, 4 + i);
+                Console.Write((i+1) + "\t" + node.Choices[i]);
+            }
+            Console.SetCursorPosition(0, 18);
+        }
+
+        private static void PrintDialog(Dialog node)
         {
             int currCursorPos = 5;
             Console.SetCursorPosition(0, currCursorPos-1);
@@ -46,7 +61,7 @@ namespace Brigit.Runtime
                 Console.SetCursorPosition(4, currCursorPos);
             }
             // set it at the bottom
-            Console.SetCursorPosition(0, 14);
+            Console.SetCursorPosition(0, 18);
         }
 
         // in this case the speech area is lines 11 for the character name

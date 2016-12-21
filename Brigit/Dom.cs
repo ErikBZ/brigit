@@ -544,35 +544,28 @@ namespace Brigit
     [Serializable]
     public class Choice : DomNode
     {
-        string[] choices;
-
-        // properties
-        public string[] Replies
-        {
-            get { return choices; }
-            set { choices = value; }
-        }
+        public string[] Choices { get; set; }
 
         // once again i'll add the other ones later
         public Choice() :
             base()
         {
-            this.choices = new string[0];
+            this.Choices = new string[0];
         }
 
         public Choice(DomNode[] children, Dictionary<string, bool> flags,
             Dictionary<string, bool> flagSets, string character, string[] replies):
             base(children, flags, flagSets, character)
         {
-            this.choices= replies;
+            this.Choices= replies;
         }
 
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            for(int i=0;i<choices.Length;i++)
+            for(int i=0;i<Choices.Length;i++)
             {
-                string c = choices[i];
+                string c = Choices[i];
                 sb.Append(i);
                 sb.Append(c);
                 sb.Append('\n');

@@ -45,13 +45,26 @@ namespace Brigit.Parser
         public DomTree Parse()
         {
             DomTree scene = new DomTree();
+            bool sceneIsBranch = false;
             // add stuff for parses things before the actually starts here
             // idk what but stuff I guess
 
             muncher.EatWhiteSpace();
-            while(!muncher.Complete())
+            sceneIsBranch = muncher.CheckChar('{');
+
+            // this while loop keeps going if there is still more to parse
+            // OR if this Parse is for a branch then it stops when the end of the branch is reached
+            // noted by a '}'
+            while (!muncher.Complete() && !(sceneIsBranch && muncher.CheckChar('}')))
             {
-                scene.Add(ParseCharacterDialog());
+                if (muncher.StartsWith("CHOICE"))
+                {
+                    scene.Add(ParseChoice());
+                }
+                else
+                {
+                    scene.Add(ParseCharacterDialog());
+                }
                 muncher.EatWhiteSpace();
             }
 
@@ -64,7 +77,7 @@ namespace Brigit.Parser
         /// <returns></returns>
         private string ParseSpeechText()
         {
-            string entry = muncher.SpitUpWhile(delegate (char c)
+            string entry = muncher.SpitUpWhile(delegate (char c, StringBuilder sb)
             {
                 if (muncher.StartsWith("\\*") || muncher.StartsWith("\\}"))
                 {
@@ -99,6 +112,44 @@ namespace Brigit.Parser
             node.Text = speech;
             node.Type = NodeType.Object;
             return node;
+        }
+
+        /// <summary>
+        /// Parses the possible choices that a player has for a certain part
+        /// </summary>
+        /// <returns></returns>
+        private DomTree ParseChoice()
+        {
+            // this will be used later when trees can be created within a CHOICE block
+            DomTree tree = new DomTree();
+            // for now we only really care about making sure Chioce works
+            Choice node = new Choice();
+
+            muncher.StartsWith("CHOICE");
+            muncher.ConsumeChar(6);
+            muncher.EatWhiteSpace();
+            if(!muncher.CheckChar('{'))
+            {
+                throw new Exception($"{muncher.Position} CHOICE block must have an open brace");
+            }
+
+            muncher.ConsumeChar();
+            muncher.EatWhiteSpace();
+            List<string> choices = new List<string>();
+            while (!muncher.CheckChar('}'))
+            {
+                choices.Add(ParseSpeechText());
+                if (muncher.SpitChar() != '*')
+                {
+                    throw new Exception($"Speech text at {muncher.Position} did not end in an *");
+                }
+                muncher.EatWhiteSpace();
+            }
+            // eating the last closing bracket
+            muncher.ConsumeChar();
+            node.Choices = choices.ToArray();
+            tree.Add(node);
+            return tree;
         }
 
         /// <summary>
@@ -272,7 +323,7 @@ namespace Brigit.Parser
             if (all_text[lineNum] == string.Empty)
                 return ' ';
             if (all_text[lineNum].Length == posNum)
-                return '\n';
+                return ' ';
             return all_text[lineNum][posNum];
         }
 
@@ -373,6 +424,7 @@ namespace Brigit.Parser
             while(!Complete() && pred(SniffChar(), sb))
             {
                 // all of the required things will be pred?
+                sb.Append(SpitChar());
             }
             return sb.ToString();
         }

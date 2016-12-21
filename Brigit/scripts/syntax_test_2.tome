@@ -1,5 +1,21 @@
-Leila  {Lord Eliwood of Pherae and Lady Lyndis of Caelin, correct? I am Leila.
-   Pleased to make your acquaintance. Lady Lyndis, Marquess Caelin is back
-   there receiving treatment.}
-Lyn  {My grandfather is safe?!}
-Leila  {... His life is yet his own.}
+Thing1 {
+    Well hello there ladies
+}
+
+Thing {
+    sadfkjaslkdfjaslkfdj
+}
+
+CatInTheHat {
+    sfdkj asdlfk jasdlkfj
+}
+
+Narrator{
+    whaa whaa whaa
+}
+
+CHOICE{
+    Choice 1*
+    choice 2*
+    choice 3*
+}
