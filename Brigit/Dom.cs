@@ -112,14 +112,17 @@ namespace Brigit
         /// Used for asset loading
         /// </summary>
         [DataMember]
-        List<string> chars = new List<string>();
+        List<string> chars;
 
         /// <summary>
         /// A Dictionary of all the Backgrounds possible
         /// Used for asset loading
         /// </summary>
         [DataMember]
-        List<string> backgrounds = new List<string>();
+        List<string> backgrounds;
+
+        Dictionary<string, bool> globalFlags;
+        Dictionary<string, bool> localFlags;
         
         // properties
         public string Name
@@ -156,6 +159,7 @@ namespace Brigit
             head = null;
             chars = new List<string>();
             backgrounds = new List<string>();
+            localFlags = new Dictionary<string, bool>();
         }
 
         public DomTree(List<string> cArray)
@@ -545,6 +549,9 @@ namespace Brigit
     public class Choice : DomNode
     {
         public string[] Choices { get; set; }
+        // the key is a string in the Choices array pointing to a dictionary of flag names and
+        // what bool they should be set to
+        public Dictionary<string, Dictionary<string, bool>> FlagsSetByChoice = new Dictionary<string, Dictionary<string, bool>>();
 
         // once again i'll add the other ones later
         public Choice() :
@@ -559,6 +566,13 @@ namespace Brigit
         {
             this.Choices= replies;
         }
+
+        public void MakeChoice(int i)
+        {
+            string choice = Choices[i];
+
+        }
+
 
         public override string ToString()
         {

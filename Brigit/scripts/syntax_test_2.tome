@@ -15,7 +15,19 @@ Narrator{
 }
 
 CHOICE{
-    Choice 1*
+    choice 1*->{
+        Thing1{
+            You choose the first choice!
+        }
+    }
     choice 2*
-    choice 3*
+    choice 3*->{
+        Thing1{
+            You chooce the third choice!
+        }
+    }
+}
+
+Narrator{
+    And so he decided from among the three choices
 }

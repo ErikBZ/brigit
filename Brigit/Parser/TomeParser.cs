@@ -67,6 +67,10 @@ namespace Brigit.Parser
                 }
                 muncher.EatWhiteSpace();
             }
+            if(sceneIsBranch)
+            {
+                muncher.ConsumeChar('}');
+            }
 
             return scene;
         }
@@ -136,12 +140,24 @@ namespace Brigit.Parser
             muncher.ConsumeChar();
             muncher.EatWhiteSpace();
             List<string> choices = new List<string>();
+            List<DomTree> branches = new List<DomTree>();
             while (!muncher.CheckChar('}'))
             {
                 choices.Add(ParseSpeechText());
                 if (muncher.SpitChar() != '*')
                 {
                     throw new Exception($"Speech text at {muncher.Position} did not end in an *");
+                }
+                if(muncher.StartsWith("->"))
+                {
+                    if(muncher.CheckChar('{'))
+                    {
+                        branches.Add(Parse());
+                    }
+                    else
+                    {
+                        throw new Exception($"New branch must start with open '{{'. {muncher.Position}");
+                    }
                 }
                 muncher.EatWhiteSpace();
             }
@@ -362,6 +378,23 @@ namespace Brigit.Parser
             if (Complete())
             {
                 Console.WriteLine("Reached EOF cannot eat anymore");
+            }
+        }
+
+        /// <summary>
+        /// Checks to see if a specfic char is at the location and consusmes it
+        /// if not then it throws an exception
+        /// </summary>
+        /// <param name="x"></param>
+        public void ConsumeChar(char x)
+        {
+            if(CheckChar(x))
+            {
+                throw new Exception($"Expected {x} at position {Position}");
+            }
+            else
+            {
+                ConsumeChar();
             }
         }
 
