@@ -78,6 +78,9 @@ namespace Brigit
         }
     }
 
+    // TODO add a "scene" class that keeps track of what characters,
+    // backgrounds, and flags are required and used
+
     [Serializable, DataContract]
     public class DomTree
     {
@@ -121,8 +124,14 @@ namespace Brigit
         [DataMember]
         List<string> backgrounds;
 
-        Dictionary<string, bool> globalFlags;
-        Dictionary<string, bool> localFlags;
+        /// <summary>
+        /// Will load in flags that are used through out the story
+        /// </summary>
+        public Dictionary<string, bool> GlobalFlags { get; set; }
+        /// <summary>
+        /// Used only in a single tree and are instantiated false to begin with
+        /// </summary>
+        public Dictionary<string, bool> LocalFlags { get; set; }
         
         // properties
         public string Name
@@ -159,7 +168,7 @@ namespace Brigit
             head = null;
             chars = new List<string>();
             backgrounds = new List<string>();
-            localFlags = new Dictionary<string, bool>();
+            LocalFlags = new Dictionary<string, bool>();
         }
 
         public DomTree(List<string> cArray)
@@ -381,7 +390,7 @@ namespace Brigit
         /// more than 1 leaf can be activated by an overlapping set of flags
         /// </summary>
         [DataMember]
-        Dictionary<string, bool> RequiredFlags { get; set; }
+        public string RequiredFlags { get; set; }
 
         /// <summary>
         /// The flags that this Node will set
@@ -441,24 +450,12 @@ namespace Brigit
         /// Creates a new Dom Node for a tree.
         /// </summary>
         /// <param name="children"></param>
-        public DomNode(DomNode[] children):
-            this(children, new Dictionary<string, bool>())
+        public DomNode(DomNode[] children)
         {
+            Children = children;
         }
         
-        public DomNode(DomNode[] children, Dictionary<string, bool> flags):
-            this(children, flags, new Dictionary<string, bool>())
-        {
-        }
-
-        public DomNode(DomNode[] children, Dictionary<string, bool> flags,
-            Dictionary<string, bool> flagSets):
-            this(children, flagSets, flagSets, null)
-        {
-
-        }
-
-        public DomNode(DomNode[] children, Dictionary<string, bool> flags,
+        public DomNode(DomNode[] children, string flags,
             Dictionary<string, bool> flagSets, string character)
         {
             this.Children = children;
@@ -532,13 +529,6 @@ namespace Brigit
             this.speechText = string.Empty;
         }
 
-        public Dialog(DomNode[] children, Dictionary<string, bool> flags,
-            Dictionary<string, bool> flagSets, string character, string response):
-            base(children, flags, flagSets, character)
-        {
-            this.speechText = response;
-        }
-
         public override string ToString()
         {
             return this.speechText;
@@ -552,19 +542,11 @@ namespace Brigit
         // the key is a string in the Choices array pointing to a dictionary of flag names and
         // what bool they should be set to
         public Dictionary<string, Dictionary<string, bool>> FlagsSetByChoice = new Dictionary<string, Dictionary<string, bool>>();
-
         // once again i'll add the other ones later
         public Choice() :
             base()
         {
             this.Choices = new string[0];
-        }
-
-        public Choice(DomNode[] children, Dictionary<string, bool> flags,
-            Dictionary<string, bool> flagSets, string character, string[] replies):
-            base(children, flags, flagSets, character)
-        {
-            this.Choices= replies;
         }
 
         public void MakeChoice(int i)
@@ -587,12 +569,31 @@ namespace Brigit
 
             return sb.ToString();
         }
+
+        /// <summary>
+        /// Sets the global and local variables and 
+        /// </summary>
+        /// <param name="ch"></param>
+        // TODO keep working on this
+        public void MakeChoice(string ch)
+        {
+            int choice = -1;
+            if(int.TryParse(ch, out choice))
+            {
+
+            }
+            else
+            {
+                // do something here?
+            }
+            // get flags for this choice
+        }
     }
 
     /// <summary>
     /// contains info for the background that can be set
     /// </summary>
-    // TODO add more shit to this
+    // TODO remove this at some point
     [Serializable]
     public class Background
     {

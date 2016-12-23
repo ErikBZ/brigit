@@ -30,9 +30,16 @@ namespace Brigit.Runtime
                 {
                     Console.WriteLine("I don't know how to deal with this yet");
                 }
-                Console.ReadLine();
+                string choice = Console.ReadLine();
                 ClearSpeechArea();
-                curr = curr.GetNext();
+                if (curr is Choice)
+                {
+                    ((Choice)curr).MakeChoice(choice);
+                }
+                else
+                {
+                    curr = curr.GetNext();
+                }
             }
         }
 

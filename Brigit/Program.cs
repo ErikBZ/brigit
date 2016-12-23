@@ -15,7 +15,7 @@ namespace Brigit
     {
         static void Main(string[] args)
         {
-            string path = @"..\..\scripts\syntax_test_2.tome";
+            string path = @"..\..\scripts\syntax_test.tome";
             string[] toParse = null;
             if (File.Exists(path))
             {

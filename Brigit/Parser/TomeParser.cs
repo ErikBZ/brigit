@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-// TODO add the Eater class to this and
 // Rename BrigitParser to BrigitParser
 namespace Brigit.Parser
 {
@@ -18,6 +17,8 @@ namespace Brigit.Parser
         TomeReader muncher;
         // leaving this public for testing purposes
         public List<String> characters;
+        // scene tracker
+        DomTree scene;
 
         /// <summary>
         /// Don't use this
@@ -36,6 +37,7 @@ namespace Brigit.Parser
         {
             muncher = new TomeReader(textToParse);
             characters = new List<string>();
+            scene = new DomTree();
         }
 
         /// <summary>
@@ -43,6 +45,12 @@ namespace Brigit.Parser
         /// </summary>
         /// <returns>DomTree parsed from a tome file</returns>
         public DomTree Parse()
+        {
+            scene.Add(ParseDomTree());
+            return scene;
+        }
+
+        public DomTree ParseDomTree()
         {
             DomTree scene = new DomTree();
             bool sceneIsBranch = false;
@@ -67,7 +75,7 @@ namespace Brigit.Parser
                 }
                 muncher.EatWhiteSpace();
             }
-            if(sceneIsBranch)
+            if (sceneIsBranch)
             {
                 muncher.ConsumeChar('}');
             }
@@ -129,36 +137,49 @@ namespace Brigit.Parser
             // for now we only really care about making sure Chioce works
             Choice node = new Choice();
 
-            muncher.StartsWith("CHOICE");
-            muncher.ConsumeChar(6);
+            // parsing the header and the beginning
+            muncher.ConsumeString("CHOICE");
             muncher.EatWhiteSpace();
-            if(!muncher.CheckChar('{'))
-            {
-                throw new Exception($"{muncher.Position} CHOICE block must have an open brace");
-            }
+            // attribute parsing here? yeah probably but i'll save that for later
+            // TODO add the parsing of the attributes here
+            muncher.ConsumeChar('{');
+            muncher.EatWhiteSpace();
 
-            muncher.ConsumeChar();
-            muncher.EatWhiteSpace();
+
             List<string> choices = new List<string>();
             List<DomTree> branches = new List<DomTree>();
+            int numberOfChoices = 0;
             while (!muncher.CheckChar('}'))
             {
+                bool useDefaultLocalFlags = true;
                 choices.Add(ParseSpeechText());
                 if (muncher.SpitChar() != '*')
                 {
                     throw new Exception($"Speech text at {muncher.Position} did not end in an *");
                 }
+                // attibute and flag requirements here.
+                // if there are none then the default will be used
+
                 if(muncher.StartsWith("->"))
                 {
-                    if(muncher.CheckChar('{'))
+                    if (muncher.CheckChar('{'))
                     {
-                        branches.Add(Parse());
+                        DomTree branch = Parse();
+                        if (useDefaultLocalFlags)
+                        {
+                            if (!scene.LocalFlags.ContainsKey($"choice{numberOfChoices}"))
+                            {
+                                scene.LocalFlags.Add($"choice{numberOfChoices}", false);
+                            }
+                            branch.Head.RequiredFlags = $"choice{numberOfChoices}";
+                        }
                     }
                     else
                     {
                         throw new Exception($"New branch must start with open '{{'. {muncher.Position}");
                     }
                 }
+                numberOfChoices++;
                 muncher.EatWhiteSpace();
             }
             // eating the last closing bracket
@@ -395,6 +416,23 @@ namespace Brigit.Parser
             else
             {
                 ConsumeChar();
+            }
+        }
+
+        /// <summary>
+        /// Checks if the reader will read in the given string
+        /// and then consumes it. Throws an expception otherwise
+        /// </summary>
+        /// <param name="str"></param>
+        public void ConsumeString(string str)
+        {
+            if (this.StartsWith(str))
+            {
+                this.ConsumeChar(str.Length);
+            }
+            else
+            {
+                throw new Exception($"Expected keyword {str}, but it was not found. {this.posNum}");
             }
         }
 
