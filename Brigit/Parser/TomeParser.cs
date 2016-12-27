@@ -46,19 +46,23 @@ namespace Brigit.Parser
         /// <returns>DomTree parsed from a tome file</returns>
         public DomTree Parse()
         {
-            scene.Add(ParseDomTree());
+            scene.Add(ParseDomTree(false));
             return scene;
         }
 
-        public DomTree ParseDomTree()
+        public DomTree ParseDomTree(bool sceneIsBranch)
         {
             DomTree scene = new DomTree();
-            bool sceneIsBranch = false;
             // add stuff for parses things before the actually starts here
             // idk what but stuff I guess
 
             muncher.EatWhiteSpace();
-            sceneIsBranch = muncher.CheckChar('{');
+            if(sceneIsBranch)
+            {
+                muncher.ConsumeChar('{');
+                muncher.EatWhiteSpace();
+            }
+
 
             // this while loop keeps going if there is still more to parse
             // OR if this Parse is for a branch then it stops when the end of the branch is reached
@@ -89,19 +93,19 @@ namespace Brigit.Parser
         /// <returns></returns>
         private string ParseSpeechText()
         {
-            string entry = muncher.SpitUpWhile(delegate (char c, StringBuilder sb)
+            string entry = muncher.SpitUpWhile(delegate (char c)
             {
+                // If there is more than one space or tab that is not delimted
+                // in the string then eat all but one of the spaces
+                if(muncher.StartsWith("  "))
+                {
+                    muncher.EatWhiteSpace();
+                    c = muncher.SniffChar();
+                }
+
                 if (muncher.StartsWith("\\*") || muncher.StartsWith("\\}"))
                 {
                     muncher.ConsumeChar();
-                    return true;
-                }
-                // If there is more than one space or tab that is not delimted
-                // in the string then eat all but one of the spaces
-                else if(muncher.StartsWith("  "))
-                {
-                    muncher.ConsumeChar();
-                    muncher.EatWhiteSpace();
                     return true;
                 }
                 else
@@ -162,22 +166,32 @@ namespace Brigit.Parser
 
                 if(muncher.StartsWith("->"))
                 {
+                    muncher.ConsumeString("->");
                     if (muncher.CheckChar('{'))
                     {
-                        DomTree branch = Parse();
+                        DomTree branch = ParseDomTree(true);
                         if (useDefaultLocalFlags)
                         {
                             if (!scene.LocalFlags.ContainsKey($"choice{numberOfChoices}"))
                             {
                                 scene.LocalFlags.Add($"choice{numberOfChoices}", false);
                             }
+                            // what is required for the head of the branch node
                             branch.Head.RequiredFlags = $"choice{numberOfChoices}";
+
+                            // the flags raised by this node
+                            node.FlagsRasiedByChoices.Add(numberOfChoices, new Dictionary<string, bool>());
+                            node.FlagsRasiedByChoices[numberOfChoices].Add($"choice{numberOfChoices}", true);
                         }
                     }
                     else
                     {
                         throw new Exception($"New branch must start with open '{{'. {muncher.Position}");
                     }
+                }
+                else
+                {
+                    node.FlagsRasiedByChoices.Add(numberOfChoices, new Dictionary<string, bool>());
                 }
                 numberOfChoices++;
                 muncher.EatWhiteSpace();
@@ -236,13 +250,7 @@ namespace Brigit.Parser
             // parse attributes like expression?
             // i'll save this for later
 
-            muncher.EatWhiteSpace();
-            char openBracket = muncher.SpitChar();
-            if(openBracket != '{')
-            {
-                Console.WriteLine($"No open bracket for beginning of dialog by character. Error found at {muncher.Position}");
-                // print exception and exit
-            }
+            muncher.ConsumeChar('{');
 
             // parsing the actual text
             while (muncher.SniffChar() != '}')
@@ -307,7 +315,8 @@ namespace Brigit.Parser
         /// <returns></returns>
         public bool Complete()
         {
-            return lineNum == all_text.Length;
+            return lineNum == all_text.Length ||
+                (lineNum == all_text.Length-1 && posNum == all_text[lineNum].Length);
         }
 
         /// <summary>
@@ -356,11 +365,13 @@ namespace Brigit.Parser
         {
             // if pos is greater than the string length return the null terminator
             if (Complete())
+            {
                 return '\0';
+            }
             if (all_text[lineNum] == string.Empty)
+            {
                 return ' ';
-            if (all_text[lineNum].Length == posNum)
-                return ' ';
+            }
             return all_text[lineNum][posNum];
         }
 
@@ -374,7 +385,7 @@ namespace Brigit.Parser
             {
                 throw new Exception($"{Position}, reached the end of the file.");
             }
-            else if (all_text[lineNum].Length == posNum || all_text[lineNum] == string.Empty)
+            else if (all_text[lineNum].Length-1 == posNum || all_text[lineNum] == string.Empty)
             {
                 posNum = 0;
                 lineNum++;
@@ -407,15 +418,16 @@ namespace Brigit.Parser
         /// if not then it throws an exception
         /// </summary>
         /// <param name="x"></param>
-        public void ConsumeChar(char x)
+        public bool ConsumeChar(char x)
         {
             if(CheckChar(x))
             {
-                throw new Exception($"Expected {x} at position {Position}");
+                ConsumeChar();
+                return true;
             }
             else
             {
-                ConsumeChar();
+                throw new Exception($"Expected {x} at position {Position}");
             }
         }
 
@@ -424,11 +436,12 @@ namespace Brigit.Parser
         /// and then consumes it. Throws an expception otherwise
         /// </summary>
         /// <param name="str"></param>
-        public void ConsumeString(string str)
+        public bool ConsumeString(string str)
         {
             if (this.StartsWith(str))
             {
                 this.ConsumeChar(str.Length);
+                return true;
             }
             else
             {

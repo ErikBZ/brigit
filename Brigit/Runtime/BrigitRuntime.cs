@@ -34,7 +34,7 @@ namespace Brigit.Runtime
                 ClearSpeechArea();
                 if (curr is Choice)
                 {
-                    ((Choice)curr).MakeChoice(choice);
+                    ((Choice)curr).MakeChoice(choice, tree);
                 }
                 else
                 {

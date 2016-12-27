@@ -539,22 +539,16 @@ namespace Brigit
     public class Choice : DomNode
     {
         public string[] Choices { get; set; }
-        // the key is a string in the Choices array pointing to a dictionary of flag names and
-        // what bool they should be set to
-        public Dictionary<string, Dictionary<string, bool>> FlagsSetByChoice = new Dictionary<string, Dictionary<string, bool>>();
+        public Dictionary<int, Dictionary<string, bool>> FlagsRasiedByChoices { get; set; }
+
+
         // once again i'll add the other ones later
         public Choice() :
             base()
         {
             this.Choices = new string[0];
+            FlagsRasiedByChoices = new Dictionary<int, Dictionary<string, bool>>();
         }
-
-        public void MakeChoice(int i)
-        {
-            string choice = Choices[i];
-
-        }
-
 
         public override string ToString()
         {
@@ -575,18 +569,32 @@ namespace Brigit
         /// </summary>
         /// <param name="ch"></param>
         // TODO keep working on this
-        public void MakeChoice(string ch)
+        public void MakeChoice(string ch, DomTree scene)
         {
             int choice = -1;
             if(int.TryParse(ch, out choice))
             {
-
+                Dictionary<string, bool> flags = FlagsRasiedByChoices[choice];
+                foreach(KeyValuePair<string, bool> entry in flags)
+                {
+                    if(scene.GlobalFlags.ContainsKey(entry.Key))
+                    {
+                        scene.GlobalFlags[entry.Key] = entry.Value;
+                    }
+                    else if(scene.LocalFlags.ContainsKey(entry.Key))
+                    {
+                        scene.LocalFlags[entry.Key] = entry.Value;
+                    }
+                    else
+                    {
+                        throw new Exception("Flags set by this choice are not present in either Local or Global flags within the scene");
+                    }
+                }
             }
             else
             {
                 // do something here?
             }
-            // get flags for this choice
         }
     }
 
