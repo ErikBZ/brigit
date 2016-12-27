@@ -47,6 +47,10 @@ namespace Brigit.Parser
         public DomTree Parse()
         {
             scene.Add(ParseDomTree(false));
+            if(scene.GlobalFlags == null)
+            {
+                scene.GlobalFlags = new Dictionary<string, bool>();
+            }
             return scene;
         }
 
@@ -183,6 +187,7 @@ namespace Brigit.Parser
                             node.FlagsRasiedByChoices.Add(numberOfChoices, new Dictionary<string, bool>());
                             node.FlagsRasiedByChoices[numberOfChoices].Add($"choice{numberOfChoices}", true);
                         }
+                        branches.Add(branch);
                     }
                     else
                     {
@@ -200,6 +205,7 @@ namespace Brigit.Parser
             muncher.ConsumeChar();
             node.Choices = choices.ToArray();
             tree.Add(node);
+            tree.Add(branches.ToArray());
             return tree;
         }
 

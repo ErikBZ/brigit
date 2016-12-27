@@ -36,10 +36,8 @@ namespace Brigit.Runtime
                 {
                     ((Choice)curr).MakeChoice(choice, tree);
                 }
-                else
-                {
-                    curr = curr.GetNext();
-                }
+
+                curr = curr.GetNext(tree);
             }
         }
 

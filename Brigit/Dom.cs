@@ -169,6 +169,7 @@ namespace Brigit
             chars = new List<string>();
             backgrounds = new List<string>();
             LocalFlags = new Dictionary<string, bool>();
+            GlobalFlags = new Dictionary<string, bool>();
         }
 
         public DomTree(List<string> cArray)
@@ -255,8 +256,9 @@ namespace Brigit
         {
             DomTree newTree = new DomTree();
             newTree.type = TreeType.Inner;
-            newTree.head = new DomNode();
-            newTree.head.Type = NodeType.Empty;
+            // I don't set tail here so maybe that's why there's an error later on
+            //newTree.head = new DomNode();
+            //newTree.head.Type = NodeType.Empty;
 
             List<DomNode> nodeHeads = new List<DomNode>();
             List<DomNode> nodeTails = new List<DomNode>();
@@ -444,6 +446,7 @@ namespace Brigit
         public DomNode()
         {
             Children = null;
+            RequiredFlags = string.Empty;
         }
 
         /// <summary>
@@ -469,7 +472,7 @@ namespace Brigit
         /// IE, it will equate the flags and get the next node
         /// </summary>
         /// <returns></returns>
-        public DomNode GetNext()
+        public virtual DomNode GetNext(DomTree scene)
         {
             if(Children != null)
             {
@@ -478,6 +481,27 @@ namespace Brigit
             else
             {
                 return null;
+            }
+        }
+        
+        /// <summary>
+        /// Given the current context of the scene with flags, it returns
+        /// a bool indicating if it's flag requirements are met
+        /// </summary>
+        /// <returns></returns>
+        public bool EvaluateFlags(DomTree scene)
+        {
+            if(scene.GlobalFlags.ContainsKey(RequiredFlags))
+            {
+                return scene.GlobalFlags[RequiredFlags];
+            }
+            else if(scene.LocalFlags.ContainsKey(RequiredFlags))
+            {
+                return scene.LocalFlags[RequiredFlags];
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -564,6 +588,18 @@ namespace Brigit
             return sb.ToString();
         }
 
+        public override DomNode GetNext(DomTree scene)
+        {
+            foreach(DomNode child in Children)
+            {
+                if(child.EvaluateFlags(scene))
+                {
+                    return child;
+                }
+            }
+            // really throw an excpetion here if none of the nodes meet the requirements
+            return Children[0];
+        }
         /// <summary>
         /// Sets the global and local variables and 
         /// </summary>
