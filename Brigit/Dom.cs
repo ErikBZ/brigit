@@ -26,7 +26,7 @@ namespace Brigit
     public enum NodeType { Start, End, Dual, Object, Empty };
     /*
      * If a tree is an inner type tree then it only
-     * needs to have tails and head correctly tracked
+     * needs to have tails and Head correctly tracked
      */
     [Serializable]
     public enum TreeType { Outer, Inner };
@@ -36,6 +36,7 @@ namespace Brigit
     /// DomTree's and lists of DomTrees maybe even Characters
     /// </summary>
     // this can probably be deleted soon
+    [Obsolete]
     public static class DomAdmin
     {
         /// <summary>
@@ -88,26 +89,26 @@ namespace Brigit
         /// The DomTree's name
         /// </summary>
         [DataMember]
-        string name;
+        public string Name { get; set; }
 
         /// <summary>
         /// The beginning of the script
         /// </summary>
         [DataMember]
-        DomNode head;
+        public DomNode Head { get; set; }
 
         /// <summary>
         /// Keeps track of the end of the list
         /// </summary>
         [DataMember]
-        DomNode[] tail;
+        public DomNode[] Tail { get; set; }
 
         /// <summary>
         /// Trees can have multiple inner trees but
         /// only one outer tree
         /// </summary>
         [DataMember]
-        TreeType type;
+        public TreeType Type { get; set; }
 
         // I may turn these into Lists since it'll be up to the runtime to determine what they map to
         /// <summary>
@@ -133,18 +134,6 @@ namespace Brigit
         /// </summary>
         public Dictionary<string, bool> LocalFlags { get; set; }
         
-        // properties
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
-        public DomNode Head
-        {
-            get { return head; }
-            set { head = value; }
-        }
-
         public List<string> Characaters
         {
             get { return chars; }
@@ -157,15 +146,20 @@ namespace Brigit
             set { backgrounds = value; }
         }
 
-        public TreeType Type
+        public static DomTree CreateEmptyDomTree()
         {
-            get { return type; }
+            DomTree tree = new DomTree();
+            tree.Type = TreeType.Inner;
+            tree.Head = new DomNode();
+            tree.Head.Type = NodeType.Empty;
+            tree.Tail = new DomNode[] { tree.Head };
+            return tree;
         }
-
 
         public DomTree()
         {
-            head = null;
+            Head = null;
+            Name = string.Empty;
             chars = new List<string>();
             backgrounds = new List<string>();
             LocalFlags = new Dictionary<string, bool>();
@@ -174,7 +168,7 @@ namespace Brigit
 
         public DomTree(List<string> cArray)
         {
-            head = null;
+            Head = null;
             chars = cArray;
         }
 
@@ -184,39 +178,39 @@ namespace Brigit
 
         /// <summary>
         /// Adds ALL nodes that were passed to the method to all
-        /// tail nodes at the end of the tree
+        /// Tail nodes at the end of the tree
         /// </summary>
         /// <param name="nodes"></param>
         public void Add(params DomNode[] nodes)
         {
-            if(head == null && nodes.Length == 1)
+            if(Head == null && nodes.Length == 1)
             {
-                head = nodes[0];
+                Head = nodes[0];
             }
             else
             {
-                // there wasn't a head before
-                if(head == null)
+                // there wasn't a Head before
+                if(Head == null)
                 {
-                    head = new DomNode();
-                    head.Type = NodeType.Empty;
-                    tail = new DomNode[] { head };
+                    Head = new DomNode();
+                    Head.Type = NodeType.Empty;
+                    Tail = new DomNode[] { Head };
                 }
                 // now that we have either a "empty node" or
-                // actual nodes in tail
-                foreach (DomNode t in tail)
+                // actual nodes in Tail
+                foreach (DomNode t in Tail)
                 {
                     t.SetChildren(nodes);
                 }
             }
-            tail = nodes;
+            Tail = nodes;
         }
 
         public void Add(DomTree tree)
         {
-            // add the head node
-            this.Add(tree.head);
-            this.tail = tree.tail;
+            // add the Head node
+            this.Add(tree.Head);
+            this.Tail = tree.Tail;
 
             // adding characters that are in tree but not
             // in this.tree
@@ -248,35 +242,35 @@ namespace Brigit
         }
 
         /// <summary>
-        /// Connects trees by giving them the same Head, an empty head
-        /// and setting the "tail" to the tails of both trees
+        /// Connects trees by giving them the same Head, an empty Head
+        /// and setting the "Tail" to the tails of both trees
         /// </summary>
         /// <param name="trees"></param>
         public static DomTree ConnectTrees(params DomTree[] trees)
         {
             DomTree newTree = new DomTree();
-            newTree.type = TreeType.Inner;
-            // I don't set tail here so maybe that's why there's an error later on
-            //newTree.head = new DomNode();
-            //newTree.head.Type = NodeType.Empty;
+            newTree.Type = TreeType.Inner;
+            // I don't set Tail here so maybe that's why there's an error later on
+            //newTree.Head = new DomNode();
+            //newTree.Head.Type = NodeType.Empty;
 
             List<DomNode> nodeHeads = new List<DomNode>();
             List<DomNode> nodeTails = new List<DomNode>();
 
-            // finds the heads of the trees
+            // finds the Heads of the trees
             // and the tails
             foreach (DomTree t in trees)
             {
                 nodeHeads.Add(t.Head);
-                foreach (DomNode tl in t.tail)
+                foreach (DomNode tl in t.Tail)
                 {
                     nodeTails.Add(tl);
                 }
             }
 
-            // new tree head is empty.
+            // new tree Head is empty.
             newTree.Add(nodeHeads.ToArray());
-            newTree.tail = nodeTails.ToArray();
+            newTree.Tail = nodeTails.ToArray();
             return newTree;
         }
 
@@ -318,25 +312,7 @@ namespace Brigit
         /// <returns>A pretty picture</returns>
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
-            GoodSortedList list = GetSortedDomNodes();
-
-            for(int i=0;i<list.Count;i++)
-            {
-                ArrayList l = list.GetListAtDepth(i);
-                if(l != null)
-                {
-                    for(int j=0;j<l.Count;j++)
-                    {
-                        sb.Append('(');
-                        sb.Append(GetObjectType(l[j]));
-                        sb.Append(')');
-                    }
-                }
-                sb.Append("\n");
-            }
-
-            return sb.ToString();
+            return this.Name;
         }
 
         private string GetObjectType(Object obj)
@@ -350,10 +326,11 @@ namespace Brigit
             return s;
         }
 
+        [Obsolete("Don't use this, just don't")]
         public GoodSortedList GetSortedDomNodes()
         {
             GoodSortedList list = new GoodSortedList();
-            AddDomNode(list, head, 0);
+            AddDomNode(list, Head, 0);
             return list;
         }
 
@@ -445,7 +422,7 @@ namespace Brigit
         /// </summary>
         public DomNode()
         {
-            Children = null;
+            Children = new DomNode[0];
             RequiredFlags = string.Empty;
         }
 
@@ -474,16 +451,38 @@ namespace Brigit
         /// <returns></returns>
         public virtual DomNode GetNext(DomTree scene)
         {
-            if(Children != null)
-            {
-                return Children[0];
-            }
-            else
+            DomNode next = null;
+
+            if(Children.Length == 0)
             {
                 return null;
             }
+
+            foreach (DomNode child in Children)
+            {
+                bool isNextChild= child.EvaluateFlags(scene);
+                if (isNextChild && next != null)
+                {
+                    // throw exception more than one node has met the flags
+                }
+                else if (isNextChild && next == null)
+                {
+                    next = child;
+                    if(next.type == NodeType.Empty)
+                    {
+                        next = next.GetNext(scene);
+                    }
+                }
+            }
+            // really throw an excpetion here if none of the nodes meet the requirements
+            if (next == null)
+            {
+                throw new Exception("No node matched the combination of flags raised. Consider using default branch");
+            }
+
+            return next;
         }
-        
+
         /// <summary>
         /// Given the current context of the scene with flags, it returns
         /// a bool indicating if it's flag requirements are met
@@ -491,13 +490,17 @@ namespace Brigit
         /// <returns></returns>
         public bool EvaluateFlags(DomTree scene)
         {
-            if(scene.GlobalFlags.ContainsKey(RequiredFlags))
+            if (scene.GlobalFlags.ContainsKey(RequiredFlags))
             {
                 return scene.GlobalFlags[RequiredFlags];
             }
-            else if(scene.LocalFlags.ContainsKey(RequiredFlags))
+            else if (scene.LocalFlags.ContainsKey(RequiredFlags))
             {
                 return scene.LocalFlags[RequiredFlags];
+            }
+            else if(RequiredFlags == string.Empty)
+            {
+                return true;
             }
             else
             {
@@ -519,9 +522,12 @@ namespace Brigit
             if(next.Length == 1 && next[0].type == NodeType.Empty)
             {
                 // set this nodes Children to the Children of the empty node
-                SetChildren(next[0].Children);
+                this.SetChildren(next[0].Children);
             }
-            Children = next;
+            else
+            {
+                this.Children = next;
+            }
         }
 
         /// <summary>
@@ -588,18 +594,6 @@ namespace Brigit
             return sb.ToString();
         }
 
-        public override DomNode GetNext(DomTree scene)
-        {
-            foreach(DomNode child in Children)
-            {
-                if(child.EvaluateFlags(scene))
-                {
-                    return child;
-                }
-            }
-            // really throw an excpetion here if none of the nodes meet the requirements
-            return Children[0];
-        }
         /// <summary>
         /// Sets the global and local variables and 
         /// </summary>

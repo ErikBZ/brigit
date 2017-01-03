@@ -1,17 +1,23 @@
 CHOICE{
-    choice 1*->{
-        Thing1{
-            You choose the first choice!
-        }
-    }
-    choice 2*
-    choice 3*->{
-        Thing1{
-            You chooce the third choice!
-        }
-    }
+	choice 1*->{
+		Thing1{
+			You choose the first choice!
+		}
+	}
+	choice 2*
+	choice 3*->{
+		Thing1{
+			You chooce the third choice!
+		}
+		Thing3{
+			I'm saying something extra
+		}
+		Test{
+			testing more stuff!!!
+		}
+	}
 }
 
 Narrator{
-    And so he decided from among the three choices
+	And so he decided from among the three choices
 }

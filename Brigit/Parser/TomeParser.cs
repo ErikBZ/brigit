@@ -160,6 +160,8 @@ namespace Brigit.Parser
             while (!muncher.CheckChar('}'))
             {
                 bool useDefaultLocalFlags = true;
+                DomTree branch = null;
+                numberOfChoices++;
                 choices.Add(ParseSpeechText());
                 if (muncher.SpitChar() != '*')
                 {
@@ -173,21 +175,7 @@ namespace Brigit.Parser
                     muncher.ConsumeString("->");
                     if (muncher.CheckChar('{'))
                     {
-                        DomTree branch = ParseDomTree(true);
-                        if (useDefaultLocalFlags)
-                        {
-                            if (!scene.LocalFlags.ContainsKey($"choice{numberOfChoices}"))
-                            {
-                                scene.LocalFlags.Add($"choice{numberOfChoices}", false);
-                            }
-                            // what is required for the head of the branch node
-                            branch.Head.RequiredFlags = $"choice{numberOfChoices}";
-
-                            // the flags raised by this node
-                            node.FlagsRasiedByChoices.Add(numberOfChoices, new Dictionary<string, bool>());
-                            node.FlagsRasiedByChoices[numberOfChoices].Add($"choice{numberOfChoices}", true);
-                        }
-                        branches.Add(branch);
+                        branch = ParseDomTree(true);
                     }
                     else
                     {
@@ -196,9 +184,26 @@ namespace Brigit.Parser
                 }
                 else
                 {
-                    node.FlagsRasiedByChoices.Add(numberOfChoices, new Dictionary<string, bool>());
+                    // TODO Create add an empty node as a possible branch if a choice does not point
+                    // to a branch.
+                    branch = DomTree.CreateEmptyDomTree();
                 }
-                numberOfChoices++;
+
+                if (useDefaultLocalFlags)
+                {
+                    if (!scene.LocalFlags.ContainsKey($"choice{numberOfChoices}"))
+                    {
+                        scene.LocalFlags.Add($"choice{numberOfChoices}", false);
+                    }
+                    // what is required for the head of the branch node
+                    branch.Head.RequiredFlags = $"choice{numberOfChoices}";
+
+                    // the flags raised by this node
+                    node.FlagsRasiedByChoices.Add(numberOfChoices, new Dictionary<string, bool>());
+                    node.FlagsRasiedByChoices[numberOfChoices].Add($"choice{numberOfChoices}", true);
+                }
+
+                branches.Add(branch);
                 muncher.EatWhiteSpace();
             }
             // eating the last closing bracket
