@@ -189,6 +189,7 @@ namespace Brigit.Parser
                     branch = DomTree.CreateEmptyDomTree();
                 }
 
+                // can probably just change this to temp flags
                 if (useDefaultLocalFlags)
                 {
                     if (!scene.LocalFlags.ContainsKey($"choice{numberOfChoices}"))

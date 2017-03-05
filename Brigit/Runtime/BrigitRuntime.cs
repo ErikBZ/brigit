@@ -32,12 +32,34 @@ namespace Brigit.Runtime
                 }
                 string choice = Console.ReadLine();
                 ClearSpeechArea();
+
+                /*
+                 * this should be needed anymore
                 if (curr is Choice)
                 {
                     ((Choice)curr).MakeChoice(choice, tree);
                 }
+                */
 
-                curr = curr.GetNext(tree);
+                // trying to get the next node            choice -= 1;
+
+                int ch = -1;
+                bool parsed = int.TryParse(choice, out ch);
+
+                if (parsed && curr is Choice)
+                {
+                    // passing choice - 1 since their current choices are from
+                    // 1 to x, but indeces are from 0 to x-1
+                    curr = ((Choice)curr).GetNext(ch-1, tree);
+                }
+                else if (!parsed && curr is Choice)
+                {
+                    throw new Exception("Choice could not be parsed correctly");
+                }
+                else
+                {
+                    curr = curr.GetNext(ch, tree);
+                }
             }
         }
 

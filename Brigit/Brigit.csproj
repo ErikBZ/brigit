@@ -48,6 +48,7 @@
     <Compile Include="Parser\ParserExceptions.cs" />
     <Compile Include="Parser\TomeParser.cs" />
     <Compile Include="Runtime\BrigitRuntime.cs" />
+    <Compile Include="Runtime\GlobalFlags.cs" />
     <Compile Include="Tests.cs" />
     <Compile Include="Dom.cs" />
     <Compile Include="GoodSortedList.cs" />

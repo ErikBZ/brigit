@@ -12,6 +12,20 @@ namespace Brigit.IO
 {
     class BrigitIO
     {
+        public static string[] ReadTomeFile(string path)
+        {
+            string[] tome = new string[0];
+            if (File.Exists(path))
+            {
+                tome = File.ReadAllLines(path);
+            }
+            else
+            {
+                Console.WriteLine($"Tome file at {path} does not exist");
+            }
+            return tome;
+        }
+
         /// <summary>
         /// Reads a domtree from the given file location
         /// </summary>

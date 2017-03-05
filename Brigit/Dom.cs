@@ -449,10 +449,10 @@ namespace Brigit
         /// IE, it will equate the flags and get the next node
         /// </summary>
         /// <returns></returns>
-        public virtual DomNode GetNext(DomTree scene)
+        public virtual DomNode GetNext(int choice, DomTree scene)
         {
             DomNode next = null;
-
+            // shifting it to the left since 1 is mapped to 0
             if(Children.Length == 0)
             {
                 return null;
@@ -470,7 +470,7 @@ namespace Brigit
                     next = child;
                     if(next.type == NodeType.Empty)
                     {
-                        next = next.GetNext(scene);
+                        next = next.GetNext(choice, scene);
                     }
                 }
             }
@@ -599,11 +599,13 @@ namespace Brigit
         /// </summary>
         /// <param name="ch"></param>
         // TODO keep working on this
-        public void MakeChoice(string ch, DomTree scene)
+        public DomNode MakeChoice(string ch, DomTree scene)
         {
             int choice = -1;
+            DomNode next = null;
             if(int.TryParse(ch, out choice))
             {
+
                 Dictionary<string, bool> flags = FlagsRasiedByChoices[choice];
                 foreach(KeyValuePair<string, bool> entry in flags)
                 {
@@ -625,6 +627,26 @@ namespace Brigit
             {
                 // do something here?
             }
+            return next;
+        }
+
+        // with this function we choose based on the index shown to the player. Prior to this
+        // we can calculate what choices will be availabe to the player
+        public override DomNode GetNext(int choice, DomTree scene)
+        {
+            DomNode next = null;
+
+            // for now assume that all choices show up to the player
+            if(choice != -1 || choice >= this.Children.Length)
+            {
+                next = this.Children[choice];
+            }
+            else
+            {
+                throw new Exception("Choice does not exist in this context");
+            }
+
+            return next;
         }
     }
 

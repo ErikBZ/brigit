@@ -12,6 +12,7 @@
 *.xml
 LogoSketches/
 math/
+[Bb]ugs/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

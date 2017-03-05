@@ -1,5 +1,0 @@
-[rep char:person1]	
-	[r]thing1[*]
-	[r]thing2[*]
-	[r]thing3[*]
-[*]
