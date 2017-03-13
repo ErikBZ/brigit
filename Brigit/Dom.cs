@@ -79,7 +79,6 @@ namespace Brigit
         }
     }
 
-    // TODO add a "scene" class that keeps track of what characters,
     // backgrounds, and flags are required and used
 
     [Serializable, DataContract]
@@ -369,6 +368,7 @@ namespace Brigit
         /// more than 1 leaf can be activated by an overlapping set of flags
         /// </summary>
         [DataMember]
+        /// TODO refactor this to use the new Flag enum
         public string RequiredFlags { get; set; }
 
         /// <summary>
@@ -598,7 +598,7 @@ namespace Brigit
         /// Sets the global and local variables and 
         /// </summary>
         /// <param name="ch"></param>
-        // TODO keep working on this
+        // TODO refactor this out since it will probably never be used
         public DomNode MakeChoice(string ch, DomTree scene)
         {
             int choice = -1;

@@ -33,16 +33,7 @@ namespace Brigit.Runtime
                 string choice = Console.ReadLine();
                 ClearSpeechArea();
 
-                /*
-                 * this should be needed anymore
-                if (curr is Choice)
-                {
-                    ((Choice)curr).MakeChoice(choice, tree);
-                }
-                */
-
-                // trying to get the next node            choice -= 1;
-
+                // trying to get the next node choice -= 1;
                 int ch = -1;
                 bool parsed = int.TryParse(choice, out ch);
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Brigit.Runtime
+namespace Brigit.Attributes
 {
     // mostly being  used as an abstraction and
     static class GlobalFlags

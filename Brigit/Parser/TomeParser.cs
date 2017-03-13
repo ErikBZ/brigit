@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Brigit.Attributes;
 
 // Rename BrigitParser to BrigitParser
 namespace Brigit.Parser
@@ -47,7 +48,7 @@ namespace Brigit.Parser
         public DomTree Parse()
         {
             scene.Add(ParseDomTree(false));
-            if(scene.GlobalFlags == null)
+            if (scene.GlobalFlags == null)
             {
                 scene.GlobalFlags = new Dictionary<string, bool>();
             }
@@ -61,7 +62,7 @@ namespace Brigit.Parser
             // idk what but stuff I guess
 
             muncher.EatWhiteSpace();
-            if(sceneIsBranch)
+            if (sceneIsBranch)
             {
                 muncher.ConsumeChar('{');
                 muncher.EatWhiteSpace();
@@ -101,7 +102,7 @@ namespace Brigit.Parser
             {
                 // If there is more than one space or tab that is not delimted
                 // in the string then eat all but one of the spaces
-                if(muncher.StartsWith("  "))
+                if (muncher.StartsWith("  "))
                 {
                     muncher.EatWhiteSpace();
                     c = muncher.SniffChar();
@@ -157,20 +158,32 @@ namespace Brigit.Parser
             List<string> choices = new List<string>();
             List<DomTree> branches = new List<DomTree>();
             int numberOfChoices = 0;
+
             while (!muncher.CheckChar('}'))
             {
-                bool useDefaultLocalFlags = true;
                 DomTree branch = null;
                 numberOfChoices++;
+
+                // Parsing the plain text that a character will say
                 choices.Add(ParseSpeechText());
+
+                // Every plaintext speech blurb must be ended with an asterisk
                 if (muncher.SpitChar() != '*')
                 {
                     throw new Exception($"Speech text at {muncher.Position} did not end in an *");
                 }
+
+                // if there's a paren then it means this choice has local or global
+                // flags to set or require
+                // TODO parse required, local, and global flags
+                if (muncher.CheckChar('('))
+                {
+                    Dictionary<string, Flag> thingy = ParseNodeAttributes();
+                }
+
                 // attibute and flag requirements here.
                 // if there are none then the default will be used
-
-                if(muncher.StartsWith("->"))
+                if (muncher.StartsWith("->"))
                 {
                     muncher.ConsumeString("->");
                     if (muncher.CheckChar('{'))
@@ -189,21 +202,6 @@ namespace Brigit.Parser
                     branch = DomTree.CreateEmptyDomTree();
                 }
 
-                // can probably just change this to temp flags
-                if (useDefaultLocalFlags)
-                {
-                    if (!scene.LocalFlags.ContainsKey($"choice{numberOfChoices}"))
-                    {
-                        scene.LocalFlags.Add($"choice{numberOfChoices}", false);
-                    }
-                    // what is required for the head of the branch node
-                    branch.Head.RequiredFlags = $"choice{numberOfChoices}";
-
-                    // the flags raised by this node
-                    node.FlagsRasiedByChoices.Add(numberOfChoices, new Dictionary<string, bool>());
-                    node.FlagsRasiedByChoices[numberOfChoices].Add($"choice{numberOfChoices}", true);
-                }
-
                 branches.Add(branch);
                 muncher.EatWhiteSpace();
             }
@@ -216,6 +214,57 @@ namespace Brigit.Parser
         }
 
         /// <summary>
+        /// Parses a attributes of a node like expression, flag requirements and other things
+        /// </summary>
+        /// <returns></returns>
+        // an open paren should always be the first thing that this method sees
+        // ( [a-z]* )
+        private Dictionary<string, Flag> ParseNodeAttributes()
+        {
+            Dictionary<string, Flag> attributes = new Dictionary<string, Flag>();
+
+            // will error if this is not true
+            muncher.ConsumeChar('(');
+
+            // eats a string and then stops at the next :
+            while (!muncher.CheckChar(')'))
+            {
+                string attr = muncher.SpitUpAlpha();
+                // after the attribute there must be a semicolon to show that the value is coming next
+                muncher.ConsumeChar(':');
+
+                // depending on the value there maybe more than one value for the attribute like for flags
+                string[] values = ParseAttributeValues().ToArray();
+            }
+            return attributes;
+        }
+
+        // will eat whitespace first to make sure it can start at an alpha character
+        private List<string> ParseAttributeValues()
+        { 
+            List<string> values = new List<string>();
+
+            muncher.EatWhiteSpace();
+            
+            // if it's an end paren then the attributes list has ended, otherwise
+            // if it s a comma then it is the end of the value list
+            while(!(muncher.CheckChar(')') || muncher.CheckChar(',')))
+            {
+                values.Add(muncher.SpitUpAlpha());
+                // values should be delimited by spaces
+                muncher.EatWhiteSpace();
+            }
+
+            if(muncher.CheckChar(','))
+            {
+                muncher.ConsumeChar();
+            }
+
+            return values;
+        }
+
+
+        /// <summary>
         /// Parses a characater name
         /// </summary>
         /// <returns></returns>
@@ -223,7 +272,7 @@ namespace Brigit.Parser
         {
             string characterName = muncher.SpitUpWhile(delegate (char c)
             {
-                if(Char.IsLetterOrDigit(muncher.SniffChar()))
+                if (Char.IsLetterOrDigit(muncher.SniffChar()))
                 {
                     return true;
                 }
@@ -232,7 +281,7 @@ namespace Brigit.Parser
                     return false;
                 }
             });
-            if(!characters.Contains(characterName))
+            if (!characters.Contains(characterName))
             {
                 characters.Add(characterName);
             }
@@ -271,7 +320,7 @@ namespace Brigit.Parser
                 newNode.Character = character;
                 tree.Add(newNode);
                 char asterisk = muncher.SniffChar();
-                if(asterisk == '*')
+                if (asterisk == '*')
                 {
                     muncher.ConsumeChar();
                 }
@@ -281,275 +330,6 @@ namespace Brigit.Parser
             muncher.ConsumeChar();
 
             return tree;
-        }
-    }
-    
-    /// <summary>
-    /// A class that steps through a string to parse it
-    /// </summary>
-    class TomeReader
-    {
-        string[] all_text;
-        // The actual line and position of the character
-        int lineNum;
-        int posNum;
-
-        public override string ToString()
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (string s in all_text)
-            {
-                sb.Append(s);
-            }
-            return sb.ToString();
-        }
-
-        public string Position
-        {
-            // the plus 1 is to normalize it
-            get { return $"Line: {lineNum + 1}, Position: {posNum + 1}"; }
-        }
-
-        public TomeReader() : this(null)
-        {
-        }
-
-        public TomeReader(string[] text)
-        {
-            all_text = text;
-            lineNum = 0;
-            posNum = 0;
-        }
-
-        /// <summary>
-        /// Checks if the eater has reached the EOF
-        /// </summary>
-        /// <returns></returns>
-        public bool Complete()
-        {
-            return lineNum == all_text.Length ||
-                (lineNum == all_text.Length-1 && posNum == all_text[lineNum].Length);
-        }
-
-        /// <summary>
-        /// Gets the remaining string to be parsed
-        /// </summary>
-        /// <returns></returns>
-        public string GetRemainingString()
-        {
-            StringBuilder sb = new StringBuilder();
-            for (int i = lineNum; i < all_text.Length; i++)
-            {
-                if (i == lineNum)
-                {
-                    sb.Append(all_text[lineNum].Substring(posNum));
-                }
-                else
-                {
-                    sb.Append(all_text[i]);
-                }
-                sb.Append("\n");
-            }
-
-            return sb.ToString();
-        }
-
-        /// <summary>
-        /// Checks to see if a the char at pos is equal to the given char
-        /// </summary>
-        /// <param name="c">A Char</param>
-        /// <returns>True or False</returns>
-        public bool CheckChar(char c)
-        {
-            bool b = false;
-            if (!Complete())
-            {
-                b = c == SniffChar();
-            }
-            return b;
-        }
-
-        /// <summary>
-        /// Peeks at the current char
-        /// </summary>
-        /// <returns>Returns the current char</returns>
-        public char SniffChar()
-        {
-            // if pos is greater than the string length return the null terminator
-            if (Complete())
-            {
-                return '\0';
-            }
-            if (all_text[lineNum] == string.Empty)
-            {
-                return ' ';
-            }
-            return all_text[lineNum][posNum];
-        }
-
-        /// <summary>
-        /// Steps forward by 1 in the string
-        /// </summary>
-        public void ConsumeChar()
-        {
-            // The eater has already reached the end
-            if (lineNum >= all_text.Length)
-            {
-                throw new Exception($"{Position}, reached the end of the file.");
-            }
-            else if (all_text[lineNum].Length-1 == posNum || all_text[lineNum] == string.Empty)
-            {
-                posNum = 0;
-                lineNum++;
-            }
-            else
-            {
-                posNum++;
-            }
-        }
-
-        /// <summary>
-        /// Steps forward by x in the string
-        /// </summary>
-        /// <param name="x">Skip x chars</param>
-        // Slower but safer
-        public void ConsumeChar(int x)
-        {
-            for (int i = 0; i < x && !Complete(); i++)
-            {
-                ConsumeChar();
-            }
-            if (Complete())
-            {
-                Console.WriteLine("Reached EOF cannot eat anymore");
-            }
-        }
-
-        /// <summary>
-        /// Checks to see if a specfic char is at the location and consusmes it
-        /// if not then it throws an exception
-        /// </summary>
-        /// <param name="x"></param>
-        public bool ConsumeChar(char x)
-        {
-            if(CheckChar(x))
-            {
-                ConsumeChar();
-                return true;
-            }
-            else
-            {
-                throw new Exception($"Expected {x} at position {Position}");
-            }
-        }
-
-        /// <summary>
-        /// Checks if the reader will read in the given string
-        /// and then consumes it. Throws an expception otherwise
-        /// </summary>
-        /// <param name="str"></param>
-        public bool ConsumeString(string str)
-        {
-            if (this.StartsWith(str))
-            {
-                this.ConsumeChar(str.Length);
-                return true;
-            }
-            else
-            {
-                throw new Exception($"Expected keyword {str}, but it was not found. {this.posNum}");
-            }
-        }
-
-        /// <summary>
-        /// Returns the current char and steps forward by one
-        /// </summary>
-        /// <returns>Returns the current char</returns>
-        public char SpitChar()
-        {
-            char c = SniffChar();
-            ConsumeChar();
-            return c;
-        }
-
-        /// <summary>
-        /// Takes a delegate that returns a bool to keep eating
-        /// until the function returns false.
-        /// </summary>
-        /// <param name="predicate"></param>
-        public void EatWhile(Func<char, bool> predicate)
-        {
-            while (predicate(SniffChar()) && !Complete())
-            {
-                ConsumeChar();
-            }
-        }
-
-        /// <summary>
-        /// Only eats whitespace like tabs, spaces and carriage
-        /// returns
-        /// </summary>
-        public void EatWhiteSpace()
-        {
-            Func<char, bool> p = delegate (char c) { return Char.IsWhiteSpace(c); };
-            EatWhile(p);
-        }
-
-        /// <summary>
-        /// Consumes a string and spits it back out. Only takes
-        /// a conditional statement and cannot add extra things
-        /// to the string builder
-        /// </summary>
-        /// <param name="pred"></param>
-        /// <returns></returns>
-        public string SpitUpWhile(Func<char, bool> pred)
-        {
-            StringBuilder sb = new StringBuilder();
-            while (pred(SniffChar()) && !Complete())
-            {
-                sb.Append(SpitChar());
-            }
-
-            return sb.ToString();
-        }
-
-        // overloading SpitUpWhile
-        public string SpitUpWhile(Func<char, StringBuilder, bool> pred)
-        {
-            StringBuilder sb = new StringBuilder();
-            while(!Complete() && pred(SniffChar(), sb))
-            {
-                // all of the required things will be pred?
-                sb.Append(SpitChar());
-            }
-            return sb.ToString();
-        }
-
-        /// <summary>
-        /// Eats only letters and then spits them back up
-        /// </summary>
-        /// <returns>A string of letters</returns>
-        public string SpitUpAlpha()
-        {
-            Func<char, bool> p = delegate (char c) { return Char.IsLetter(c); };
-            return SpitUpWhile(p);
-        }
-
-        /// <summary>
-        /// Checks to see if the string, starting at pos, has the string "s"
-        /// </summary>
-        /// <param name="s"></param>
-        /// <returns></returns>
-        public bool StartsWith(string s)
-        {
-            string sub = string.Empty;
-            bool b = false;
-            if (!Complete())
-            {
-                sub = all_text[lineNum].Substring(posNum);
-                b = sub.StartsWith(s);
-            }
-            return b;
         }
     }
 }
