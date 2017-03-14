@@ -44,24 +44,6 @@ namespace Brigit
             Console.ReadLine();
         }
 
-        public void SomeTest()
-        {
-            string path = @"..\..\scripts\script_test_2.txt";
-            string[] toParse = null;
-            if (File.Exists(path))
-            {
-                toParse = File.ReadAllLines(path);
-            }
-
-            TomeParser p = new TomeParser(toParse);
-            DomTree writeTree = p.ParseCharacterDialog();
-            DomAdmin.WriteDomTree(writeTree);
-            DomTree domTree = DomAdmin.ReadDomTree(@"..\..\doms\test.ctom");
-
-            Console.WriteLine(domTree);
-            Console.ReadLine();
-        }
-
         public void RequireArgumentsDictTest()
         {
             string path = @"..\..\scripts\comment_test.tome";

@@ -1,0 +1,17 @@
+CHOICE{
+    ch1*->{
+        Char1{
+            Hello friends
+        }
+    }
+    ch2*->{
+        Char2{
+            Hi
+        }
+    }
+    ch3*
+}
+
+Char3{
+    Hello
+}

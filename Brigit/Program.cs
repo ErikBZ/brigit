@@ -8,6 +8,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using static Brigit.IO.BrigitIO;
 using Brigit.Parser;
+using Brigit.Structure;
 
 namespace Brigit
 {

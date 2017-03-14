@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Brigit.Attributes;
+using Brigit.Structure;
 
 // Rename BrigitParser to BrigitParser
 namespace Brigit.Parser

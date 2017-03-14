@@ -12,6 +12,7 @@ using Brigit;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using Brigit.Structure;
 
 namespace BrigitVisualizer
 {

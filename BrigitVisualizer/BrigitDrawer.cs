@@ -5,6 +5,7 @@ using System.Text;
 using Brigit;
 using System.Windows.Forms;
 using System.Drawing;
+using Brigit.Structure;
 
 namespace BrigitVisualizer
 {
