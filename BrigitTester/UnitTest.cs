@@ -5,10 +5,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace BrigitTester
 {
     [TestClass]
-    public class UnitTest1
+    public class ParserTests
     {
         [TestMethod]
-        public void TestMethod1()
+        public void TestFullParse()
         {
 
         }

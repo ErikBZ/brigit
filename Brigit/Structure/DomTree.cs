@@ -243,6 +243,81 @@ namespace Brigit.Structure
             return this.Name;
         }
 
+        public override bool Equals(object obj)
+        {
+            if(!(obj is DomTree))
+            {
+                return false;
+            }
+            else
+            {
+                if(TraverseTrees((DomTree)obj))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        // Takes the head of the tree and adds it to a queue,
+        // keeps check to see if both heads are equal, then adds it's children to the queue,
+        // afterwards it checks those nodes, and keeps adding in the children to the queue until
+        // there is nothing left int he queue
+        public bool TraverseTrees(DomTree tree)
+        {
+            // assume they are true for now to test the head
+            bool treesAreEqual = true;
+            Queue<DomNode> thisQueue = new Queue<DomNode>();
+            Queue<DomNode> otherQueue = new Queue<DomNode>();
+
+            thisQueue.Enqueue(this.Head);
+            otherQueue.Enqueue(tree.Head);
+
+            // Keep going until you have found a node that is not equal, or
+            // until there are no more nodes to check. Once the queues are done
+            // trees are equal will have the correct values
+            while(thisQueue.Count != 0 && otherQueue.Count != 0 && treesAreEqual)
+            {
+                DomNode thisNode = thisQueue.Dequeue();
+                DomNode otherNode = otherQueue.Dequeue();
+
+                // usable nodes should either be choices are dialogs
+                // they should not be DomNodes
+                if (thisNode is Choice)
+                {
+                    treesAreEqual = ((Choice)thisNode).Equals(otherNode);
+                }
+                else if (thisNode is Dialog)
+                {
+                    treesAreEqual = ((Dialog)thisNode).Equals(otherNode);
+                }
+                else
+                {
+                    // this is not supposed to happen
+                    treesAreEqual = false;
+                }
+
+                if(treesAreEqual)
+                {
+                    foreach(DomNode ch in thisNode.Children)
+                    {
+                        thisQueue.Enqueue(ch);
+                    }
+
+                    foreach(DomNode ch in otherNode.Children)
+                    {
+                        otherQueue.Enqueue(ch);
+                    }
+                }
+            }
+
+            return treesAreEqual;
+        }
+
+        // TODO get rid of everything after this because I probably won't be using it all
         private string GetObjectType(Object obj)
         {
             string s = string.Empty;

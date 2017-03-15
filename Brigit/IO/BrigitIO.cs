@@ -11,7 +11,7 @@ using Brigit.Structure;
 
 namespace Brigit.IO
 {
-    class BrigitIO
+    public class BrigitIO
     {
         public static string[] ReadTomeFile(string path)
         {

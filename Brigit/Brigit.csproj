@@ -51,6 +51,8 @@
     <Compile Include="Runtime\BrigitRuntime.cs" />
     <Compile Include="Attributes\Flags.cs" />
     <Compile Include="Attributes\GlobalFlags.cs" />
+    <Compile Include="Structure\Choice.cs" />
+    <Compile Include="Structure\Dialog.cs" />
     <Compile Include="Structure\DomAdmin.cs" />
     <Compile Include="Structure\DomTree.cs" />
     <Compile Include="Structure\NodeType.cs" />

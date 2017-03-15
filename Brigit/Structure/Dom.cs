@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
 using System.Xml.Linq;
@@ -168,11 +167,6 @@ namespace Brigit.Structure
             }
         }
 
-        public override string ToString()
-        {
-            return "Dom Node";
-        }
-
         /// <summary>
         /// Set the possible branches for this node
         /// </summary>
@@ -198,147 +192,31 @@ namespace Brigit.Structure
         {
             return Children;
         }
-    }
-
-    [Serializable]
-    public class Dialog : DomNode
-    {
-        public string speechText;
-
-        public string Text
-        {
-            get { return speechText; }
-            set { speechText = value; }
-        }
-
-
-        // i'll add the other ones later
-        public Dialog():
-            base()
-        {
-            this.speechText = string.Empty;
-        }
 
         public override string ToString()
         {
-            return this.speechText;
-        }
-    }
-
-    [Serializable]
-    public class Choice : DomNode
-    {
-        public string[] Choices { get; set; }
-        public Dictionary<int, Dictionary<string, bool>> FlagsRasiedByChoices { get; set; }
-
-
-        // once again i'll add the other ones later
-        public Choice() :
-            base()
-        {
-            this.Choices = new string[0];
-            FlagsRasiedByChoices = new Dictionary<int, Dictionary<string, bool>>();
+            return "Dom Node";
         }
 
-        public override string ToString()
+        public override bool Equals(object obj)
         {
-            StringBuilder sb = new StringBuilder();
-            for(int i=0;i<Choices.Length;i++)
+            if(obj == null || !(obj is DomNode))
             {
-                string c = Choices[i];
-                sb.Append(i);
-                sb.Append(c);
-                sb.Append('\n');
+                return false;
             }
 
-            return sb.ToString();
-        }
+            DomNode node = (DomNode)obj;
+            /*
+             * Checks the flags that the node sets, the number of children,
+             * the character that owns the node, and what the flags the node sets
+             * I'll need to refactor RequiredFlags, and FlagSets at some point
+             */
+            bool nodesAreEqual = this.RequiredFlags.Equals(node.RequiredFlags) &&
+                this.Children.Length == node.Children.Length &&
+                this.character.Equals(node.character) &&
+                this.flagSets.Equals(node.flagSets);
 
-        /// <summary>
-        /// Sets the global and local variables and 
-        /// </summary>
-        /// <param name="ch"></param>
-        // TODO refactor this out since it will probably never be used
-        public DomNode MakeChoice(string ch, DomTree scene)
-        {
-            int choice = -1;
-            DomNode next = null;
-            if(int.TryParse(ch, out choice))
-            {
-
-                Dictionary<string, bool> flags = FlagsRasiedByChoices[choice];
-                foreach(KeyValuePair<string, bool> entry in flags)
-                {
-                    if(scene.GlobalFlags.ContainsKey(entry.Key))
-                    {
-                        scene.GlobalFlags[entry.Key] = entry.Value;
-                    }
-                    else if(scene.LocalFlags.ContainsKey(entry.Key))
-                    {
-                        scene.LocalFlags[entry.Key] = entry.Value;
-                    }
-                    else
-                    {
-                        throw new Exception("Flags set by this choice are not present in either Local or Global flags within the scene");
-                    }
-                }
-            }
-            else
-            {
-                // do something here?
-            }
-            return next;
-        }
-
-        // with this function we choose based on the index shown to the player. Prior to this
-        // we can calculate what choices will be availabe to the player
-        public override DomNode GetNext(int choice, DomTree scene)
-        {
-            DomNode next = null;
-
-            // for now assume that all choices show up to the player
-            if(choice != -1 || choice >= this.Children.Length)
-            {
-                next = this.Children[choice];
-            }
-            else
-            {
-                throw new Exception("Choice does not exist in this context");
-            }
-
-            return next;
-        }
-    }
-
-    /// <summary>
-    /// contains info for the background that can be set
-    /// </summary>
-    // TODO remove this at some point
-    [Serializable]
-    public class Background
-    {
-        string name;
-
-        // properties
-        public string Name
-        {
-            get { return Name; }
-            set { name = value; }
-        }
-
-        public Background()
-        {
-            name = string.Empty;
-        }
-
-        public Background(string name)
-        {
-            this.name = name;
-        }
-
-        public override string ToString()
-        {
-            return name;
+            return nodesAreEqual;
         }
     }
 }

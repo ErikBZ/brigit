@@ -1,0 +1,9 @@
+CHOICE{
+    ch1*
+    ch2*
+    ch3*
+}
+
+Character1{
+    The player needed to choose something
+}
