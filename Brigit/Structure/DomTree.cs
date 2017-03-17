@@ -251,14 +251,7 @@ namespace Brigit.Structure
             }
             else
             {
-                if(TraverseTrees((DomTree)obj))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return TraverseTrees((DomTree)obj);
             }
         }
 

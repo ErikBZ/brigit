@@ -16,24 +16,25 @@ namespace Brigit
     {
         static void Main(string[] args)
         {
-            // this should be the same
-            // arrange
-            DomNode node1 = new DomNode();
-            node1.Character = "char";
-            node1.RequiredFlags = "flag1";
-            node1.FlagToggles = new System.Collections.Generic.Dictionary<string, bool>();
-            node1.Children = new DomNode[3];
-            // arraning node 2
-            DomNode node2 = new DomNode();
-            node2.Character = "char";
-            node2.RequiredFlags = "flag1";
-            node2.FlagToggles = new System.Collections.Generic.Dictionary<string, bool>();
-            node2.Children = new DomNode[3];
+            string[] lines = ReadTomeFile(@"..\..\Tests\attribute_test_1.tome");
+            TomeParser parser = new TomeParser(lines);
+            // arrange a tree that should be the product of this tome
+            /*
+             * TODO write all the shit out at some point
+             */
+            DomTree constructedTree = new DomTree();
+            Dialog node = new Dialog();
+            node.Character = "Character1";
+            node.Text = "Hello there";
 
-            // acting
-            bool areNodesEqual = node1.Equals(node2);
+            // act
+            DomTree parsedTree = parser.Parse();
 
-            Console.WriteLine(areNodesEqual);
+            // assert
+            bool test = constructedTree.Equals(parsedTree);
+
+            Console.WriteLine(test);
+            Console.ReadLine();
         }
     }
 }

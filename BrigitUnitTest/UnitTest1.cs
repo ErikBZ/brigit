@@ -135,6 +135,211 @@ namespace BrigitUnitTest
             Assert.AreEqual(areNodesEqual, true, "Two equal dialog nodes were found to be different");
         }
 
+        [TestMethod]
+        public void TestEqualNode6()
+        {
+            // arrange
+            Dialog node1 = new Dialog();
+            node1.Character = "char";
+            node1.RequiredFlags = "flag1";
+            node1.FlagToggles = new System.Collections.Generic.Dictionary<string, bool>();
+            node1.FlagToggles.Add("thing", true);
+            node1.FlagToggles.Add("thing2", false);
+            node1.Children = new DomNode[3];
+            node1.speechText = "Say something";
+            // arraning node 2
+            Dialog node2 = new Dialog();
+            node2.Character = "char";
+            node2.RequiredFlags = "flag1";
+            node2.FlagToggles = new System.Collections.Generic.Dictionary<string, bool>();
+            node2.FlagToggles.Add("thing", true);
+            node2.FlagToggles.Add("thing2", false);
+            node2.Children = new DomNode[3];
+            node2.speechText = "Say something";
+
+            // acting
+            bool areNodesEqual = node1.Equals(node2);
+
+            // asserting
+            Assert.AreEqual(areNodesEqual, true, "Two dialog nodes with equal flags were found to be different");
+        }
+
+        [TestMethod]
+        public void TestEqualNode7()
+        {
+            // arrange
+            Dialog node1 = new Dialog();
+            node1.Character = "char";
+            node1.RequiredFlags = "flag1";
+            node1.FlagToggles = new System.Collections.Generic.Dictionary<string, bool>();
+            node1.FlagToggles.Add("thing", false);
+            node1.FlagToggles.Add("thing2", false);
+            node1.Children = new DomNode[3];
+            node1.speechText = "Say something";
+            // arraning node 2
+            Dialog node2 = new Dialog();
+            node2.Character = "char";
+            node2.RequiredFlags = "flag1";
+            node2.FlagToggles = new System.Collections.Generic.Dictionary<string, bool>();
+            node2.FlagToggles.Add("thing", true);
+            node2.FlagToggles.Add("thing2", false);
+            node2.Children = new DomNode[3];
+            node2.speechText = "Say something";
+
+            // acting
+            bool areNodesEqual = node1.Equals(node2);
+
+            // asserting
+            Assert.AreEqual(areNodesEqual, false, "Two equal dialog nodes were found to be different");
+        }
+
+        // testing small constructed DomTrees here
+        [TestMethod]
+        public void TestTreeEquality1()
+        {
+            // arrange
+            DomTree tree1 = new DomTree();
+            Dialog node1 = new Dialog();
+            node1.Character = "char1";
+            node1.Text = "hello";
+            Dialog node2 = new Dialog();
+            node2.Character = "char2";
+            node2.Text = "hello there";
+            tree1.Add(node1);
+            tree1.Add(node2);
+
+            DomTree tree2 = new DomTree();
+            Dialog node3 = new Dialog();
+            node3.Character = "char1";
+            node3.Text = "hello";
+            Dialog node4 = new Dialog();
+            node4.Character = "char2";
+            node4.Text = "hello there";
+            tree2.Add(node3);
+            tree2.Add(node4);
+            
+            // act
+            bool areTreesEqual = tree1.Equals(tree2);
+            //assert
+            Assert.AreEqual(areTreesEqual, true);
+        }
+
+        [TestMethod]
+        public void TestTreeEqaulity2()
+        {
+            // arrange
+            DomTree tree1 = new DomTree();
+            Dialog node1 = new Dialog();
+            node1.Character = "char2";
+            node1.Text = "What's up";
+            Dialog node2 = new Dialog();
+            node2.Character = "char1";
+            node2.Text = "Hurrderr";
+            tree1.Add(node1);
+            tree1.Add(node2);
+
+            DomTree tree2 = new DomTree();
+            Dialog node3 = new Dialog();
+            node3.Character = "char1";
+            node3.Text = "hello";
+            Dialog node4 = new Dialog();
+            node4.Character = "char2";
+            node4.Text = "hello there";
+            tree2.Add(node3);
+            tree2.Add(node4);
+
+            // act
+            bool areTreesEqual = tree1.Equals(tree2);
+            //assert
+            Assert.AreEqual(areTreesEqual, false);
+        }
+
+        [TestMethod]
+        public void TestTreeEquailty3()
+        {
+            // arrange
+            DomTree tree1 = new DomTree();
+            Dialog node1 = new Dialog();
+            node1.Character = "char1";
+            node1.Text = "hello";
+            Choice node2 = new Choice();
+            node2.Character = "char2";
+            tree1.Add(node1);
+            tree1.Add(node2);
+
+            DomTree tree2 = new DomTree();
+            Dialog node3 = new Dialog();
+            node3.Character = "char1";
+            node3.Text = "hello";
+            Dialog node4 = new Dialog();
+            node4.Character = "char2";
+            node4.Text = "hello there";
+            tree2.Add(node3);
+            tree2.Add(node4);
+
+            // act
+            bool areTreesEqual = tree1.Equals(tree2);
+            //assert
+            Assert.AreEqual(areTreesEqual, false);
+        }
+
+        [TestMethod]
+        public void TestTreeEquality4()
+        {
+            // arrange
+            DomTree tree1 = new DomTree();
+            Dialog node1 = new Dialog();
+            node1.Character = "char1";
+            node1.Text = "hello";
+            Choice node2 = new Choice();
+            node2.Character = "char2";
+            tree1.Add(node1);
+            tree1.Add(node2);
+
+            DomTree tree2 = new DomTree();
+            Dialog node3 = new Dialog();
+            node3.Character = "char1";
+            node3.Text = "hello";
+            Choice node4 = new Choice();
+            node4.Character = "char2";
+            node4.Choices = new string[3];
+            tree2.Add(node3);
+            tree2.Add(node4);
+
+            // act
+            bool areTreesEqual = tree1.Equals(tree2);
+            //assert
+            Assert.AreEqual(areTreesEqual, false);
+        }
+
+        [TestMethod]
+        public void TestTreeEquality5()
+        {
+            // arrange
+            DomTree tree1 = new DomTree();
+            Dialog node1 = new Dialog();
+            node1.Character = "char1";
+            node1.Text = "hello";
+            Choice node2 = new Choice();
+            node2.Character = "char2";
+            tree1.Add(node1);
+            tree1.Add(node2);
+
+            DomTree tree2 = new DomTree();
+            Dialog node3 = new Dialog();
+            node3.Character = "char1";
+            node3.Text = "hello";
+            Choice node4 = new Choice();
+            node4.Character = "char2";
+            tree2.Add(node3);
+            tree2.Add(node4);
+
+            // act
+            bool areTreesEqual = tree1.Equals(tree2);
+            //assert
+            Assert.AreEqual(areTreesEqual, true);
+        }
+
 
         [TestMethod]
         public void TestParseAttribute1()
@@ -150,12 +355,16 @@ namespace BrigitUnitTest
              * TODO write all the shit out at some point
              */
             DomTree constructedTree = new DomTree();
+            Dialog node = new Dialog();
+            node.Character = "Character1";
+            node.Text = "Hello there";
 
             // act
             DomTree parsedTree = parser.Parse();
 
             // assert
-            Assert.AreEqual(constructedTree, parsedTree, "Tree's are not equal");
+            bool test = constructedTree.Equals(parsedTree);
+            Assert.AreEqual(test, true, "Tree's are not equal");
         }
 
         [TestMethod]
@@ -177,7 +386,8 @@ namespace BrigitUnitTest
             DomTree parsedTree = parser.Parse();
 
             // assert
-            Assert.AreEqual(constructedTree, parsedTree, "Tree's are not equal");
+            bool test = constructedTree.Equals(parsedTree);
+            Assert.AreEqual(test, true, "Tree's are not equal");
         }
 
         [TestMethod]
@@ -199,7 +409,8 @@ namespace BrigitUnitTest
             DomTree parsedTree = parser.Parse();
 
             // assert
-            Assert.AreEqual(constructedTree, parsedTree, "Tree's are not equal");
+            bool test = constructedTree.Equals(parsedTree);
+            Assert.AreEqual(test, true, "Tree's are not equal");
         }
 
         [TestMethod]
@@ -221,7 +432,8 @@ namespace BrigitUnitTest
             DomTree parsedTree = parser.Parse();
 
             // assert
-            Assert.AreEqual(constructedTree, parsedTree, "Tree's are not equal");
+            bool test = constructedTree.Equals(parsedTree);
+            Assert.AreEqual(test, true, "Tree's are not equal");
         }
 
         [TestMethod]
@@ -243,7 +455,8 @@ namespace BrigitUnitTest
             DomTree parsedTree = parser.Parse();
 
             // assert
-            Assert.AreEqual(constructedTree, parsedTree, "Tree's are not equal");
+            bool test = constructedTree.Equals(parsedTree);
+            Assert.AreEqual(test, true, "Tree's are not equal");
         }
 
         [TestMethod]
@@ -265,7 +478,8 @@ namespace BrigitUnitTest
             DomTree parsedTree = parser.Parse();
 
             // assert
-            Assert.AreEqual(constructedTree, parsedTree, "Tree's are not equal");
+            bool test = constructedTree.Equals(parsedTree);
+            Assert.AreEqual(test, true, "Tree's are not equal");
         }
 
         [TestMethod]
@@ -287,7 +501,8 @@ namespace BrigitUnitTest
             DomTree parsedTree = parser.Parse();
 
             // assert
-            Assert.AreEqual(constructedTree, parsedTree, "Tree's are not equal");
+            bool test = constructedTree.Equals(parsedTree);
+            Assert.AreEqual(test, true, "Tree's are not equal");
         }
 
         [TestMethod]
@@ -309,7 +524,8 @@ namespace BrigitUnitTest
             DomTree parsedTree = parser.Parse();
 
             // assert
-            Assert.AreEqual(constructedTree, parsedTree, "Tree's are not equal");
+            bool test = constructedTree.Equals(parsedTree);
+            Assert.AreEqual(test, true, "Tree's are not equal");
         }
     }
 }

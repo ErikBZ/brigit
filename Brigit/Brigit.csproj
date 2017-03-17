@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\AttributeManager.cs" />
     <Compile Include="IO\BrigitIO.cs" />
     <Compile Include="Parser\ParserExceptions.cs" />
     <Compile Include="Parser\TomeParser.cs" />

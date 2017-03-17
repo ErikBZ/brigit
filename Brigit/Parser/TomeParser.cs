@@ -237,6 +237,7 @@ namespace Brigit.Parser
                 // depending on the value there maybe more than one value for the attribute like for flags
                 string[] values = ParseAttributeValues().ToArray();
             }
+            muncher.ConsumeChar(')');
             return attributes;
         }
 
@@ -311,9 +312,13 @@ namespace Brigit.Parser
 
             // parse attributes like expression?
             // i'll save this for later
+            Dictionary<string, Flag> values = new Dictionary<string, Flag>();
+            if (muncher.CheckChar('('))
+            {
+                ParseNodeAttributes();
+            }
 
             muncher.ConsumeChar('{');
-
             // parsing the actual text
             while (muncher.SniffChar() != '}')
             {

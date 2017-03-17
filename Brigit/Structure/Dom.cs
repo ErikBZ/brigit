@@ -82,7 +82,9 @@ namespace Brigit.Structure
         public DomNode()
         {
             Children = new DomNode[0];
+            flagSets = new Dictionary<string, bool>();
             RequiredFlags = string.Empty;
+            Character = string.Empty;
         }
 
         /// <summary>
@@ -227,7 +229,7 @@ namespace Brigit.Structure
                         // if it's true, y1 and y2 must be the same so that it can continue
                         // to be true. hence y1 xor y2
                         // x = x && (y1 ^ y2)
-                        dictionariesEqual = dictionariesEqual && (kvp.Value ^ node.flagSets[kvp.Key]);
+                        dictionariesEqual = dictionariesEqual && !(kvp.Value ^ node.flagSets[kvp.Key]);
                     }
                     else
                     {
