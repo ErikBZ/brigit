@@ -211,10 +211,37 @@ namespace Brigit.Structure
              * the character that owns the node, and what the flags the node sets
              * I'll need to refactor RequiredFlags, and FlagSets at some point
              */
+
+            // checking the equality of the dictionaries
+            bool dictionariesEqual = this.flagSets.Count == node.flagSets.Count;
+            // if the dictionary counts are not equal then obviously the
+            // entries will be different as well. this only runs to check the actual
+            // entries if there are the same count of entries.
+            if(dictionariesEqual)
+            {
+                foreach (KeyValuePair<string, bool> kvp in this.flagSets)
+                {
+                    if(node.flagSets.ContainsKey(kvp.Key))
+                    {
+                        // if x is false then all subsequent operations will be false
+                        // if it's true, y1 and y2 must be the same so that it can continue
+                        // to be true. hence y1 xor y2
+                        // x = x && (y1 ^ y2)
+                        dictionariesEqual = dictionariesEqual && (kvp.Value ^ node.flagSets[kvp.Key]);
+                    }
+                    else
+                    {
+                        dictionariesEqual = false;
+                    }
+                }
+            }
+
             bool nodesAreEqual = this.RequiredFlags.Equals(node.RequiredFlags) &&
                 this.Children.Length == node.Children.Length &&
                 this.character.Equals(node.character) &&
-                this.flagSets.Equals(node.flagSets);
+                dictionariesEqual;
+
+            Console.WriteLine(nodesAreEqual);
 
             return nodesAreEqual;
         }

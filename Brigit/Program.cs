@@ -16,17 +16,24 @@ namespace Brigit
     {
         static void Main(string[] args)
         {
-            string path = @"..\..\scripts\syntax_test_2.tome";
-            string[] toParse = null;
-            if (File.Exists(path))
-            {
-                toParse = File.ReadAllLines(path);
-            }
+            // this should be the same
+            // arrange
+            DomNode node1 = new DomNode();
+            node1.Character = "char";
+            node1.RequiredFlags = "flag1";
+            node1.FlagToggles = new System.Collections.Generic.Dictionary<string, bool>();
+            node1.Children = new DomNode[3];
+            // arraning node 2
+            DomNode node2 = new DomNode();
+            node2.Character = "char";
+            node2.RequiredFlags = "flag1";
+            node2.FlagToggles = new System.Collections.Generic.Dictionary<string, bool>();
+            node2.Children = new DomNode[3];
 
-            TomeParser tp = new TomeParser(toParse);
-            DomTree thing = tp.Parse();
-            Runtime.BrigitRuntime.Run(thing);
-            Console.ReadLine();
+            // acting
+            bool areNodesEqual = node1.Equals(node2);
+
+            Console.WriteLine(areNodesEqual);
         }
     }
 }

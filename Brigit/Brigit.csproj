@@ -57,7 +57,6 @@
     <Compile Include="Structure\DomTree.cs" />
     <Compile Include="Structure\NodeType.cs" />
     <Compile Include="Structure\TreeType.cs" />
-    <Compile Include="Tests.cs" />
     <Compile Include="Structure\Dom.cs" />
     <Compile Include="Structure\GoodSortedList.cs" />
     <Compile Include="Program.cs" />
