@@ -309,42 +309,5 @@ namespace Brigit.Structure
 
             return treesAreEqual;
         }
-
-        // TODO get rid of everything after this because I probably won't be using it all
-        private string GetObjectType(Object obj)
-        {
-            string s = string.Empty;
-            if (obj is Choice)
-                s = ((Choice)obj).ToString();
-            else if (obj is Dialog)
-                s = ((Dialog)obj).ToString();
-
-            return s;
-        }
-
-        [Obsolete("Don't use this, just don't")]
-        public GoodSortedList GetSortedDomNodes()
-        {
-            GoodSortedList list = new GoodSortedList();
-            AddDomNode(list, Head, 0);
-            return list;
-        }
-
-        private void AddDomNode(GoodSortedList l, DomNode d, int depth)
-        {
-            l.Add(d, depth);
-            DomNode[] ch = d.GetChildren();
-            for(int i = 0;i<ch.Length;i++)
-            {
-                AddDomNode(l, ch[i], depth + 1);
-            }
-        }
-
-        private ArrayList[] ExpandArray(ArrayList[] array)
-        {
-            ArrayList[] longerArray = new ArrayList[array.Length * 2];
-            array.CopyTo(longerArray, 0);
-            return longerArray;
-        }
     }
 }

@@ -44,7 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\FlagExpression\And.cs" />
     <Compile Include="Attributes\AttributeManager.cs" />
+    <Compile Include="Attributes\FlagExpression\Expression.cs" />
+    <Compile Include="Attributes\FlagExpression\Not.cs" />
+    <Compile Include="Attributes\FlagExpression\Or.cs" />
+    <Compile Include="Attributes\FlagExpression\Xor.cs" />
     <Compile Include="IO\BrigitIO.cs" />
     <Compile Include="Parser\ParserExceptions.cs" />
     <Compile Include="Parser\TomeParser.cs" />

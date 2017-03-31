@@ -1,9 +1,12 @@
-﻿namespace Brigit.Attributes
+﻿using System;
+
+namespace Brigit.Attributes
 {
-    enum Flag
+    public enum Flag
     {
         // Part where this flag gets set has not been encountered
         // All Flags will start as Unset
+        // If One flag in an expression is unset then the whole shall be unset
         Unset = 0x0,
         // Somesort of choice was made settings this Flag as either True
         // or False

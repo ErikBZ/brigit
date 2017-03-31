@@ -27,7 +27,7 @@ namespace Brigit.Structure
         /// more than 1 leaf can be activated by an overlapping set of flags
         /// </summary>
         [DataMember]
-        /// TODO refactor this to use the new Flag enum
+        /// TODO refactor this to use the Experssion
         public string RequiredFlags { get; set; }
 
         /// <summary>

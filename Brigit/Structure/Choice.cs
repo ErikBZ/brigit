@@ -36,42 +36,6 @@ namespace Brigit.Structure
             return sb.ToString();
         }
 
-        /// <summary>
-        /// Sets the global and local variables and 
-        /// </summary>
-        /// <param name="ch"></param>
-        // TODO refactor this out since it will probably never be used
-        public DomNode MakeChoice(string ch, DomTree scene)
-        {
-            int choice = -1;
-            DomNode next = null;
-            if(int.TryParse(ch, out choice))
-            {
-
-                Dictionary<string, bool> flags = FlagsRasiedByChoices[choice];
-                foreach(KeyValuePair<string, bool> entry in flags)
-                {
-                    if(scene.GlobalFlags.ContainsKey(entry.Key))
-                    {
-                        scene.GlobalFlags[entry.Key] = entry.Value;
-                    }
-                    else if(scene.LocalFlags.ContainsKey(entry.Key))
-                    {
-                        scene.LocalFlags[entry.Key] = entry.Value;
-                    }
-                    else
-                    {
-                        throw new Exception("Flags set by this choice are not present in either Local or Global flags within the scene");
-                    }
-                }
-            }
-            else
-            {
-                // do something here?
-            }
-            return next;
-        }
-
         // with this function we choose based on the index shown to the player. Prior to this
         // we can calculate what choices will be availabe to the player
         public override DomNode GetNext(int choice, DomTree scene)

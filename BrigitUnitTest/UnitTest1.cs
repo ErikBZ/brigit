@@ -15,6 +15,22 @@ namespace BrigitUnitTest
          * function is working just fine
          */
         [TestMethod]
+        public void TestExpression1()
+        {
+            // arrange
+            // action
+            // assert
+        }
+
+        [TestMethod]
+        public void TestExpression2()
+        {
+            // arrange
+            // action
+            // assert
+        }
+
+        [TestMethod]
         public void TestEqualNode1()
         {
             // this should be the same
@@ -346,6 +362,9 @@ namespace BrigitUnitTest
         {
             // arrange
             // i'll do this at some point
+            DomTree tree1 = new DomTree();
+            Dialog node1 = new Dialog();
+            node1.Character = "Character1";
 
             // setting up the parser to parse
             string[] lines = BrigitIO.ReadTomeFile(@"..\..\Tests\attribute_test_1.tome");
@@ -381,6 +400,17 @@ namespace BrigitUnitTest
              * TODO write all the shit out at some point
              */
             DomTree constructedTree = new DomTree();
+            Choice ch = new Choice();
+            ch.Choices = new string[3];
+            ch.Choices[0] = "ch1";
+            ch.Choices[1] = "ch2";
+            ch.Choices[2] = "ch3";
+            constructedTree.Add(ch);
+
+            Dialog diag = new Dialog();
+            diag.Character = "Character1";
+            diag.Text = "The player needed to choose something";
+            constructedTree.Add(diag);
 
             // act
             DomTree parsedTree = parser.Parse();

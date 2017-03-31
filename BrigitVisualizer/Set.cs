@@ -148,7 +148,6 @@ namespace BrigitVisualizer
         /// Returns the obj found at index x
         /// </summary>
         /// <param name="x"></param>
-        //TODO chage this to some abstract Node later
         public Object GetObjAt(int x)
         {
             return list[x];

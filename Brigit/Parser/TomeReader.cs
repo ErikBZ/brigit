@@ -32,8 +32,18 @@ namespace Brigit.Parser
             get { return $"Line: {lineNum + 1}, Position: {posNum + 1}"; }
         }
 
-        public TomeReader() : this(null)
+        public TomeReader()
         {
+            all_text = new string[0];
+            lineNum = 0;
+            posNum = 0;
+        }
+
+        public TomeReader(string text)
+        {
+            all_text = new string[1] { text };
+            lineNum = 0;
+            posNum = 0;
         }
 
         public TomeReader(string[] text)

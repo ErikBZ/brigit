@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Brigit.Attributes;
+using Brigit.Attributes.FlagExpression;
 using Brigit.Structure;
 
 // Rename BrigitParser to BrigitParser
@@ -150,8 +151,10 @@ namespace Brigit.Parser
             // parsing the header and the beginning
             muncher.ConsumeString("CHOICE");
             muncher.EatWhiteSpace();
+            
             // attribute parsing here? yeah probably but i'll save that for later
             // TODO add the parsing of the attributes here
+            Dictionary<string, Flag> attributes = ParseNodeAttributes();
             muncher.ConsumeChar('{');
             muncher.EatWhiteSpace();
 
@@ -265,6 +268,69 @@ namespace Brigit.Parser
             return values;
         }
 
+        // this can be sent to it's own class
+        // TODO put this in it's own class
+        // this parses the overall expressions
+        public Expression ParseExpression(string expression)
+        {
+            // this dash is the default for no real reason
+            char delimter = '-';
+
+            // starts at some name, and end at ;
+            // | is or, & is and, ! is not, ^ is exclusive or
+            int counter = 0;
+            while(delimter == '-' && counter < expression.Length)
+            {
+                char opt = expression[counter];
+                // search for base operation
+                // ! is a special case
+                switch (opt)
+                {
+                    case '&':
+                        delimter = '&';
+                        break;
+                    case '|':
+                        delimter = '|';
+                        break;
+                    case '^':
+                        delimter = '^';
+                        break;
+                    // TODO all of this
+                    default:
+                        // do nothing for simple characters
+                        break;
+                }
+                counter++;
+            }
+
+            // this means that there was no delimter found
+            // and it justa base flag, or a NOT flag / experession
+            if(delimter == '-')
+            {
+
+            }
+
+            TomeReader expMuncher = new TomeReader(expression);
+            Queue<string> subExperssions = new Queue<string>();
+            // parses the whole experssion into substrings
+            while (!expMuncher.Complete())
+            {
+                subExperssions.Enqueue(expMuncher.SpitUpWhile(x => {
+                    return x != delimter;
+                }));
+            }
+
+            List<Expression> expressionsList = new List<Expression>();
+            while(subExperssions.Count != 0)
+            {
+
+            }
+
+            return new Expression();
+        }
+
+        // for now we'll only support ands, nots, ors and xors.
+        // these parse the sub expressions
 
         /// <summary>
         /// Parses a characater name
