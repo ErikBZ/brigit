@@ -1,15 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brigit", "Brigit\Brigit.csproj", "{7B4F47AE-3FEB-4BD6-921A-C647BAD1C26C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrigitVisualizer", "BrigitVisualizer\BrigitVisualizer.csproj", "{A4A7991C-751E-4DA2-BC2B-516C9272603D}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8ABB0F39-CF19-433C-853D-A4CFC4344087}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrigitUnitTest", "BrigitUnitTest\BrigitUnitTest.csproj", "{5EF66550-3ADD-4669-9CFD-1614DC24B742}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrigitTest", "BrigitUnitTest\BrigitTest.csproj", "{5EF66550-3ADD-4669-9CFD-1614DC24B742}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,22 +37,6 @@ Global
 		{7B4F47AE-3FEB-4BD6-921A-C647BAD1C26C}.Release|x64.Build.0 = Release|Any CPU
 		{7B4F47AE-3FEB-4BD6-921A-C647BAD1C26C}.Release|x86.ActiveCfg = Release|Any CPU
 		{7B4F47AE-3FEB-4BD6-921A-C647BAD1C26C}.Release|x86.Build.0 = Release|Any CPU
-		{A4A7991C-751E-4DA2-BC2B-516C9272603D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A4A7991C-751E-4DA2-BC2B-516C9272603D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A4A7991C-751E-4DA2-BC2B-516C9272603D}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{A4A7991C-751E-4DA2-BC2B-516C9272603D}.Debug|ARM.Build.0 = Debug|Any CPU
-		{A4A7991C-751E-4DA2-BC2B-516C9272603D}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{A4A7991C-751E-4DA2-BC2B-516C9272603D}.Debug|x64.Build.0 = Debug|Any CPU
-		{A4A7991C-751E-4DA2-BC2B-516C9272603D}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{A4A7991C-751E-4DA2-BC2B-516C9272603D}.Debug|x86.Build.0 = Debug|Any CPU
-		{A4A7991C-751E-4DA2-BC2B-516C9272603D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A4A7991C-751E-4DA2-BC2B-516C9272603D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A4A7991C-751E-4DA2-BC2B-516C9272603D}.Release|ARM.ActiveCfg = Release|Any CPU
-		{A4A7991C-751E-4DA2-BC2B-516C9272603D}.Release|ARM.Build.0 = Release|Any CPU
-		{A4A7991C-751E-4DA2-BC2B-516C9272603D}.Release|x64.ActiveCfg = Release|Any CPU
-		{A4A7991C-751E-4DA2-BC2B-516C9272603D}.Release|x64.Build.0 = Release|Any CPU
-		{A4A7991C-751E-4DA2-BC2B-516C9272603D}.Release|x86.ActiveCfg = Release|Any CPU
-		{A4A7991C-751E-4DA2-BC2B-516C9272603D}.Release|x86.Build.0 = Release|Any CPU
 		{5EF66550-3ADD-4669-9CFD-1614DC24B742}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5EF66550-3ADD-4669-9CFD-1614DC24B742}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EF66550-3ADD-4669-9CFD-1614DC24B742}.Debug|ARM.ActiveCfg = Debug|Any CPU

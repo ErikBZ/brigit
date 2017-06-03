@@ -50,16 +50,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\FlagExpression\And.cs" />
     <Compile Include="Attributes\AttributeManager.cs" />
-    <Compile Include="Attributes\FlagExpression\Expression.cs" />
-    <Compile Include="Attributes\FlagExpression\Not.cs" />
-    <Compile Include="Attributes\FlagExpression\Or.cs" />
-    <Compile Include="Attributes\FlagExpression\Xor.cs" />
+    <Compile Include="Attributes\ExpressionParser\Parser.cs" />
+    <Compile Include="Attributes\Operators\And.cs" />
+    <Compile Include="Attributes\Operators\IExpression.cs" />
+    <Compile Include="Attributes\Operators\Mux.cs" />
+    <Compile Include="Attributes\Operators\Or.cs" />
+    <Compile Include="Attributes\Operators\Variable.cs" />
     <Compile Include="IO\BrigitIO.cs" />
-    <Compile Include="Parser\ParserExceptions.cs" />
-    <Compile Include="Parser\TomeParser.cs" />
-    <Compile Include="Parser\TomeReader.cs" />
+    <Compile Include="TomeParser\ParserExceptions.cs" />
+    <Compile Include="TomeParser\TomeParser.cs" />
+    <Compile Include="TomeParser\TomeReader.cs" />
     <Compile Include="Runtime\BrigitRuntime.cs" />
     <Compile Include="Attributes\Flags.cs" />
     <Compile Include="Attributes\GlobalFlags.cs" />

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Brigit.Parser
+namespace Brigit.TomeParser
 {
     /// <summary>
     /// A class that steps through a string to parse it

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Brigit.Attributes;
-using Brigit.Attributes.FlagExpression;
+using Brigit.Attributes.Operators;
 using Brigit.Structure;
 
 // Rename BrigitParser to BrigitParser
-namespace Brigit.Parser
+namespace Brigit.TomeParser
 {
 
     /// <summary>
@@ -271,7 +271,7 @@ namespace Brigit.Parser
         // this can be sent to it's own class
         // TODO put this in it's own class
         // this parses the overall expressions
-        public Expression ParseExpression(string expression)
+        public IExpression ParseExpression(string expression)
         {
             // this dash is the default for no real reason
             char delimter = '-';
@@ -320,13 +320,13 @@ namespace Brigit.Parser
                 }));
             }
 
-            List<Expression> expressionsList = new List<Expression>();
+            List<IExpression> expressionsList = new List<IExpression>();
             while(subExperssions.Count != 0)
             {
 
             }
 
-            return new Expression();
+            return new Variable();
         }
 
         // for now we'll only support ands, nots, ors and xors.

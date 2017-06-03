@@ -2,13 +2,13 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Brigit;
 using Brigit.IO;
-using Brigit.Parser;
+using Brigit.TomeParser;
 using Brigit.Structure;
 
-namespace BrigitUnitTest
+namespace Brigit.Test
 {
     [TestClass]
-    public class UnitTest1
+    public class GeneralTest
     {
         /*
          * This first set of functions is here to make sure that the overriden equals
@@ -129,15 +129,17 @@ namespace BrigitUnitTest
         [TestMethod]
         public void TestEqualNode5()
         {
-            // arrange
-            Dialog node1 = new Dialog();
-            node1.Character = "char";
-            node1.RequiredFlags = "flag1";
-            node1.FlagToggles = new System.Collections.Generic.Dictionary<string, bool>();
-            node1.Children = new DomNode[3];
-            node1.speechText = "Say something";
-            // arraning node 2
-            Dialog node2 = new Dialog();
+			// arrange
+			Dialog node1 = new Dialog()
+			{
+				Character = "char",
+				RequiredFlags = "flag1",
+				FlagToggles = new System.Collections.Generic.Dictionary<string, bool>(),
+				Children = new DomNode[3],
+				speechText = "Say something"
+			};
+			// arraning node 2
+			Dialog node2 = new Dialog();
             node2.Character = "char";
             node2.RequiredFlags = "flag1";
             node2.FlagToggles = new System.Collections.Generic.Dictionary<string, bool>();
@@ -368,7 +370,7 @@ namespace BrigitUnitTest
 
             // setting up the parser to parse
             string[] lines = BrigitIO.ReadTomeFile(@"..\..\Tests\attribute_test_1.tome");
-            TomeParser parser = new TomeParser(lines);
+			TomeParser.TomeParser parser = new TomeParser.TomeParser(lines);
             // arrange a tree that should be the product of this tome
             /*
              * TODO write all the shit out at some point
@@ -394,7 +396,7 @@ namespace BrigitUnitTest
 
             // setting up the parser to parse
             string[] lines = BrigitIO.ReadTomeFile(@"..\..\Tests\choice_test_1.tome");
-            TomeParser parser = new TomeParser(lines);
+			TomeParser.TomeParser parser = new TomeParser.TomeParser(lines);
             // arrange a tree that should be the product of this tome
             /*
              * TODO write all the shit out at some point
@@ -428,7 +430,7 @@ namespace BrigitUnitTest
 
             // setting up the parser to parse
             string[] lines = BrigitIO.ReadTomeFile(@"..\..\Tests\choice_test_2.tome");
-            TomeParser parser = new TomeParser(lines);
+			TomeParser.TomeParser parser = new TomeParser.TomeParser(lines);
             // arrange a tree that should be the product of this tome
             /*
              * TODO write all the shit out at some point
@@ -451,7 +453,7 @@ namespace BrigitUnitTest
 
             // setting up the parser to parse
             string[] lines = BrigitIO.ReadTomeFile(@"..\..\Tests\test_choice_3.tome");
-            TomeParser parser = new TomeParser(lines);
+			TomeParser.TomeParser parser = new TomeParser.TomeParser(lines);
             // arrange a tree that should be the product of this tome
             /*
              * TODO write all the shit out at some point
@@ -474,7 +476,7 @@ namespace BrigitUnitTest
 
             // setting up the parser to parse
             string[] lines = BrigitIO.ReadTomeFile(@"..\..\Tests\dialog_exchange_1.tome");
-            TomeParser parser = new TomeParser(lines);
+			TomeParser.TomeParser parser = new TomeParser.TomeParser(lines);
             // arrange a tree that should be the product of this tome
             /*
              * TODO write all the shit out at some point
@@ -497,7 +499,7 @@ namespace BrigitUnitTest
 
             // setting up the parser to parse
             string[] lines = BrigitIO.ReadTomeFile(@"..\..\Tests\dialog_exchange_2.tome");
-            TomeParser parser = new TomeParser(lines);
+			TomeParser.TomeParser parser = new TomeParser.TomeParser(lines);
             // arrange a tree that should be the product of this tome
             /*
              * TODO write all the shit out at some point
@@ -520,7 +522,7 @@ namespace BrigitUnitTest
 
             // setting up the parser to parse
             string[] lines = BrigitIO.ReadTomeFile(@"..\..\Tests\syntax_test_1.tome");
-            TomeParser parser = new TomeParser(lines);
+			TomeParser.TomeParser parser = new TomeParser.TomeParser(lines);
             // arrange a tree that should be the product of this tome
             /*
              * TODO write all the shit out at some point
@@ -543,7 +545,7 @@ namespace BrigitUnitTest
 
             // setting up the parser to parse
             string[] lines = BrigitIO.ReadTomeFile(@"..\..\Tests\syntax_test_2.tome");
-            TomeParser parser = new TomeParser(lines);
+			TomeParser.TomeParser parser = new TomeParser.TomeParser(lines);
             // arrange a tree that should be the product of this tome
             /*
              * TODO write all the shit out at some point

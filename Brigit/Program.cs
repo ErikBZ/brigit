@@ -7,7 +7,7 @@ using System.Collections;
 using System.IO;
 using System.Text.RegularExpressions;
 using static Brigit.IO.BrigitIO;
-using Brigit.Parser;
+using Brigit.TomeParser;
 using Brigit.Structure;
 
 namespace Brigit
@@ -17,7 +17,7 @@ namespace Brigit
         static void Main(string[] args)
         {
             string[] lines = ReadTomeFile(@"..\..\Tests\attribute_test_1.tome");
-            TomeParser parser = new TomeParser(lines);
+			TomeParser.TomeParser parser = new TomeParser.TomeParser(lines);
             // arrange a tree that should be the product of this tome
             /*
              * TODO write all the shit out at some point
