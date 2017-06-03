@@ -13,12 +13,25 @@ namespace Brigit.Attributes.Operators
 
 		public void Add(IExpression exp)
 		{
-			throw new NotImplementedException();
+			exp.Add(exp);
 		}
 
 		public Flag Evaluate(Dictionary<string, Flag> locals, Dictionary<string, Flag> globals)
 		{
-			throw new NotImplementedException();
+			Flag evaluation = Flag.False;
+			foreach (IExpression e in exp)
+			{
+				if(e.Evaluate(locals, globals) == Flag.True)
+				{
+					return Flag.True;
+				}
+				else if(e.Evaluate(locals, globals) == Flag.Unset)
+				{
+					return Flag.Unset;
+				}
+			}
+
+			return evaluation;
 		}
 	}
 }

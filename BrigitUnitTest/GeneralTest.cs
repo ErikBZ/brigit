@@ -14,21 +14,6 @@ namespace Brigit.Test
          * This first set of functions is here to make sure that the overriden equals
          * function is working just fine
          */
-        [TestMethod]
-        public void TestExpression1()
-        {
-            // arrange
-            // action
-            // assert
-        }
-
-        [TestMethod]
-        public void TestExpression2()
-        {
-            // arrange
-            // action
-            // assert
-        }
 
         [TestMethod]
         public void TestEqualNode1()

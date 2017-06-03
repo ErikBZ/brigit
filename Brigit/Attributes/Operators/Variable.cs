@@ -20,14 +20,28 @@ namespace Brigit.Attributes.Operators
 			variableName = name;
 		}
 
+		// nothing can be added to variables
+		// maybe return an error?
 		public void Add(IExpression exp)
 		{
-			throw new NotImplementedException();
+			return;
 		}
 
 		public Flag Evaluate(Dictionary<string, Flag> locals, Dictionary<string, Flag> globals)
 		{
-			throw new NotImplementedException();
+			if (locals.ContainsKey(variableName))
+			{
+				return locals[variableName];
+			}
+			else if(globals.ContainsKey(variableName))
+			{
+				return globals[variableName];
+			}
+			else
+			{
+				// should throw an exception here
+				return Flag.Unset;
+			}
 		}
 	}
 }

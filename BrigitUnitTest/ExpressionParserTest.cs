@@ -17,17 +17,23 @@ namespace Brigit.Test
 			string expression = "var1 | var2 | (var1 & var3)";
 
 			// act
-			Attributes.ExpressionParser.Parser.Parse(expression);
+			bool parsedWell = Parser.Preprocess(expression);
 
 			// assert
-
-
+			Assert.AreEqual(true, parsedWell);	
 		}
 
 		[TestMethod]
-		public void ParseExpression_InvalidExpressionShouldFailAtPreprocessor()
+		public void ParseExpression_InvalidExpressionFailsPreprocessor()
 		{
+			// arrange
+			string expression = "var1 & var2 | (var1 & var3)";
 
+			// act
+			bool parsedWell = Parser.Preprocess(expression);
+
+			// assert
+			Assert.AreEqual(false, parsedWell);	
 		}
 
 		[TestMethod]

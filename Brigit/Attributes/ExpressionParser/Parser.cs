@@ -176,7 +176,7 @@ namespace Brigit.Attributes.ExpressionParser
             }
 
             // making sure the last item in the stack is not a paren
-            if(expressionTracker.Count != 0)
+            if(expressionTracker.Count != 0 && stackIsGood)
             {
                 stackIsGood = !(expressionTracker.Peek() == '(' || expressionTracker.Peek() == ')');
             } 

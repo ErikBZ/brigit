@@ -19,7 +19,22 @@ namespace Brigit.Attributes.Operators
 
 		public Flag Evaluate(Dictionary<string, Flag> locals, Dictionary<string, Flag> globals)
 		{
-			throw new NotImplementedException();
+			Flag eval = Flag.True;
+
+			foreach(IExpression e in exp)
+			{
+				Flag subEval = e.Evaluate(locals, globals);
+				if(subEval == Flag.False)
+				{
+					return Flag.False;
+				}
+				else if(subEval == Flag.Unset)
+				{
+					return Flag.Unset;
+				}
+			}
+
+			return eval;
 		}
 	} 
 }
