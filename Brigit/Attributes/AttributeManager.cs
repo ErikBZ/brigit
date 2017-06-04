@@ -20,6 +20,18 @@ namespace Brigit.Attributes
         // duration of the dialog
         string Length;
 
+		public AttributeManager()
+		{
+			RequiredGlobalFlags = new Dictionary<string, Flag>();
+			RequiredLocalFlags = new Dictionary<string, Flag>();
+			SetLocalFlags = new Dictionary<string, Flag>();
+			SetGlobalFlags = new Dictionary<string, Flag>();
+
+			Emote = string.Empty;
+
+			Length = string.Empty;
+		}
+
         public override bool Equals(object obj)
         {
             bool equal = true;
@@ -67,5 +79,10 @@ namespace Brigit.Attributes
             }
             return equal;
         }
+
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
     }
 }

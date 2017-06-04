@@ -247,5 +247,10 @@ namespace Brigit.Structure
 
             return nodesAreEqual;
         }
-    }
+
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
+	}
 }

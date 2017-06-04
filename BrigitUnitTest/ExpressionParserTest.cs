@@ -51,16 +51,16 @@ namespace Brigit.Test
 
 			// act
 			IExpression exp = null;	
-			if (Attributes.ExpressionParser.Parser.Preprocess(expression))
+			if (Parser.Preprocess(expression))
 			{
-				exp = Attributes.ExpressionParser.Parser.Parse(expression);
+				exp = Parser.Parse(expression);
 			}
 
 			result = exp.Evaluate(locals, globals);
 
 
 			// assert
-			Assert.AreEqual(expression, result);
+			Assert.AreEqual(expected, result);
 		}
 	}
 }

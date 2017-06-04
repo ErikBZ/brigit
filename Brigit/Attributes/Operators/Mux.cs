@@ -6,16 +6,16 @@ namespace Brigit.Attributes.Operators
 	// Mux is a better way to describe what this operation does
 	public class Mux:IExpression
     {
-		private List<IExpression> exp;
+		private List<IExpression> ExpList;
 
 		public Mux()
 		{
-			exp = new List<IExpression>();
+			ExpList = new List<IExpression>();
 		}
 
 		public void Add(IExpression exp)
 		{
-			throw new NotImplementedException();
+			ExpList.Add(exp);
 		}
 
 
@@ -23,7 +23,7 @@ namespace Brigit.Attributes.Operators
 		{
 			Flag eval = Flag.False;
 			
-			foreach(IExpression e in exp)
+			foreach(IExpression e in ExpList)
 			{
 				Flag subEval = e.Evaluate(locals, globals);
 

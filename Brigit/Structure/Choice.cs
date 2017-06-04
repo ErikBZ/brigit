@@ -68,5 +68,11 @@ namespace Brigit.Structure
 
             return choicesAreEqual;
         }
+
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
+ 
     }
 }

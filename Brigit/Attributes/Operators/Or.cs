@@ -5,21 +5,21 @@ namespace Brigit.Attributes.Operators
 {
 	public class Or : IExpression
 	{
-		private List<IExpression> exp;
+		private List<IExpression> ExpList;
 		public Or()
 		{
-			exp = new List<IExpression>();
+			ExpList = new List<IExpression>();
 		}
 
 		public void Add(IExpression exp)
 		{
-			exp.Add(exp);
+			ExpList.Add(exp);
 		}
 
 		public Flag Evaluate(Dictionary<string, Flag> locals, Dictionary<string, Flag> globals)
 		{
 			Flag evaluation = Flag.False;
-			foreach (IExpression e in exp)
+			foreach (IExpression e in ExpList)
 			{
 				if(e.Evaluate(locals, globals) == Flag.True)
 				{

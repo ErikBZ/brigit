@@ -40,5 +40,10 @@ namespace Brigit.Structure
             bool dialogsAreEqual = base.Equals(obj) && speechText.Equals(node.speechText);
             return dialogsAreEqual;
         }
-    }
+
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
+	}
 }

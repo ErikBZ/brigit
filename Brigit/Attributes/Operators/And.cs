@@ -5,23 +5,23 @@ namespace Brigit.Attributes.Operators
 {
     public class And:IExpression
     {
-		private List<IExpression> exp;
+		private List<IExpression> ExpList;
 
         public And()
         {
-			exp = new List<IExpression>();
+			ExpList = new List<IExpression>();
         }
 
 		public void Add(IExpression exp)
 		{
-			throw new NotImplementedException();
+			ExpList.Add(exp);
 		}
 
 		public Flag Evaluate(Dictionary<string, Flag> locals, Dictionary<string, Flag> globals)
 		{
 			Flag eval = Flag.True;
 
-			foreach(IExpression e in exp)
+			foreach(IExpression e in ExpList)
 			{
 				Flag subEval = e.Evaluate(locals, globals);
 				if(subEval == Flag.False)

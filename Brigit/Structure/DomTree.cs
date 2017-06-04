@@ -309,5 +309,11 @@ namespace Brigit.Structure
 
             return treesAreEqual;
         }
+
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
+
     }
 }
