@@ -6,11 +6,19 @@ using System.Threading.Tasks;
 
 namespace Brigit.TomeParser
 {
-    /// <summary>
-    /// A class that steps through a string to parse it
-    /// </summary>
-    class TomeReader
-    {
+	/// <summary>
+	/// A class that steps through a string to parse it
+	/// </summary>
+	class TomeReader
+	{
+		public char CurrentChar
+		{
+			get
+			{
+				return SniffChar();
+			}
+		}
+
         string[] all_text;
         // The actual line and position of the character
         int lineNum;

@@ -3,33 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Brigit.Attributes.Operators;
 
 namespace Brigit.Attributes
 {
-    class AttributeManager
-    {
-        // Flags
-        Dictionary<string, Flag> RequiredLocalFlags;
-        Dictionary<string, Flag> RequiredGlobalFlags;
-        Dictionary<string, Flag> SetLocalFlags;
-        Dictionary<string, Flag> SetGlobalFlags;
+	public class AttributeManager
+	{
+		// Flags
+		public IExpression Expression { get; set; }
+
+		public Dictionary<Flag, string> SetFlags { get; set; }
+
 
         // emote for the saying
-        string Emote;
+        public string Emote { get; set; }
 
         // duration of the dialog
-        string Length;
+        public string Length { get; set; }
+
 
 		public AttributeManager()
 		{
-			RequiredGlobalFlags = new Dictionary<string, Flag>();
-			RequiredLocalFlags = new Dictionary<string, Flag>();
-			SetLocalFlags = new Dictionary<string, Flag>();
-			SetGlobalFlags = new Dictionary<string, Flag>();
+			SetFlags = new Dictionary<Flag, string>();
 
 			Emote = string.Empty;
 
 			Length = string.Empty;
+
+			Expression = null;
 		}
 
         public override bool Equals(object obj)
@@ -42,18 +43,15 @@ namespace Brigit.Attributes
             else
             {
                 AttributeManager am = (AttributeManager)obj;
-                equal = FlagsAreEqual(RequiredGlobalFlags, am.RequiredGlobalFlags) &&
-                    FlagsAreEqual(RequiredLocalFlags, am.RequiredLocalFlags) &&
-                    FlagsAreEqual(SetLocalFlags, am.SetLocalFlags) &&
-                    FlagsAreEqual(SetGlobalFlags, am.SetGlobalFlags) &&
+                equal = FlagsAreEqual(SetFlags, am.SetFlags) &&
                     Emote.Equals(am.Emote) &&
-                    Length.Equals(am.Length); ;
+                    Length.Equals(am.Length); 
             }
 
             return equal;
         }
 
-        public bool FlagsAreEqual(Dictionary<string, Flag> flags1, Dictionary<string, Flag> flags2)
+        public bool FlagsAreEqual(Dictionary<Flag, string> flags1, Dictionary<Flag, string> flags2)
         {
             bool equal = true;
             // checking the equality of the dictionaries
@@ -63,7 +61,7 @@ namespace Brigit.Attributes
             // entries if there are the same count of entries.
             if (dictionariesEqual)
             {
-                foreach (KeyValuePair<string, Flag> kvp in flags1)
+                foreach (KeyValuePair<Flag, string> kvp in flags1)
                 {
                     if (flags2.ContainsKey(kvp.Key))
                     {

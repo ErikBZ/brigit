@@ -14,7 +14,7 @@ namespace Brigit.TomeParser
     /// <summary>
     /// Parses a tome document into a DOM data structure
     /// </summary>
-    public class TomeParser
+    public partial class TomeParser
     {
         // MUNCHER LIVES ON
         TomeReader muncher;
@@ -138,201 +138,6 @@ namespace Brigit.TomeParser
         }
 
         /// <summary>
-        /// Parses the possible choices that a player has for a certain part
-        /// </summary>
-        /// <returns></returns>
-        private DomTree ParseChoice()
-        {
-            // this will be used later when trees can be created within a CHOICE block
-            DomTree tree = new DomTree();
-            // for now we only really care about making sure Chioce works
-            Choice node = new Choice();
-
-            // parsing the header and the beginning
-            muncher.ConsumeString("CHOICE");
-            muncher.EatWhiteSpace();
-            
-            // attribute parsing here? yeah probably but i'll save that for later
-            // TODO add the parsing of the attributes here
-            Dictionary<string, Flag> attributes = ParseNodeAttributes();
-            muncher.ConsumeChar('{');
-            muncher.EatWhiteSpace();
-
-
-            List<string> choices = new List<string>();
-            List<DomTree> branches = new List<DomTree>();
-            int numberOfChoices = 0;
-
-            while (!muncher.CheckChar('}'))
-            {
-                DomTree branch = null;
-                numberOfChoices++;
-
-                // Parsing the plain text that a character will say
-                choices.Add(ParseSpeechText());
-
-                // Every plaintext speech blurb must be ended with an asterisk
-                if (muncher.SpitChar() != '*')
-                {
-                    throw new Exception($"Speech text at {muncher.Position} did not end in an *");
-                }
-
-                // if there's a paren then it means this choice has local or global
-                // flags to set or require
-                // TODO parse required, local, and global flags
-                if (muncher.CheckChar('('))
-                {
-                    Dictionary<string, Flag> thingy = ParseNodeAttributes();
-                }
-
-                // attibute and flag requirements here.
-                // if there are none then the default will be used
-                if (muncher.StartsWith("->"))
-                {
-                    muncher.ConsumeString("->");
-                    if (muncher.CheckChar('{'))
-                    {
-                        branch = ParseDomTree(true);
-                    }
-                    else
-                    {
-                        throw new Exception($"New branch must start with open '{{'. {muncher.Position}");
-                    }
-                }
-                else
-                {
-                    // TODO Create add an empty node as a possible branch if a choice does not point
-                    // to a branch.
-                    branch = DomTree.CreateEmptyDomTree();
-                }
-
-                branches.Add(branch);
-                muncher.EatWhiteSpace();
-            }
-            // eating the last closing bracket
-            muncher.ConsumeChar();
-            node.Choices = choices.ToArray();
-            tree.Add(node);
-            tree.Add(branches.ToArray());
-            return tree;
-        }
-
-        /// <summary>
-        /// Parses a attributes of a node like expression, flag requirements and other things
-        /// </summary>
-        /// <returns></returns>
-        // an open paren should always be the first thing that this method sees
-        // ( [a-z]* )
-        private Dictionary<string, Flag> ParseNodeAttributes()
-        {
-            Dictionary<string, Flag> attributes = new Dictionary<string, Flag>();
-
-            // will error if this is not true
-            muncher.ConsumeChar('(');
-
-            // eats a string and then stops at the next :
-            while (!muncher.CheckChar(')'))
-            {
-                string attr = muncher.SpitUpAlpha();
-                // after the attribute there must be a semicolon to show that the value is coming next
-                muncher.ConsumeChar(':');
-
-                // depending on the value there maybe more than one value for the attribute like for flags
-                string[] values = ParseAttributeValues().ToArray();
-            }
-            muncher.ConsumeChar(')');
-            return attributes;
-        }
-
-        // will eat whitespace first to make sure it can start at an alpha character
-        private List<string> ParseAttributeValues()
-        { 
-            List<string> values = new List<string>();
-
-            muncher.EatWhiteSpace();
-            
-            // if it's an end paren then the attributes list has ended, otherwise
-            // if it s a comma then it is the end of the value list
-            while(!(muncher.CheckChar(')') || muncher.CheckChar(',')))
-            {
-                values.Add(muncher.SpitUpAlpha());
-                // values should be delimited by spaces
-                muncher.EatWhiteSpace();
-            }
-
-            if(muncher.CheckChar(','))
-            {
-                muncher.ConsumeChar();
-            }
-
-            return values;
-        }
-
-        // this can be sent to it's own class
-        // TODO put this in it's own class
-        // this parses the overall expressions
-        public IExpression ParseExpression(string expression)
-        {
-            // this dash is the default for no real reason
-            char delimter = '-';
-
-            // starts at some name, and end at ;
-            // | is or, & is and, ! is not, ^ is exclusive or
-            int counter = 0;
-            while(delimter == '-' && counter < expression.Length)
-            {
-                char opt = expression[counter];
-                // search for base operation
-                // ! is a special case
-                switch (opt)
-                {
-                    case '&':
-                        delimter = '&';
-                        break;
-                    case '|':
-                        delimter = '|';
-                        break;
-                    case '^':
-                        delimter = '^';
-                        break;
-                    // TODO all of this
-                    default:
-                        // do nothing for simple characters
-                        break;
-                }
-                counter++;
-            }
-
-            // this means that there was no delimter found
-            // and it justa base flag, or a NOT flag / experession
-            if(delimter == '-')
-            {
-
-            }
-
-            TomeReader expMuncher = new TomeReader(expression);
-            Queue<string> subExperssions = new Queue<string>();
-            // parses the whole experssion into substrings
-            while (!expMuncher.Complete())
-            {
-                subExperssions.Enqueue(expMuncher.SpitUpWhile(x => {
-                    return x != delimter;
-                }));
-            }
-
-            List<IExpression> expressionsList = new List<IExpression>();
-            while(subExperssions.Count != 0)
-            {
-
-            }
-
-            return new Variable();
-        }
-
-        // for now we'll only support ands, nots, ors and xors.
-        // these parse the sub expressions
-
-        /// <summary>
         /// Parses a characater name
         /// </summary>
         /// <returns></returns>
@@ -381,7 +186,7 @@ namespace Brigit.TomeParser
             Dictionary<string, Flag> values = new Dictionary<string, Flag>();
             if (muncher.CheckChar('('))
             {
-                ParseNodeAttributes();
+                ParseAttributes();
             }
 
             muncher.ConsumeChar('{');
