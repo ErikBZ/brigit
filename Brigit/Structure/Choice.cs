@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Brigit.Attributes;
 
 /// <summary>
 /// Summary description for Class1
@@ -11,15 +12,12 @@ namespace Brigit.Structure
     public class Choice : DomNode
     {
         public string[] Choices { get; set; }
-        public Dictionary<int, Dictionary<string, bool>> FlagsRasiedByChoices { get; set; }
-
 
         // once again i'll add the other ones later
         public Choice() :
             base()
         {
             this.Choices = new string[0];
-            FlagsRasiedByChoices = new Dictionary<int, Dictionary<string, bool>>();
         }
 
         public override string ToString()

@@ -61,6 +61,7 @@
     <Compile Include="TomeParser\ParserExceptions.cs" />
     <Compile Include="TomeParser\TomeParseAttributes.cs" />
     <Compile Include="TomeParser\TomeParseChoice.cs" />
+    <Compile Include="TomeParser\TomeParseDialog.cs" />
     <Compile Include="TomeParser\TomeParser.cs" />
     <Compile Include="TomeParser\TomeReader.cs" />
     <Compile Include="Runtime\BrigitRuntime.cs" />

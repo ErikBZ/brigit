@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using System.Runtime.Serialization;
+using Brigit.Attributes;
 
 /// <summary>
 /// Summary description for Class1
@@ -56,11 +57,11 @@ namespace Brigit.Structure
         /// <summary>
         /// Will load in flags that are used through out the story
         /// </summary>
-        public Dictionary<string, bool> GlobalFlags { get; set; }
+        public Dictionary<string, Flag> GlobalFlags { get; set; }
         /// <summary>
         /// Used only in a single tree and are instantiated false to begin with
         /// </summary>
-        public Dictionary<string, bool> LocalFlags { get; set; }
+        public Dictionary<string, Flag> LocalFlags { get; set; }
         
         public List<string> Characaters
         {
@@ -90,8 +91,8 @@ namespace Brigit.Structure
             Name = string.Empty;
             chars = new List<string>();
             backgrounds = new List<string>();
-            LocalFlags = new Dictionary<string, bool>();
-            GlobalFlags = new Dictionary<string, bool>();
+            LocalFlags = new Dictionary<string, Flag>();
+            GlobalFlags = new Dictionary<string, Flag>();
         }
 
         public DomTree(List<string> cArray)

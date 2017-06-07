@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 using System.Xml.Serialization;
 using System.Xml.Linq;
 using System.Xml;
+using Brigit.Attributes;
 
 /// <summary>
 /// Summary description for Class1
@@ -31,12 +32,6 @@ namespace Brigit.Structure
         public string RequiredFlags { get; set; }
 
         /// <summary>
-        /// The flags that this Node will set
-        /// </summary>
-        [DataMember]
-        Dictionary<string, bool> flagSets;
-
-        /// <summary>
         /// The character that "owns" this node, IE the character who said this
         /// </summary>
         [DataMember]
@@ -49,14 +44,11 @@ namespace Brigit.Structure
         [DataMember]
         string background;
 
+		[DataMember]
+		public AttributeManager Attributes { get; set; }
+
         [DataMember]
         NodeType type;
-
-        public Dictionary<string, bool> FlagToggles
-        {
-            get { return flagSets; }
-            set { flagSets = value; }
-        }
 
         public string Character
         {
@@ -82,9 +74,9 @@ namespace Brigit.Structure
         public DomNode()
         {
             Children = new DomNode[0];
-            flagSets = new Dictionary<string, bool>();
             RequiredFlags = string.Empty;
             Character = string.Empty;
+			Attributes = new AttributeManager();
         }
 
         /// <summary>
@@ -100,8 +92,6 @@ namespace Brigit.Structure
             Dictionary<string, bool> flagSets, string character)
         {
             this.Children = children;
-            this.RequiredFlags = flags;
-            this.flagSets = flagSets;
             this.character = character;
         }
 
@@ -121,7 +111,9 @@ namespace Brigit.Structure
 
             foreach (DomNode child in Children)
             {
-                bool isNextChild= child.EvaluateFlags(scene);
+				// TODO I may want to change this later so that I can do different things
+				// for different flags
+                bool isNextChild= child.EvaluateFlags(scene) == Flag.True;
                 if (isNextChild && next != null)
                 {
                     // throw exception more than one node has met the flags
@@ -149,24 +141,9 @@ namespace Brigit.Structure
         /// a bool indicating if it's flag requirements are met
         /// </summary>
         /// <returns></returns>
-        public bool EvaluateFlags(DomTree scene)
+        public Flag EvaluateFlags(DomTree scene)
         {
-            if (scene.GlobalFlags.ContainsKey(RequiredFlags))
-            {
-                return scene.GlobalFlags[RequiredFlags];
-            }
-            else if (scene.LocalFlags.ContainsKey(RequiredFlags))
-            {
-                return scene.LocalFlags[RequiredFlags];
-            }
-            else if(RequiredFlags == string.Empty)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+			return Attributes.Expression.Evaluate(scene.LocalFlags, scene.GlobalFlags);
         }
 
         /// <summary>
@@ -214,34 +191,9 @@ namespace Brigit.Structure
              * I'll need to refactor RequiredFlags, and FlagSets at some point
              */
 
-            // checking the equality of the dictionaries
-            bool dictionariesEqual = this.flagSets.Count == node.flagSets.Count;
-            // if the dictionary counts are not equal then obviously the
-            // entries will be different as well. this only runs to check the actual
-            // entries if there are the same count of entries.
-            if(dictionariesEqual)
-            {
-                foreach (KeyValuePair<string, bool> kvp in this.flagSets)
-                {
-                    if(node.flagSets.ContainsKey(kvp.Key))
-                    {
-                        // if x is false then all subsequent operations will be false
-                        // if it's true, y1 and y2 must be the same so that it can continue
-                        // to be true. hence y1 xor y2
-                        // x = x && (y1 ^ y2)
-                        dictionariesEqual = dictionariesEqual && !(kvp.Value ^ node.flagSets[kvp.Key]);
-                    }
-                    else
-                    {
-                        dictionariesEqual = false;
-                    }
-                }
-            }
-
-            bool nodesAreEqual = this.RequiredFlags.Equals(node.RequiredFlags) &&
-                this.Children.Length == node.Children.Length &&
+            bool nodesAreEqual = this.Children.Length == node.Children.Length &&
                 this.character.Equals(node.character) &&
-                dictionariesEqual;
+                this.Attributes.Equals(node.Attributes);
 
             Console.WriteLine(nodesAreEqual);
 

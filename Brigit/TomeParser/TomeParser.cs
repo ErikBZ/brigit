@@ -52,7 +52,7 @@ namespace Brigit.TomeParser
             scene.Add(ParseDomTree(false));
             if (scene.GlobalFlags == null)
             {
-                scene.GlobalFlags = new Dictionary<string, bool>();
+                scene.GlobalFlags = new Dictionary<string, Flag>();
             }
             return scene;
         }
@@ -159,54 +159,6 @@ namespace Brigit.TomeParser
                 characters.Add(characterName);
             }
             return characterName;
-        }
-
-
-        /// <summary>
-        /// Parses and entire dialog set that a character will say
-        /// It is ended by a '}' closing curly brace
-        /// </summary>
-        /// <returns>A DomTree containing the entry nodes for what the character said</returns>
-        // This is looking a lot like a function
-        public DomTree ParseCharacterDialog()
-        {
-            DomTree tree = new DomTree();
-
-            muncher.EatWhiteSpace();
-            string character = ParseCharacterName();
-
-            if (!characters.Contains(character))
-            {
-                // print exception and exit
-                Console.WriteLine($"{character} is not character in the scene. Error found at {muncher.Position}");
-            }
-
-            // parse attributes like expression?
-            // i'll save this for later
-            Dictionary<string, Flag> values = new Dictionary<string, Flag>();
-            if (muncher.CheckChar('('))
-            {
-                ParseAttributes();
-            }
-
-            muncher.ConsumeChar('{');
-            // parsing the actual text
-            while (muncher.SniffChar() != '}')
-            {
-                DomNode newNode = ParseSingleDialog();
-                newNode.Character = character;
-                tree.Add(newNode);
-                char asterisk = muncher.SniffChar();
-                if (asterisk == '*')
-                {
-                    muncher.ConsumeChar();
-                }
-            }
-
-            // eating the '}'
-            muncher.ConsumeChar();
-
-            return tree;
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Brigit.Attributes
 		// Flags
 		public IExpression Expression { get; set; }
 
-		public Dictionary<Flag, string> SetFlags { get; set; }
+		public Dictionary<string, Flag> SetFlags { get; set; }
 
 
         // emote for the saying
@@ -24,13 +24,13 @@ namespace Brigit.Attributes
 
 		public AttributeManager()
 		{
-			SetFlags = new Dictionary<Flag, string>();
+			SetFlags = new Dictionary<string, Flag>();
 
 			Emote = string.Empty;
 
 			Length = string.Empty;
 
-			Expression = null;
+			Expression = new Variable("TRUE");
 		}
 
         public override bool Equals(object obj)
@@ -51,7 +51,7 @@ namespace Brigit.Attributes
             return equal;
         }
 
-        public bool FlagsAreEqual(Dictionary<Flag, string> flags1, Dictionary<Flag, string> flags2)
+        public bool FlagsAreEqual(Dictionary<string, Flag> flags1, Dictionary<string, Flag> flags2)
         {
             bool equal = true;
             // checking the equality of the dictionaries
@@ -61,7 +61,7 @@ namespace Brigit.Attributes
             // entries if there are the same count of entries.
             if (dictionariesEqual)
             {
-                foreach (KeyValuePair<Flag, string> kvp in flags1)
+                foreach (KeyValuePair<string, Flag> kvp in flags1)
                 {
                     if (flags2.ContainsKey(kvp.Key))
                     {

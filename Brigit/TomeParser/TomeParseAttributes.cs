@@ -77,7 +77,7 @@ namespace Brigit.TomeParser
 		{
 			foreach(string name in flagNames)
 			{
-				am.SetFlags.Add(f, name);
+				am.SetFlags.Add(name, f);
 			}
 		}
 		private string GrabSubstringToParse()
