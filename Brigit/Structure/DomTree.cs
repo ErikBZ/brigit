@@ -4,9 +4,10 @@ using System.Collections;
 using System.Runtime.Serialization;
 using Brigit.Attributes;
 
-/// <summary>
-/// Summary description for Class1
-/// </summary>
+// TODO Create a ToDotGraph function
+// TODO Seperate the data DomNode datastruct from things like characters, backgrounds
+// and other non structure stuff
+
 namespace Brigit.Structure
 {
     // backgrounds, and flags are required and used
@@ -165,10 +166,37 @@ namespace Brigit.Structure
 
         public void Add(params DomTree[] trees)
         {
-            DomTree connectedTrees = ConnectTrees(trees);
-            this.Add(connectedTrees);
-            // all those treees have now been added to the tree!
+			// check if they're empty first. If the trees are empty then return
+			List<DomTree> nonEmptyTrees = new List<DomTree>();
+			foreach(DomTree t in trees)
+			{
+				if(!t.IsEmpty())
+				{
+					nonEmptyTrees.Add(t);
+				}
+			}
+
+			trees = nonEmptyTrees.ToArray();
+
+			// continue only if there are more than 0 trees to add
+			if(trees.Length != 0)
+			{
+	            DomTree connectedTrees = ConnectTrees(trees);
+	            this.Add(connectedTrees);
+	            // all those treees have now been added to the tree!
+			}
         }
+
+		/// <summary>
+		/// Checks if the Head and Tail are empty, then assumes the whole tree is empty
+		/// </summary>
+		/// <returns></returns>
+		private bool IsEmpty()
+		{
+			bool empty = this.Head.Type == NodeType.Empty;
+			empty &= (this.Tail.Length == 1) && this.Tail[0].Type == NodeType.Empty;
+			return empty;
+		}
 
         /// <summary>
         /// Connects trees by giving them the same Head, an empty Head
@@ -201,38 +229,6 @@ namespace Brigit.Structure
             newTree.Add(nodeHeads.ToArray());
             newTree.Tail = nodeTails.ToArray();
             return newTree;
-        }
-
-        /// <summary>
-        /// Sets the Dictionary of characters for this tree
-        /// </summary>
-        /// <param name="chars"></param>
-        [Obsolete("Decepricated can be removed at some point")]
-        public void SetCharacterDict(List<string> chars)
-        {
-            this.chars = chars;
-        }
-
-        /// <summary>
-        /// do not use
-        /// </summary>
-        /// <param name="charNames"></param>
-        // TODO right now this is just a place holder
-        // isn't needed anymore
-        public void SetCharacterDict(string[] charNames)
-        {
-            for(int i=0;i<charNames.Length;i++)
-            {
-                chars.Add(charNames[i]);
-            }
-        }
-
-        public void SetBackgrounds(string[] bckNames)
-        {
-            for(int i=0;i<bckNames.Length;i++)
-            {
-                backgrounds.Add(bckNames[i]);
-            }
         }
 
         /// <summary>

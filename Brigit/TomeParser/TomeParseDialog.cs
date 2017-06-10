@@ -29,14 +29,13 @@ namespace Brigit.TomeParser
                 Console.WriteLine($"{character} is not character in the scene. Error found at {muncher.Position}");
             }
 
-            // parse attributes like expression?
-            // i'll save this for later
-            Dictionary<string, Flag> values = new Dictionary<string, Flag>();
+			AttributeManager am = new AttributeManager();
+
             if (muncher.CheckChar('['))
             {
 				// safe to assume char is being eaten is [
 				muncher.ConsumeChar();
-                ParseAttributes();
+				am = ParseAttributes();
 				// forcing the section to end
 				muncher.ConsumeChar(']');
             }
@@ -47,12 +46,14 @@ namespace Brigit.TomeParser
             {
                 DomNode newNode = ParseSingleDialog();
                 newNode.Character = character;
+				newNode.Attributes = am;
                 tree.Add(newNode);
                 char asterisk = muncher.SniffChar();
                 if (asterisk == '*')
                 {
                     muncher.ConsumeChar();
                 }
+				am = new AttributeManager();
             }
 
             // eating the '}'

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Brigit.Attributes.Operators
 {
-	class Variable : IExpression
+	public class Variable : IExpression
 	{
 		string variableName;
 
@@ -42,6 +42,22 @@ namespace Brigit.Attributes.Operators
 				// should throw an exception here
 				return Flag.Unset;
 			}
+		}
+
+		// this is the base case for all IExpressions
+		public override bool Equals(object obj)
+		{
+			if(!(obj is Variable))
+			{
+				return false;
+			}
+
+			return ((Variable)obj).variableName == this.variableName;
+		}
+
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
 		}
 	}
 }

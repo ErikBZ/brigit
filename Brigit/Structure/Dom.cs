@@ -185,17 +185,16 @@ namespace Brigit.Structure
             }
 
             DomNode node = (DomNode)obj;
-            /*
+			/*
              * Checks the flags that the node sets, the number of children,
              * the character that owns the node, and what the flags the node sets
              * I'll need to refactor RequiredFlags, and FlagSets at some point
              */
+			// splitting up the boolean expresssion since it's easier to debug that way
 
-            bool nodesAreEqual = this.Children.Length == node.Children.Length &&
-                this.character.Equals(node.character) &&
-                this.Attributes.Equals(node.Attributes);
-
-            Console.WriteLine(nodesAreEqual);
+			bool nodesAreEqual = this.Children.Length == node.Children.Length;
+			nodesAreEqual &= this.character.Equals(node.character);
+			nodesAreEqual &= this.Attributes.Equals(node.Attributes);
 
             return nodesAreEqual;
         }

@@ -5,6 +5,7 @@ using Brigit.IO;
 using Brigit.TomeParser;
 using Brigit.Structure;
 using Brigit.Attributes;
+using Brigit.Attributes.Operators;
 
 namespace Brigit.Test
 {
@@ -267,8 +268,14 @@ namespace Brigit.Test
 				Text = "Hello there",
 				Attributes = new Attributes.AttributeManager(),
 			};
-			node.Attributes.SetFlags.Add("set", Flag.True);
-			node.Attributes.SetFlags.Add("stuff", Flag.True);
+
+			Variable setVar = new Variable("set");
+			Variable stuffVar = new Variable("stuff");
+			And andSetStuff = new And();
+			andSetStuff.Add(setVar);
+			andSetStuff.Add(stuffVar);
+			node.Attributes.Expression = andSetStuff; 
+
 			constructedTree.Add(node);
 
             // act
@@ -276,22 +283,17 @@ namespace Brigit.Test
 
             // assert
             bool test = constructedTree.Equals(parsedTree);
-            Assert.AreEqual(test, true, "Tree's are not equal");
+            Assert.AreEqual(true, test, "Tree's are not equal");
         }
 
         [TestMethod]
         public void TestParseChoice1()
         {
             // arrange
-            // i'll do this at some point
-
             // setting up the parser to parse
             string[] lines = BrigitIO.ReadTomeFile(@"..\..\Tests\choice_test_1.tome");
 			TomeParser.TomeParser parser = new TomeParser.TomeParser(lines);
             // arrange a tree that should be the product of this tome
-            /*
-             * TODO write all the shit out at some point
-             */
             DomTree constructedTree = new DomTree();
 			Choice ch = new Choice()
 			{
@@ -302,6 +304,7 @@ namespace Brigit.Test
 			};
 
             constructedTree.Add(ch);
+
             Dialog diag = new Dialog();
             diag.Character = "Character1";
             diag.Text = "The player needed to choose something";
@@ -310,25 +313,56 @@ namespace Brigit.Test
             // act
             DomTree parsedTree = parser.Parse();
 
-            // assert
-            bool test = constructedTree.Equals(parsedTree);
+			// assert
+			bool test = constructedTree.Equals(parsedTree);
             Assert.AreEqual(test, true, "Tree's are not equal");
         }
 
         [TestMethod]
         public void TestParseChoice2()
         {
-            // arrange
-            // i'll do this at some point
-
             // setting up the parser to parse
             string[] lines = BrigitIO.ReadTomeFile(@"..\..\Tests\choice_test_2.tome");
 			TomeParser.TomeParser parser = new TomeParser.TomeParser(lines);
-            // arrange a tree that should be the product of this tome
-            /*
-             * TODO write all the shit out at some point
-             */
+
             DomTree constructedTree = new DomTree();
+			Choice ch1 = new Choice
+			{
+				Choices = new string[]
+				{
+					"ch1", "ch2", "ch3"
+				}
+			};
+
+			// subTrees
+			Dialog char1 = new Dialog
+			{
+				Character = "Char1",
+				Text = "Hello friends"
+			};
+			Dialog char2 = new Dialog
+			{
+				Character = "Char2",
+				Text = "Hi"
+			};
+			DomTree subTree1 = new DomTree();
+			subTree1.Add(char1);
+			DomTree subTree2 = new DomTree();
+			subTree2.Add(char2);
+			// maybe i should just make that the default constructor?
+			DomTree subTreeEmpty = DomTree.CreateEmptyDomTree();
+
+			// ending dialog node
+			Dialog char3 = new Dialog
+			{
+				Character = "Char3",
+				Text = "Hello"
+			};
+			
+			// adding them up
+			constructedTree.Add(ch1);
+			constructedTree.Add(subTree1, subTree2, subTreeEmpty);
+			constructedTree.Add(char3);
 
             // act
             DomTree parsedTree = parser.Parse();
@@ -362,7 +396,7 @@ namespace Brigit.Test
         }
 
         [TestMethod]
-        public void TestPraseDialog1()
+        public void ParseDialogExchangeBetweenTwoCharacters()
         {
             // arrange
             // i'll do this at some point
@@ -371,10 +405,24 @@ namespace Brigit.Test
             string[] lines = BrigitIO.ReadTomeFile(@"..\..\Tests\dialog_exchange_1.tome");
 			TomeParser.TomeParser parser = new TomeParser.TomeParser(lines);
             // arrange a tree that should be the product of this tome
-            /*
-             * TODO write all the shit out at some point
-             */
             DomTree constructedTree = new DomTree();
+			Dialog char1 = new Dialog()
+			{
+				Character = "Character1",
+				Text = "Yo what's up",
+				RequiredFlags = string.Empty
+			};
+
+			Dialog char2 = new Dialog()
+			{
+				Character = "Character2",
+				Text = "Nothing much",
+				RequiredFlags = string.Empty
+			};
+
+			constructedTree.Add(char1);
+			constructedTree.Add(char2);
+
 
             // act
             DomTree parsedTree = parser.Parse();

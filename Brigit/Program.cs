@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using static Brigit.IO.BrigitIO;
 using Brigit.TomeParser;
 using Brigit.Structure;
+using Brigit.Runtime;
 
 namespace Brigit
 {
@@ -16,43 +17,18 @@ namespace Brigit
     {
         static void Main(string[] args)
         {
-			/*
-            string[] lines = ReadTomeFile(@"..\..\Tests\attribute_test_1.tome");
+			string path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+			path += @"\..\BrigitUnitTest\";
+			Console.WriteLine(path);
+
+
+			string[] lines = ReadTomeFile(path + @"Tests\choice_test_1.tome");
 			TomeParser.TomeParser parser = new TomeParser.TomeParser(lines);
-            // arrange a tree that should be the product of this tome
-            /*
-             * TODO write all the shit out at some point
-             */
 
-			/*
-            DomTree constructedTree = new DomTree();
-            Dialog node = new Dialog();
-            node.Character = "Character1";
-            node.Text = "Hello there";
-
-            // act
             DomTree parsedTree = parser.Parse();
-
-            // assert
-            bool test = constructedTree.Equals(parsedTree);
-
-            Console.WriteLine(test);
-			*/
-
-			TestingStuff();
-
+			BrigitRuntime.Run(parsedTree);
+			
             Console.ReadLine();
         }
-
-
-		static public void TestingStuff()
-		{
-			string split = "thing: thing";
-			string[] strs = split.Split(':', ' ');
-			foreach (string s in strs)
-			{
-				Console.WriteLine(s);
-			}
-		}
     }
 }

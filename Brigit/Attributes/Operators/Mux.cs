@@ -39,5 +39,29 @@ namespace Brigit.Attributes.Operators
 
 			return eval;
 		}
+
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
+
+		public override bool Equals(object obj)
+		{
+			if(!(obj is Mux))
+			{
+				return false;
+			}
+
+			Mux other = (Mux)obj;
+			bool subExpressionsEqual = true;
+
+			int i = 0;
+			while(i < ExpList.Count && subExpressionsEqual)
+			{
+				subExpressionsEqual = this.ExpList[i].Equals(other.ExpList[i]);	
+			}
+			
+			return subExpressionsEqual;
+		}
 	} 
 }

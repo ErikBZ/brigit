@@ -45,26 +45,26 @@ namespace Brigit.TomeParser
 				string keyword = KeywordAndValue[0];
 				string value = KeywordAndValue[1];
 
-				if (s.StartsWith(REQFLAGS) || s.StartsWith(" " + REQFLAGS))
+				if (keyword.StartsWith(REQFLAGS) || keyword.StartsWith(" " + REQFLAGS))
 				{
 					am.Expression = ParseRequiredFlags(value);
 				}
-				else if (s.StartsWith(TRUEFLAGS) || s.StartsWith(" " + TRUEFLAGS))
+				else if (keyword.StartsWith(TRUEFLAGS) || keyword.StartsWith(" " + TRUEFLAGS))
 				{
 					string[] flagsToSetTrue = value.Split(' ');
 					SetFlagArrayTo(Flag.True, flagsToSetTrue, am);
 				}
-				else if (s.StartsWith(FALSEFLAGS) || s.StartsWith(" " + FALSEFLAGS))
+				else if (keyword.StartsWith(FALSEFLAGS) || keyword.StartsWith(" " + FALSEFLAGS))
 				{
 					string[] falseFlags = value.Split(' ');
 					SetFlagArrayTo(Flag.False, falseFlags, am);
 				}
-				else if (s.StartsWith(DONTCARE) || s.StartsWith(" " + DONTCARE))
+				else if (keyword.StartsWith(DONTCARE) || keyword.StartsWith(" " + DONTCARE))
 				{
 					string[] dontCareFlags = value.Split(' ');
 					SetFlagArrayTo(Flag.DontCare, dontCareFlags, am);
 				}
-				else if (s.StartsWith(SETEMOTE) || s.StartsWith(" " + SETEMOTE))
+				else if (keyword.StartsWith(SETEMOTE) || keyword.StartsWith(" " + SETEMOTE))
 				{
 					am.Emote = value;
 				}

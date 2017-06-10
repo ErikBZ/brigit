@@ -43,9 +43,10 @@ namespace Brigit.Attributes
             else
             {
                 AttributeManager am = (AttributeManager)obj;
-                equal = FlagsAreEqual(SetFlags, am.SetFlags) &&
-                    Emote.Equals(am.Emote) &&
-                    Length.Equals(am.Length); 
+				equal = FlagsAreEqual(SetFlags, am.SetFlags);
+				equal &= Emote.Equals(am.Emote);
+				equal &= Length.Equals(am.Length);
+				equal &= Expression.Equals(am.Expression);
             }
 
             return equal;
@@ -53,7 +54,6 @@ namespace Brigit.Attributes
 
         public bool FlagsAreEqual(Dictionary<string, Flag> flags1, Dictionary<string, Flag> flags2)
         {
-            bool equal = true;
             // checking the equality of the dictionaries
             bool dictionariesEqual = flags1.Count == flags2.Count;
             // if the dictionary counts are not equal then obviously the
@@ -75,7 +75,7 @@ namespace Brigit.Attributes
                     }
                 }
             }
-            return equal;
+            return dictionariesEqual;
         }
 
 		public override int GetHashCode()
