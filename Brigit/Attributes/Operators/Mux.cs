@@ -58,9 +58,10 @@ namespace Brigit.Attributes.Operators
 			int i = 0;
 			while(i < ExpList.Count && subExpressionsEqual)
 			{
-				subExpressionsEqual = this.ExpList[i].Equals(other.ExpList[i]);	
+				subExpressionsEqual = this.ExpList[i].Equals(other.ExpList[i]);
+				i++;
 			}
-			
+
 			return subExpressionsEqual;
 		}
 	} 
