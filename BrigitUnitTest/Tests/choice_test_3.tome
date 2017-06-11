@@ -1,5 +1,5 @@
 CHOICE{
-    ch1*->[lags: set stuff]{
+    ch1*->[False: set stuff]{
         Char1{
             Hello friends
         }
@@ -9,7 +9,7 @@ CHOICE{
             Hi
         }
     }
-    ch3*[flags: set more stuff]
+    ch3*[TrueFlags: set more stuff]
 }
 
 Char3{

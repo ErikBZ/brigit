@@ -58,6 +58,7 @@
     <Compile Include="Attributes\Operators\Or.cs" />
     <Compile Include="Attributes\Operators\Variable.cs" />
     <Compile Include="IO\BrigitIO.cs" />
+    <Compile Include="Structure\Selection.cs" />
     <Compile Include="TomeParser\ParserExceptions.cs" />
     <Compile Include="TomeParser\TomeParseAttributes.cs" />
     <Compile Include="TomeParser\TomeParseChoice.cs" />
@@ -67,13 +68,13 @@
     <Compile Include="Runtime\BrigitRuntime.cs" />
     <Compile Include="Attributes\Flags.cs" />
     <Compile Include="Attributes\GlobalFlags.cs" />
-    <Compile Include="Structure\Choice.cs" />
+    <Compile Include="Structure\UserChoice.cs" />
     <Compile Include="Structure\Dialog.cs" />
     <Compile Include="Structure\DomAdmin.cs" />
     <Compile Include="Structure\DomTree.cs" />
     <Compile Include="Structure\NodeType.cs" />
     <Compile Include="Structure\TreeType.cs" />
-    <Compile Include="Structure\Dom.cs" />
+    <Compile Include="Structure\DomNode.cs" />
     <Compile Include="Structure\GoodSortedList.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

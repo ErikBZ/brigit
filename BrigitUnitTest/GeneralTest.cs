@@ -24,12 +24,10 @@ namespace Brigit.Test
             // arrange
             DomNode node1 = new DomNode();
             node1.Character = "char";
-            node1.RequiredFlags = "flag1";
             node1.Children = new DomNode[3];
             // arraning node 2
             DomNode node2 = new DomNode();
             node2.Character = "char";
-            node2.RequiredFlags = "flag1";
             node2.Children = new DomNode[3];
 
             // acting
@@ -45,12 +43,10 @@ namespace Brigit.Test
             // arrange
             DomNode node1 = new DomNode();
             node1.Character = "char1";
-            node1.RequiredFlags = "flag1";
             node1.Children = new DomNode[3];
             // arraning node 2
             DomNode node2 = new DomNode();
             node2.Character = "char2";
-            node2.RequiredFlags = "flag1";
             node2.Children = new DomNode[3];
 
             // acting
@@ -66,15 +62,13 @@ namespace Brigit.Test
             // arrange
             Dialog node1 = new Dialog();
             node1.Character = "char";
-            node1.RequiredFlags = "flag1";
             node1.Children = new DomNode[3];
             node1.speechText = "Say something";
             // arraning node 2
-            Choice node2 = new Choice();
+            UserChoice node2 = new UserChoice();
             node2.Character = "char";
-            node2.RequiredFlags = "flag1";
             node2.Children = new DomNode[3];
-            node2.Choices = new string[3];
+            node2.Choices = new Selection[3];
 
             // acting
             bool areNodesEqual = node1.Equals(node2);
@@ -86,18 +80,16 @@ namespace Brigit.Test
         public void TwoChoicesWithTheSameChoicesShouldBeEqual()
         {
             // arrange
-            Choice node1 = new Choice();
+            UserChoice node1 = new UserChoice();
             node1.Character = "char";
-            node1.RequiredFlags = "flag1";
             node1.Children = new DomNode[3];
-            node1.Choices = new string[3];
+            node1.Choices = new Selection[3];
 
             // arraning node 2
-            Choice node2 = new Choice();
+            UserChoice node2 = new UserChoice();
             node2.Character = "char";
-            node2.RequiredFlags = "flag1";
             node2.Children = new DomNode[3];
-            node2.Choices = new string[3];
+            node2.Choices = new Selection[3];
 
             // acting
             bool areNodesEqual = node1.Equals(node2);
@@ -174,7 +166,7 @@ namespace Brigit.Test
             Dialog node1 = new Dialog();
             node1.Character = "char1";
             node1.Text = "hello";
-            Choice node2 = new Choice();
+            UserChoice node2 = new UserChoice();
             node2.Character = "char2";
             tree1.Add(node1);
             tree1.Add(node2);
@@ -203,7 +195,7 @@ namespace Brigit.Test
             Dialog node1 = new Dialog();
             node1.Character = "char1";
             node1.Text = "hello";
-            Choice node2 = new Choice();
+            UserChoice node2 = new UserChoice();
             node2.Character = "char2";
             tree1.Add(node1);
             tree1.Add(node2);
@@ -212,9 +204,9 @@ namespace Brigit.Test
             Dialog node3 = new Dialog();
             node3.Character = "char1";
             node3.Text = "hello";
-            Choice node4 = new Choice();
+            UserChoice node4 = new UserChoice();
             node4.Character = "char2";
-            node4.Choices = new string[3];
+            node4.Choices = new Selection[3];
             tree2.Add(node3);
             tree2.Add(node4);
 
@@ -232,7 +224,7 @@ namespace Brigit.Test
             Dialog node1 = new Dialog();
             node1.Character = "char1";
             node1.Text = "hello";
-            Choice node2 = new Choice();
+            UserChoice node2 = new UserChoice();
             node2.Character = "char2";
             tree1.Add(node1);
             tree1.Add(node2);
@@ -241,7 +233,7 @@ namespace Brigit.Test
             Dialog node3 = new Dialog();
             node3.Character = "char1";
             node3.Text = "hello";
-            Choice node4 = new Choice();
+            UserChoice node4 = new UserChoice();
             node4.Character = "char2";
             tree2.Add(node3);
             tree2.Add(node4);
@@ -287,7 +279,7 @@ namespace Brigit.Test
         }
 
         [TestMethod]
-        public void TestParseChoice1()
+        public void ParseAndCheckChoiceWithEmptyAttribute()
         {
             // arrange
             // setting up the parser to parse
@@ -295,11 +287,14 @@ namespace Brigit.Test
 			TomeParser.TomeParser parser = new TomeParser.TomeParser(lines);
             // arrange a tree that should be the product of this tome
             DomTree constructedTree = new DomTree();
-			Choice ch = new Choice()
+			UserChoice ch = new UserChoice()
 			{
-				Choices = new string[]
+				Choices = new Selection[]
 				{
-					"ch1", "ch2", "ch3"
+					new Selection(){ Text = "ch1"},
+					new Selection(){ Text = "ch2"},
+					new Selection(){ Text = "ch3"}
+
 				}
 			};
 
@@ -319,18 +314,20 @@ namespace Brigit.Test
         }
 
         [TestMethod]
-        public void TestParseChoice2()
+        public void TestChoiceWIthInnerBranches()
         {
             // setting up the parser to parse
             string[] lines = BrigitIO.ReadTomeFile(@"..\..\Tests\choice_test_2.tome");
 			TomeParser.TomeParser parser = new TomeParser.TomeParser(lines);
 
             DomTree constructedTree = new DomTree();
-			Choice ch1 = new Choice
+			UserChoice ch1 = new UserChoice
 			{
-				Choices = new string[]
+				Choices = new Selection[]
 				{
-					"ch1", "ch2", "ch3"
+					new Selection(){ Text = "ch1"},
+					new Selection(){ Text = "ch2"},
+					new Selection(){ Text = "ch3"}
 				}
 			};
 
@@ -410,14 +407,12 @@ namespace Brigit.Test
 			{
 				Character = "Character1",
 				Text = "Yo what's up",
-				RequiredFlags = string.Empty
 			};
 
 			Dialog char2 = new Dialog()
 			{
 				Character = "Character2",
 				Text = "Nothing much",
-				RequiredFlags = string.Empty
 			};
 
 			constructedTree.Add(char1);

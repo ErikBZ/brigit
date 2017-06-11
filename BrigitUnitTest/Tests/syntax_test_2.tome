@@ -5,7 +5,7 @@ CHOICE{
 		}
 	}
 	choice 2*
-	choice 3*(flags: Yes No Maybe, rf: Hello)->{
+	choice 3*[True: Yes No Maybe, ReqFlag: Hello]->{
 		Thing1{
 			You chooce the third choice!
 		}

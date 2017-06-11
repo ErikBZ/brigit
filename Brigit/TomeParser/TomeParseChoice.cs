@@ -20,7 +20,7 @@ namespace Brigit.TomeParser
             // this will be used later when trees can be created within a CHOICE block
             DomTree tree = new DomTree();
             // for now we only really care about making sure Chioce works
-            Choice node = new Choice();
+            UserChoice node = new UserChoice();
 
             // parsing the header and the beginning
             muncher.ConsumeString("CHOICE");
@@ -40,7 +40,7 @@ namespace Brigit.TomeParser
             muncher.EatWhiteSpace();
 
 
-            List<string> choices = new List<string>();
+            List<Selection> choices = new List<Selection>();
             List<DomTree> branches = new List<DomTree>();
             int numberOfChoices = 0;
 
@@ -49,8 +49,11 @@ namespace Brigit.TomeParser
                 DomTree branch = null;
                 numberOfChoices++;
 
-                // Parsing the plain text that a character will say
-                choices.Add(ParseSpeechText());
+				String text = ParseSpeechText();
+				Selection parsedSelection = new Selection()
+				{
+					Text = text
+				};
 
                 // Every plaintext speech blurb must be ended with an asterisk
                 if (muncher.SpitChar() != '*')
@@ -63,8 +66,11 @@ namespace Brigit.TomeParser
                 // TODO parse required, local, and global flags
                 if (muncher.CheckChar('['))
                 {
-                    AttributeManager thingy = ParseAttributes();
+                    AttributeManager attr = ParseAttributes();
+					parsedSelection.Attributes = attr;
                 }
+
+				choices.Add(parsedSelection);
 
                 // attibute and flag requirements here.
                 // if there are none then the default will be used

@@ -9,15 +9,15 @@ using Brigit.Attributes;
 namespace Brigit.Structure
 {
     [Serializable]
-    public class Choice : DomNode
+    public class UserChoice : DomNode
     {
-        public string[] Choices { get; set; }
+		public Selection[] Choices { get; set; }
 
         // once again i'll add the other ones later
-        public Choice() :
+        public UserChoice() :
             base()
         {
-            this.Choices = new string[0];
+            this.Choices = new Selection[0];
         }
 
         public override string ToString()
@@ -25,7 +25,7 @@ namespace Brigit.Structure
             StringBuilder sb = new StringBuilder();
             for(int i=0;i<Choices.Length;i++)
             {
-                string c = Choices[i];
+                Selection c = Choices[i];
                 sb.Append(i);
                 sb.Append(c);
                 sb.Append('\n');
@@ -55,12 +55,12 @@ namespace Brigit.Structure
 
         public override bool Equals(object obj)
         {
-            if(obj == null || !(obj is Choice))
+            if(obj == null || !(obj is UserChoice))
             {
                 return false;
             }
 
-            Choice node = (Choice)obj;
+            UserChoice node = (UserChoice)obj;
             bool choicesAreEqual = base.Equals(node) &&
                 this.Choices.Length == node.Choices.Length;
 

@@ -76,19 +76,21 @@ namespace Brigit.Structure
             set { backgrounds = value; }
         }
 
-        public static DomTree CreateEmptyDomTree()
-        {
-            DomTree tree = new DomTree();
-            tree.Type = TreeType.Inner;
-            tree.Head = new DomNode();
-            tree.Head.Type = NodeType.Empty;
-            tree.Tail = new DomNode[] { tree.Head };
+		public static DomTree CreateEmptyDomTree()
+		{
+			DomTree tree = new DomTree()
+			{
+				Type = TreeType.Empty,
+				Head = new DomNode() { Type = NodeType.Empty }
+			};
+			tree.Tail = new DomNode[]{ tree.Head };
+
             return tree;
         }
 
         public DomTree()
         {
-            Head = null;
+            Head = DomNode.CreateEmptyDomNode();
             Name = string.Empty;
             chars = new List<string>();
             backgrounds = new List<string>();
@@ -113,17 +115,20 @@ namespace Brigit.Structure
         /// <param name="nodes"></param>
         public void Add(params DomNode[] nodes)
         {
-            if(Head == null && nodes.Length == 1)
+            if(Head.IsEmpty() && nodes.Length == 1)
             {
                 Head = nodes[0];
             }
             else
             {
-                // there wasn't a Head before
-                if(Head == null)
-                {
-                    Head = new DomNode();
-                    Head.Type = NodeType.Empty;
+				// there wasn't a Head before
+				if (Head == null)
+				{
+					Head = new DomNode()
+					{
+						Type = NodeType.Empty
+					};
+
                     Tail = new DomNode[] { Head };
                 }
                 // now that we have either a "empty node" or
@@ -166,18 +171,6 @@ namespace Brigit.Structure
 
         public void Add(params DomTree[] trees)
         {
-			// check if they're empty first. If the trees are empty then return
-			List<DomTree> nonEmptyTrees = new List<DomTree>();
-			foreach(DomTree t in trees)
-			{
-				if(!t.IsEmpty())
-				{
-					nonEmptyTrees.Add(t);
-				}
-			}
-
-			trees = nonEmptyTrees.ToArray();
-
 			// continue only if there are more than 0 trees to add
 			if(trees.Length != 0)
 			{
@@ -193,9 +186,7 @@ namespace Brigit.Structure
 		/// <returns></returns>
 		private bool IsEmpty()
 		{
-			bool empty = this.Head.Type == NodeType.Empty;
-			empty &= (this.Tail.Length == 1) && this.Tail[0].Type == NodeType.Empty;
-			return empty;
+			return Type == TreeType.Empty;
 		}
 
         /// <summary>
@@ -205,8 +196,11 @@ namespace Brigit.Structure
         /// <param name="trees"></param>
         public static DomTree ConnectTrees(params DomTree[] trees)
         {
-            DomTree newTree = new DomTree();
-            newTree.Type = TreeType.Inner;
+			DomTree newTree = new DomTree()
+			{
+				Type = TreeType.Inner
+			};
+
             // I don't set Tail here so maybe that's why there's an error later on
             //newTree.Head = new DomNode();
             //newTree.Head.Type = NodeType.Empty;
@@ -230,6 +224,7 @@ namespace Brigit.Structure
             newTree.Tail = nodeTails.ToArray();
             return newTree;
         }
+
 
         /// <summary>
         /// Super costly, returns a formatted version of the Dom Tree
@@ -276,9 +271,9 @@ namespace Brigit.Structure
 
                 // usable nodes should either be choices are dialogs
                 // they should not be DomNodes
-                if (thisNode is Choice)
+                if (thisNode is UserChoice)
                 {
-                    treesAreEqual = ((Choice)thisNode).Equals(otherNode);
+                    treesAreEqual = ((UserChoice)thisNode).Equals(otherNode);
                 }
                 else if (thisNode is Dialog)
                 {

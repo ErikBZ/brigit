@@ -13,7 +13,7 @@ namespace Brigit.Structure
 {
     [Serializable, DataContract]
     [KnownType(typeof(Dialog))]
-    [KnownType(typeof(Choice))]
+    [KnownType(typeof(UserChoice))]
     public class DomNode
     {
         /// <summary>
@@ -28,44 +28,29 @@ namespace Brigit.Structure
         /// more than 1 leaf can be activated by an overlapping set of flags
         /// </summary>
         [DataMember]
-        /// TODO refactor this to use the Experssion
-        public string RequiredFlags { get; set; }
-
         /// <summary>
         /// The character that "owns" this node, IE the character who said this
         /// </summary>
-        [DataMember]
-        string character;
+		public string Character { get; set; }
 
         /// <summary>
         /// The background for the character. Will usually not change, so the first
         /// node can have the background set and all other nodes will inherit it
         /// </summary>
         [DataMember]
+		// TODO put this in attribute
         string background;
 
 		[DataMember]
 		public AttributeManager Attributes { get; set; }
 
         [DataMember]
-        NodeType type;
-
-        public string Character
-        {
-            get { return character; }
-            set { character = value; }
-        }
+		public NodeType Type { get; set; }
 
         public string Background
         {
             get { return background; }
             set { background = value; }
-        }
-
-        public NodeType Type
-        {
-            get { return type; }
-            set { type = value; }
         }
 
         /// <summary>
@@ -74,10 +59,19 @@ namespace Brigit.Structure
         public DomNode()
         {
             Children = new DomNode[0];
-            RequiredFlags = string.Empty;
             Character = string.Empty;
 			Attributes = new AttributeManager();
         }
+
+		public static DomNode CreateEmptyDomNode()
+		{
+			DomNode empty = new DomNode
+			{
+				Type = NodeType.Empty
+			};
+
+			return empty;
+		}
 
         /// <summary>
         /// Creates a new Dom Node for a tree.
@@ -92,8 +86,13 @@ namespace Brigit.Structure
             Dictionary<string, bool> flagSets, string character)
         {
             this.Children = children;
-            this.character = character;
+            this.Character = character;
         }
+
+		public bool IsEmpty()
+		{
+			return Type == NodeType.Empty;
+		}
 
         /// <summary>
         /// Will get you the next node given the context of the scene.
@@ -121,7 +120,7 @@ namespace Brigit.Structure
                 else if (isNextChild && next == null)
                 {
                     next = child;
-                    if(next.type == NodeType.Empty)
+                    if(next.Type == NodeType.Empty)
                     {
                         next = next.GetNext(choice, scene);
                     }
@@ -152,7 +151,7 @@ namespace Brigit.Structure
         /// <param name="next"></param>
         public void SetChildren(DomNode[] next)
         {
-            if(next.Length == 1 && next[0].type == NodeType.Empty)
+            if(next.Length == 1 && next[0].Type == NodeType.Empty)
             {
                 // set this nodes Children to the Children of the empty node
                 this.SetChildren(next[0].Children);
@@ -188,12 +187,11 @@ namespace Brigit.Structure
 			/*
              * Checks the flags that the node sets, the number of children,
              * the character that owns the node, and what the flags the node sets
-             * I'll need to refactor RequiredFlags, and FlagSets at some point
              */
 			// splitting up the boolean expresssion since it's easier to debug that way
 
 			bool nodesAreEqual = this.Children.Length == node.Children.Length;
-			nodesAreEqual &= this.character.Equals(node.character);
+			nodesAreEqual &= this.Character.Equals(node.Character);
 			nodesAreEqual &= this.Attributes.Equals(node.Attributes);
 
             return nodesAreEqual;

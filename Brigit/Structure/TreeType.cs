@@ -10,5 +10,5 @@ namespace Brigit.Structure
          * needs to have tails and Head correctly tracked
          */
     [Serializable]
-    public enum TreeType { Outer, Inner };
+    public enum TreeType { Outer, Inner, Empty};
 }

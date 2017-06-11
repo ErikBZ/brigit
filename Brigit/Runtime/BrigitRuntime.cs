@@ -23,9 +23,9 @@ namespace Brigit.Runtime
                 {
                     PrintDialog((Dialog)curr);
                 }
-                else if(curr is Choice)
+                else if(curr is UserChoice)
                 {
-                    PrintChoice((Choice)curr);
+                    PrintChoice((UserChoice)curr);
                 }
                 else
                 {
@@ -38,13 +38,13 @@ namespace Brigit.Runtime
                 int ch = -1;
                 bool parsed = int.TryParse(choice, out ch);
 
-                if (parsed && curr is Choice)
+                if (parsed && curr is UserChoice)
                 {
                     // passing choice - 1 since their current choices are from
                     // 1 to x, but indeces are from 0 to x-1
-                    curr = ((Choice)curr).GetNext(ch-1, tree);
+                    curr = ((UserChoice)curr).GetNext(ch-1, tree);
                 }
-                else if (!parsed && curr is Choice)
+                else if (!parsed && curr is UserChoice)
                 {
                     throw new Exception("Choice could not be parsed correctly");
                 }
@@ -55,7 +55,7 @@ namespace Brigit.Runtime
             }
         }
 
-        private static void PrintChoice(Choice node)
+        private static void PrintChoice(UserChoice node)
         {
             for(int i=0;i<node.Choices.Length;i++)
             {
