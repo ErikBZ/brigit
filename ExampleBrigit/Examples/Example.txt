@@ -1,0 +1,19 @@
+# this owkrs
+Character:
+	saying sometthign here *(attributes)
+	saying something else as well *(moreattr)
+	done saying something**
+
+# this lasdf alsdkfj lK####
+OtherCharacter:
+	saying only one thing** # this should also work
+
+^ThisisTheBranchName:
+	Character:
+		this is the branch**
+	Character:
+		blash blah**
+
+^AnotherOne:
+	Character:
+		only says one thing**

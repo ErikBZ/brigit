@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Brigit.Structure;
+using Brigit.Structure.Old;
 
 namespace Brigit.Runtime
 {

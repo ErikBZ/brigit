@@ -17,7 +17,7 @@ namespace Brigit.Test
 			string expression = "var1 | var2 | (var1 & var3)";
 
 			// act
-			bool parsedWell = Parser.Preprocess(expression);
+			bool parsedWell = Attributes.ExpressionParser.Parser.Preprocess(expression);
 
 			// assert
 			Assert.AreEqual(true, parsedWell);	
@@ -30,7 +30,7 @@ namespace Brigit.Test
 			string expression = "var1 & var2 | (var1 & var3)";
 
 			// act
-			bool parsedWell = Parser.Preprocess(expression);
+			bool parsedWell = Attributes.ExpressionParser.Parser.Preprocess(expression);
 
 			// assert
 			Assert.AreEqual(false, parsedWell);	
@@ -51,9 +51,9 @@ namespace Brigit.Test
 
 			// act
 			IExpression exp = null;	
-			if (Parser.Preprocess(expression))
+			if (Attributes.ExpressionParser.Parser.Preprocess(expression))
 			{
-				exp = Parser.Parse(expression);
+				exp = Attributes.ExpressionParser.Parser.Parse(expression);
 			}
 
 			result = exp.Evaluate(locals, globals);

@@ -1,0 +1,9 @@
+# this owkrs
+Character:
+	saying sometthign here *(attributes)
+	saying something else as well *(moreattr)
+	done saying something**
+
+# this lasdf alsdkfj lK####
+OtherCharacter:
+	saying only one thing** # this should also work

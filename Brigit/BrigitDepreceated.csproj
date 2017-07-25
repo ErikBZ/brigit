@@ -5,14 +5,13 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{7B4F47AE-3FEB-4BD6-921A-C647BAD1C26C}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Brigit</RootNamespace>
     <AssemblyName>Brigit</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,9 +31,6 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="StyleCop, Version=4.7.1000.0, Culture=neutral, PublicKeyToken=f904653c63bc2738, processorArchitecture=MSIL">
@@ -61,38 +57,26 @@
     <Compile Include="Attributes\Operators\Mux.cs" />
     <Compile Include="Attributes\Operators\Or.cs" />
     <Compile Include="Attributes\Operators\Variable.cs" />
-    <Compile Include="Conversation.cs" />
     <Compile Include="IO\BrigitIO.cs" />
-    <Compile Include="Parser\ParseAttributes.cs" />
-    <Compile Include="Parser\ParseDialog.cs" />
-    <Compile Include="Parser\BrigitParser.cs" />
-    <Compile Include="Parser\ParsingState.cs" />
-    <Compile Include="Parser\Stream\CommentRemover.cs" />
-    <Compile Include="Parser\Stream\TomeStream.cs" />
-    <Compile Include="Structure\Exchange\BranchSelector.cs" />
-    <Compile Include="Structure\Exchange\Choice.cs" />
-    <Compile Include="Structure\Exchange\Descision.cs" />
-    <Compile Include="Structure\Exchange\Dialog.cs" />
-    <Compile Include="Structure\Exchange\SpeechText.cs" />
-    <Compile Include="Structure\LinkedList.cs" />
-    <Compile Include="Structure\Node.cs" />
-    <Compile Include="Structure\Old\Selection.cs" />
-    <Compile Include="Parser\Old\TomeParseAttributes.cs" />
-    <Compile Include="Parser\Old\TomeParseChoice.cs" />
-    <Compile Include="Parser\Old\TomeParseDialog.cs" />
-    <Compile Include="Parser\Old\TomeParser.cs" />
-    <Compile Include="Parser\Old\TomeReader.cs" />
+    <Compile Include="Structure\Selection.cs" />
+    <Compile Include="TomeParser\ParserExceptions.cs" />
+    <Compile Include="TomeParser\TomeParseAttributes.cs" />
+    <Compile Include="TomeParser\TomeParseChoice.cs" />
+    <Compile Include="TomeParser\TomeParseDialog.cs" />
+    <Compile Include="TomeParser\TomeParser.cs" />
+    <Compile Include="TomeParser\TomeReader.cs" />
     <Compile Include="Runtime\BrigitRuntime.cs" />
     <Compile Include="Attributes\Flags.cs" />
     <Compile Include="Attributes\GlobalFlags.cs" />
-    <Compile Include="Structure\Old\UserChoice.cs" />
-    <Compile Include="Structure\Old\Dialog.cs" />
-    <Compile Include="Structure\Old\DomAdmin.cs" />
-    <Compile Include="Structure\Old\DomTree.cs" />
-    <Compile Include="Structure\Old\NodeType.cs" />
-    <Compile Include="Structure\Old\TreeType.cs" />
-    <Compile Include="Structure\Old\DomNode.cs" />
-    <Compile Include="Structure\Old\GoodSortedList.cs" />
+    <Compile Include="Structure\UserChoice.cs" />
+    <Compile Include="Structure\Dialog.cs" />
+    <Compile Include="Structure\DomAdmin.cs" />
+    <Compile Include="Structure\DomTree.cs" />
+    <Compile Include="Structure\NodeType.cs" />
+    <Compile Include="Structure\TreeType.cs" />
+    <Compile Include="Structure\DomNode.cs" />
+    <Compile Include="Structure\GoodSortedList.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -102,7 +86,6 @@
   <ItemGroup>
     <Content Include="BrigitRules.txt" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

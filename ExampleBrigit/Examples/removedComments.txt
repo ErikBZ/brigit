@@ -1,0 +1,6 @@
+Character:
+	saying sometthign here *(attributes)
+	saying something else as well *(moreattr)
+	done saying something**
+OtherCharacter:
+	saying only one thing** 

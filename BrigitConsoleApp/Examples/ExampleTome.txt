@@ -1,0 +1,36 @@
+﻿character1:
+	something to say here*
+	Something else to say here and this
+	end what ever he wants to say **
+
+character2:
+	Something to say *[]*
+
+@player:
+	Some choice to choose*
+	Other choice to choose*
+	Last choice to choose**
+
+Character2:
+	Immediatly starts talking afterwards**
+
+@player:
+	Some choice that leads to some branch*->{
+		Character1:
+			Character reacts **
+	}
+	Some other choice*->BranchName**
+
+# Branch name should be added to the second choice above and that tail
+# should be pointing to this exchange
+Character1:
+	His dialog is added into the list**
+
+^BranchName{
+	Character1:
+		Something he says as part of this branch**
+	
+	Character2:
+		This is stuff they'll say before character1 says
+		His dialog is added into the list**
+}
