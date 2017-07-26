@@ -62,8 +62,10 @@
     <Compile Include="Attributes\Operators\Or.cs" />
     <Compile Include="Attributes\Operators\Variable.cs" />
     <Compile Include="Conversation.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IO\BrigitIO.cs" />
     <Compile Include="Parser\ParseAttributes.cs" />
+    <Compile Include="Parser\ParseDescision.cs" />
     <Compile Include="Parser\ParseDialog.cs" />
     <Compile Include="Parser\BrigitParser.cs" />
     <Compile Include="Parser\ParsingState.cs" />

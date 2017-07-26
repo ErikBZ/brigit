@@ -53,6 +53,8 @@ namespace Brigit.Parser
 				else if (c == '@')
 				{
 					// start parsing as a descision
+					LinkedList subGraph = ParseDescision(stream);
+					ll.AddToEnd(subGraph);
 				}
 				else if (c == '^')
 				{
@@ -63,6 +65,13 @@ namespace Brigit.Parser
 					// panic here
 					throw new Exception($"Expected beginning of character name, branch or choice found {stream.PeekChar()} at {stream.Position}");
 				}
+
+				Whitespace(stream);
+			}
+
+			if(!stream.Complete())
+			{
+				AssertChar(stream, '}');
 			}
 
 			return ll; 
@@ -196,6 +205,26 @@ namespace Brigit.Parser
 				default:
 					throw new Exception($"Error decoding char {c}. No such \\{c} character found");
 			}
+		}
+
+		private static bool AssertChar(TomeStream stream, char c)
+		{
+			if(stream.PeekChar() != c)
+			{
+				throw new Exception($"Expected {c} symbol but found { stream.PeekChar() }, at position {stream.Position}");
+			}
+			stream.NextChar();
+			return true;
+		}
+
+		private static bool AssertAlphaDigitString(TomeStream stream, string str)
+		{
+			string name = ParseOnlyTextNoEscape(stream);
+			if(name != str)
+			{
+				throw new Exception($"Expected {str} symbol but found { name }, at position {stream.Position}");
+			}
+			return true;
 		}
 	}
 }

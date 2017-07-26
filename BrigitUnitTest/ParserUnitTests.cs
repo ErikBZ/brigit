@@ -55,8 +55,7 @@ namespace BrigitUnitTest
 
 			var other = new Dialog()
 			{
-				Character = "Diego",
-			};
+				Character = "Diego", };
 			other.Text.Add(new SpeechText { Text = "Where\n" });
 			other.Text.Add(new SpeechText { Text = "\tAre" });
 			other.Text.Add(new SpeechText { Text = "The" });
@@ -112,18 +111,57 @@ namespace BrigitUnitTest
 		}
 
 		[TestMethod]
-		public void ParseSimpleChoice()
+		public void ParseSimpleChoiceWithDescisionMethod()
 		{
 			TomeStream stream = GetStream("SimpleChoiceNoBranches.txt");
-			LinkedList conv = BrigitParser.ParseTome(stream);
+			LinkedList conv = BrigitParser.ParseDescision(stream);
 			LinkedList constructed = new LinkedList();
 
 			constructed.Add(new Node()
 			{
 				Data = new Descision()
-				{ }
-
+				{
+					Choices = new List<Choice>()
+					{
+						new Choice("You have either this choice"),
+						new Choice("Or this other choice too"),
+						new Choice("Maybe one more choice as well")
+					}
+				}
 			});
+
+			bool checker = conv.Equals(constructed);
+
+			Assert.AreEqual(true, checker);
+		}
+
+		[TestMethod]
+		public void ParaseChoiceWithBranchesWithDescisionMethod()
+		{
+			TomeStream stream = GetStream("ChoiceWithBranches.txt");
+			LinkedList conv = BrigitParser.ParseDescision(stream);
+			LinkedList constructed = new LinkedList();
+
+			constructed.Add(new Node()
+			{
+				Data = new Descision()
+				{
+					Choices = new List<Choice>()
+					{
+						new Choice("This is one choice", 0),
+						new Choice("Second choice is here after the branch", 1)
+					}
+				}
+			});
+
+			LinkedList branch = new LinkedList();
+			branch.Add(new Node()
+			{
+				Data = new Dialog("Diego", "You chose the first choice")
+			});
+
+			constructed.AddBranch(constructed.Head, branch);
+
 
 			bool checker = conv.Equals(constructed);
 

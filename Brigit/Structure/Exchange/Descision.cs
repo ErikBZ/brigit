@@ -11,6 +11,11 @@ namespace Brigit.Structure.Exchange
 	{
 		public List<Choice> Choices { get; set; }
 
+		public Descision()
+		{
+			Choices = new List<Choice>();
+		}
+
 		public override bool Equals(object obj)
 		{
 			if(!(obj is Descision))
@@ -26,6 +31,7 @@ namespace Brigit.Structure.Exchange
 				Choice thisChoice = this.Choices[i];
 				Choice otherChoice = other.Choices[i];
 				equal &= thisChoice.Equals(otherChoice);
+				i++;
 			}
 
 			return equal;

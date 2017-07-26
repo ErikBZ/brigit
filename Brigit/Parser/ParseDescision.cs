@@ -15,8 +15,18 @@ namespace Brigit.Parser
 		{
 			Descision descision = new Descision();
 			LinkedList ll = new LinkedList();
+			Node root = new Node()
+			{
+				Data = descision
+			};
+
+			ll.Add(root);
 
 			// first parse away the @player:
+			AssertChar(stream, '@');
+			AssertAlphaDigitString(stream, "player");
+			AssertChar(stream, ':');
+			Whitespace(stream);
 
 			ParsingState state = ParsingState.ExpectingMore;
 			while(state == ParsingState.ExpectingMore)
@@ -33,15 +43,43 @@ namespace Brigit.Parser
 				// at this point either the parsing is complete
 				// or there is an arrow pointing to a sub branch or a branch name
 
-				// parse the subbranch if there is one
-				// parse the branch name is there is one, and we didn't parse a sub branch
-				// add the subbranch to the next list if there is none set their "next" to -1
+				// Parseing.Expecting more implies that the arrow maybe still be here
+				if(ParseArrow(stream))
+				{
+					AssertChar(stream, '{');
+					// parse the subbranch if there is one
+					// parse the branch name is there is one, and we didn't parse a sub branch
+					// add the subbranch to the next list if there is none set their "next" to -1
+					LinkedList subGraph = ParseTome(stream);
+					//Whitespace(stream);
+					//AssertChar(stream, '}');
 
-				// if there are any -1 set it to the count of the list
-				// the next node will be last in the list whose index equals the current count
+					ll.AddBranch(root, subGraph);
+					ch.NextNode = root.Next.Count - 1;	
+				}
+			}
+
+			// any next nodes in descision that are -1 should be set
+			// to the count of the list
+			foreach(Choice c in descision.Choices)
+			{
+				if(c.NextNode == -1)
+				{
+					c.NextNode = root.Next.Count;		
+				}
 			}
 
 			return ll;
+		}
+
+		private static bool ParseArrow(TomeStream stream)
+		{
+			if(stream.PeekChar() == '-')
+			{
+				stream.NextChar();
+				return AssertChar(stream, '>');
+			}
+			return false;
 		}
 
 		// this uses the same method from the parse speech
