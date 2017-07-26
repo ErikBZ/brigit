@@ -1,0 +1,19 @@
+Yulia:
+    What the fuck is this*
+    What are you doing?**
+
+@player:
+    Nothing*->{
+        Yulia:
+            You're lying**
+        Diego:
+            Wubaladubdub**
+    } 
+    Everything*
+    Go away*->{
+        Yulia:
+            NO**
+    }*
+
+Diego:
+    There's a lot of yelling going on right now**
