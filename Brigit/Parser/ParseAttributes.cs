@@ -13,11 +13,11 @@ namespace Brigit.Parser
 	public partial class BrigitParser
 	{
 		// i can add more when i need it
-		const string REQFLAGS = "ReqFlags";
-		const string TRUEFLAGS = "SFlagsTrue";
-		const string FALSEFLAGS = "SFlagsFalse";
-		const string DONTCARE = "SFlagDC";
-		const string SETEMOTE = "SEmote";
+		const string REQFLAGS = "ReqFlg";
+		const string TRUEFLAGS = "SetT";
+		const string FALSEFLAGS = "SetF";
+		const string DONTCARE = "SetDC";
+		const string SETEMOTE = "Emt";
 
 		// starts at ( and eats away the closing paren
 		public static AttributeManager ParseAttributes(TomeStream stream)
