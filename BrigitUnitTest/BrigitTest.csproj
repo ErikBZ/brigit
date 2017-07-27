@@ -61,6 +61,7 @@
     <Compile Include="ExpressionParserTest.cs" />
     <Compile Include="LinkedListTest.cs" />
     <Compile Include="ParserUnitTests.cs" />
+    <Compile Include="ParseTomesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -74,7 +75,14 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Tests\ChoiceWithBranches.txt" />
     <Content Include="Tests\DialogTestTome.txt" />
+    <Content Include="Tests\MultipleCharacterExchange.txt" />
+    <Content Include="Tests\MultipleSpeechText.txt" />
+    <Content Include="Tests\SimpleChoiceNoBranches.txt" />
+    <Content Include="Tests\StringCleaning.txt" />
+    <Content Include="Tests\TomeTest_1.txt" />
+    <Content Include="Tests\TomeTest_2.txt" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

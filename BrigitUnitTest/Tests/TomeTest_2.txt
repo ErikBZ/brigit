@@ -7,7 +7,7 @@ Yulia:
         Yulia:
             You're lying**
         Diego:
-            Wubaladubdub**
+            Yeah she is**
     } 
     Everything*
     Go away*->{

@@ -3,7 +3,7 @@ using System;
 using Brigit;
 using Brigit.Parser;
 using Brigit.Parser.Stream;
-using Briigt.Structure;
+using Brigit.Structure;
 using Brigit.Structure.Exchange;
 using System.IO;
 using System.Collections.Generic;
@@ -23,10 +23,11 @@ namespace Brigit.Test
 			return stream;
 		}
 
+		[TestMethod]
 		public void ParseTomeTest1Complete()
 		{
 			TomeStream stream = GetStream("TomeTest_1.txt");
-			LinkedList conv = ParseTome(stream);
+			LinkedList conv = BrigitParser.ParseTome(stream);
 
 			LinkedList constructed = new LinkedList();
 			constructed.Add(new Node(){
@@ -50,10 +51,11 @@ namespace Brigit.Test
 			Assert.AreEqual(true, checker);
 		}
 
+		[TestMethod]
 		public void ParseTomeTest2Complete()
 		{
 			TomeStream stream = GetStream("TomeTest_2.txt");
-			LinkedList conv = ParseTome(stream);
+			LinkedList conv = BrigitParser.ParseTome(stream);
 
 			LinkedList constructed = new LinkedList();
 			constructed.Add(new Node(){
@@ -62,13 +64,14 @@ namespace Brigit.Test
 
 			// the choice sub graph
 			LinkedList subGraph = new LinkedList();
-			Descision root = new Descision(){
+			Descision root = new Descision() {
 				Choices = new List<Choice>(){
 					new Choice("Nothing", 0),
-					new Choice("Everything", 2)
-					new Choice("Go away", 1);
+					new Choice("Everything", 2),
+					new Choice("Go away", 1),
 				}
-			}
+			};
+
 			subGraph.Add(new Node(){
 				Data = root
 			});	
@@ -79,8 +82,9 @@ namespace Brigit.Test
 				Data = new Dialog("Yulia", "You're lying")
 			});
 			nothingBranch.Add(new Node(){
-				Data = new Dialog("Diego", "Wubalabdubdub");
+				Data = new Dialog("Diego", "Yeah she is")
 			});
+
 			subGraph.AddBranch(subGraph.Head, nothingBranch);
 
 			// the second branch pointed to by the 3rd choice
@@ -90,9 +94,9 @@ namespace Brigit.Test
 			});
 			subGraph.AddBranch(subGraph.Head, goAwayBranch);
 
-			constructed.AddBranch(constructed.Head, subGraph);
+			constructed.AddToEnd(subGraph);
 			constructed.Add(new Node(){
-				Data = new Dialog("Diego", "There's alot of yelling going on right now")
+				Data = new Dialog("Diego", "There's a lot of yelling going on right now")
 			});
 
 

@@ -5,7 +5,7 @@ using Brigit.Attributes.Operators;
 
 namespace Brigit.Attributes.ExpressionParser
 {
-    public static class Parser
+    public static class BrigitExpressionParser
     {
         // delimters are
         // & for and

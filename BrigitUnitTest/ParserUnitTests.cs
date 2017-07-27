@@ -7,7 +7,7 @@ using Brigit.Parser.Stream;
 using System.IO;
 using System.Collections.Generic;
 
-namespace BrigitUnitTest
+namespace Brigit.Test
 {
 	[TestClass]
 	public class ParserUnitTests

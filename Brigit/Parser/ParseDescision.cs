@@ -46,16 +46,24 @@ namespace Brigit.Parser
 				// Parseing.Expecting more implies that the arrow maybe still be here
 				if(ParseArrow(stream))
 				{
+					// either it's a branch 
 					AssertChar(stream, '{');
 					// parse the subbranch if there is one
 					// parse the branch name is there is one, and we didn't parse a sub branch
 					// add the subbranch to the next list if there is none set their "next" to -1
 					LinkedList subGraph = ParseTome(stream);
-					//Whitespace(stream);
-					//AssertChar(stream, '}');
 
 					ll.AddBranch(root, subGraph);
 					ch.NextNode = root.Next.Count - 1;	
+
+					// this means it has reach the end
+					if(stream.PeekChar() == '*')
+					{
+						state = ParsingState.Complete;
+						stream.NextChar();
+					}
+
+					// or a branch name
 				}
 			}
 

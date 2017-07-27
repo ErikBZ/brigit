@@ -1,0 +1,7 @@
+@player:
+    this goes to a branchname*->SomeName
+    it ends withwhitespace or any none alpaha character*->{
+        Char1:
+            We can mix both up**
+    } 
+    and it will work just fine**
