@@ -27,9 +27,9 @@ namespace Brigit.Test
 		public void ParseTomeTest1Complete()
 		{
 			TomeStream stream = GetStream("TomeTest_1.txt");
-			LinkedList conv = BrigitParser.ParseTome(stream);
+			BrigitGraph conv = BrigitParser.ParseBrigitGraph(stream);
 
-			LinkedList constructed = new LinkedList();
+			BrigitGraph constructed = new BrigitGraph();
 			constructed.Add(new Node(){
 				Data = new Dialog("Diego", "Hello")
 			});
@@ -55,15 +55,15 @@ namespace Brigit.Test
 		public void ParseTomeTest2Complete()
 		{
 			TomeStream stream = GetStream("TomeTest_2.txt");
-			LinkedList conv = BrigitParser.ParseTome(stream);
+			BrigitGraph conv = BrigitParser.ParseBrigitGraph(stream);
 
-			LinkedList constructed = new LinkedList();
+			BrigitGraph constructed = new BrigitGraph();
 			constructed.Add(new Node(){
 				Data = new Dialog("Yulia", "What the fuck is this", "What are you doing?")
 			});
 
 			// the choice sub graph
-			LinkedList subGraph = new LinkedList();
+			BrigitGraph subGraph = new BrigitGraph();
 			Descision root = new Descision() {
 				Choices = new List<Choice>(){
 					new Choice("Nothing", 0),
@@ -77,7 +77,7 @@ namespace Brigit.Test
 			});	
 
 			// the first branch
-			LinkedList nothingBranch = new LinkedList();
+			BrigitGraph nothingBranch = new BrigitGraph();
 			nothingBranch.Add(new Node(){
 				Data = new Dialog("Yulia", "You're lying")
 			});
@@ -88,13 +88,13 @@ namespace Brigit.Test
 			subGraph.AddBranch(subGraph.Head, nothingBranch);
 
 			// the second branch pointed to by the 3rd choice
-			LinkedList goAwayBranch = new LinkedList();
+			BrigitGraph goAwayBranch = new BrigitGraph();
 			goAwayBranch.Add(new Node(){
 				Data = new Dialog("Yulia", "NO")
 			});
 			subGraph.AddBranch(subGraph.Head, goAwayBranch);
 
-			constructed.AddToEnd(subGraph);
+			constructed.Add(subGraph);
 			constructed.Add(new Node(){
 				Data = new Dialog("Diego", "There's a lot of yelling going on right now")
 			});
@@ -103,6 +103,12 @@ namespace Brigit.Test
 			bool checker = conv.Equals(constructed);
 
 			Assert.AreEqual(true, checker);
+		}
+
+		[TestMethod]
+		public void ParseTomeTest3Complete()
+		{
+			TomeStream stream = GetStream("TomeTest_3.txt");
 		}
 	}
 }

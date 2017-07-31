@@ -5,13 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using Brigit.Parser.Stream;
 using Brigit.Structure;
+using Brigit.Structure.Exchange;
 using Brigit.Attributes;
 
 namespace Brigit.Parser
 {
 	// partial class this file keeps all the generic used by all methods
+	// this can't be a static class i think
 	static public partial class BrigitParser
 	{
+		static Dictionary<string, (Node, Choice)> BranchesToPlace = new Dictionary<string, (Node, Choice)>();
 		
 		public static Conversation Parse(string[] tome)
 		{
@@ -30,9 +33,9 @@ namespace Brigit.Parser
 
 		// public for testing purpose
 		// this chooses what is parsed next, IE a branch, a dialog or descision
-		public static LinkedList ParseTome(TomeStream stream)
+		public static BrigitGraph ParseBrigitGraph(TomeStream stream)
 		{
-			LinkedList ll = new LinkedList();
+			BrigitGraph ll = new BrigitGraph();
 
 			while (!(stream.Complete() || stream.PeekChar() == '}'))
 			{
@@ -53,12 +56,37 @@ namespace Brigit.Parser
 				else if (c == '@')
 				{
 					// start parsing as a descision
-					LinkedList subGraph = ParseDescision(stream);
-					ll.AddToEnd(subGraph);
+					BrigitGraph subGraph;
+					Dictionary<string, (Node, Choice)> branchesToNode;
+					(subGraph, branchesToNode) = ParseDescision(stream);
+
+					foreach(KeyValuePair<string, (Node,Choice)> kvp in branchesToNode)
+					{
+						BranchesToPlace.Add(kvp.Key, kvp.Value);
+					}
+
+					// adding the dictionary entries to this
+					ll.Add(subGraph);
 				}
 				else if (c == '^')
 				{
-					// start parsing a branch node
+					// this is a branch selector
+				}
+				else if(c == '>')
+				{
+					// this is a branch name
+					(string branchName, BrigitGraph subGraph) = ParseBranch(stream);
+					if(BranchesToPlace.ContainsKey(branchName))
+					{
+						(Node n, Choice ch) = BranchesToPlace[branchName];
+						ll.AddInBetween(n, subGraph);
+						Descision d = n.Data as Descision;
+						ch.NextNode = d.Choices.Count - 1;
+					}
+					else
+					{
+						throw new Exception($"{branchName} not found in dictionary, could the name be mispelled");
+					}
 				}
 				else
 				{

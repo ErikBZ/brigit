@@ -37,7 +37,9 @@ namespace Brigit.Structure.Exchange
 			}
 
 			// only checking text for now
-			return other.Text == Text;
+			bool checker = this.Attributes.Equals(other.Attributes);
+			checker &= other.Text == this.Text;
+			return checker;
 		}
 
 		public override int GetHashCode()

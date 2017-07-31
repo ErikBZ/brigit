@@ -11,10 +11,10 @@ namespace Brigit.Parser
 {
 	public partial class BrigitParser
 	{
-		public static LinkedList ParseDescision(TomeStream stream)
+		public static (BrigitGraph, Dictionary<string, (Node, Choice)>) ParseDescision(TomeStream stream)
 		{
 			Descision descision = new Descision();
-			LinkedList ll = new LinkedList();
+			BrigitGraph ll = new BrigitGraph();
 			Node root = new Node()
 			{
 				Data = descision
@@ -28,12 +28,17 @@ namespace Brigit.Parser
 			AssertChar(stream, ':');
 			Whitespace(stream);
 
+			// this is tracks the branchnames and where the
+			// the branches should be placed
+			Dictionary<string, (Node, Choice)> branchNameToNodeAndNode = new Dictionary<string, (Node, Choice)>();
+
 			ParsingState state = ParsingState.ExpectingMore;
 			while(state == ParsingState.ExpectingMore)
 			{
 				// parse the choice (same as parse text with esacape)
 				// parse attributes if there are any
 				Choice ch;
+
 				(ch, state) = ParseChoice(stream);
 				// -1 is the place holder for now. will be set to an actual number
 				// or to the size of list
@@ -44,17 +49,28 @@ namespace Brigit.Parser
 				// or there is an arrow pointing to a sub branch or a branch name
 
 				// Parseing.Expecting more implies that the arrow maybe still be here
-				if(ParseArrow(stream))
+				if (ParseArrow(stream))
 				{
+					// whitespace
+					Whitespace(stream);
 					// either it's a branch 
-					AssertChar(stream, '{');
-					// parse the subbranch if there is one
-					// parse the branch name is there is one, and we didn't parse a sub branch
-					// add the subbranch to the next list if there is none set their "next" to -1
-					LinkedList subGraph = ParseTome(stream);
+					if (stream.PeekChar() == '{')
+					{
+						AssertChar(stream, '{');
+						// parse the subbranch if there is one
+						// parse the branch name is there is one, and we didn't parse a sub branch
+						// add the subbranch to the next list if there is none set their "next" to -1
+						BrigitGraph subGraph = ParseBrigitGraph(stream);
 
-					ll.AddBranch(root, subGraph);
-					ch.NextNode = root.Next.Count - 1;	
+						ll.AddBranch(root, subGraph);
+						ch.NextNode = root.Next.Count - 1;	
+					}
+					// or a branch name
+					else
+					{
+						string BranchName = ParseOnlyTextNoEscape(stream);
+						branchNameToNodeAndNode.Add(BranchName, (root, ch));
+					}
 
 					// this means it has reach the end
 					if(stream.PeekChar() == '*')
@@ -62,8 +78,6 @@ namespace Brigit.Parser
 						state = ParsingState.Complete;
 						stream.NextChar();
 					}
-
-					// or a branch name
 				}
 			}
 
@@ -77,7 +91,7 @@ namespace Brigit.Parser
 				}
 			}
 
-			return ll;
+			return (ll, branchNameToNodeAndNode);
 		}
 
 		private static bool ParseArrow(TomeStream stream)

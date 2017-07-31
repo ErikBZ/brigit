@@ -71,9 +71,9 @@ namespace Brigit.Test
 		public void ParseConversationWithOnlyDialog()
 		{
 			TomeStream stream = GetStream("MultipleCharacterExchange.txt");
-			LinkedList conv = BrigitParser.ParseTome(stream);
+			BrigitGraph conv = BrigitParser.ParseBrigitGraph(stream);
 
-			LinkedList constructed = new LinkedList();
+			BrigitGraph constructed = new BrigitGraph();
 			// lol this looks digusting
 			constructed.Add(new Node()
 			{
@@ -92,9 +92,9 @@ namespace Brigit.Test
 		public void ParseConversationExchangeWithAttributes()
 		{
 			TomeStream stream = GetStream(".txt");
-			LinkedList conv = BrigitParser.ParseTome(stream);
+			BrigitGraph conv = BrigitParser.ParseBrigitGraph(stream);
 
-			LinkedList constructed = new LinkedList();
+			BrigitGraph constructed = new BrigitGraph();
 			// lol this looks digusting
 			constructed.Add(new Node()
 			{
@@ -114,8 +114,8 @@ namespace Brigit.Test
 		public void ParseSimpleChoiceWithDescisionMethod()
 		{
 			TomeStream stream = GetStream("SimpleChoiceNoBranches.txt");
-			LinkedList conv = BrigitParser.ParseDescision(stream);
-			LinkedList constructed = new LinkedList();
+			(BrigitGraph conv, var notUsed) = BrigitParser.ParseDescision(stream);
+			BrigitGraph constructed = new BrigitGraph();
 
 			constructed.Add(new Node()
 			{
@@ -139,8 +139,8 @@ namespace Brigit.Test
 		public void ParaseChoiceWithBranchesWithDescisionMethod()
 		{
 			TomeStream stream = GetStream("ChoiceWithBranches.txt");
-			LinkedList conv = BrigitParser.ParseDescision(stream);
-			LinkedList constructed = new LinkedList();
+			(BrigitGraph conv, var thing) = BrigitParser.ParseDescision(stream);
+			BrigitGraph constructed = new BrigitGraph();
 
 			constructed.Add(new Node()
 			{
@@ -154,7 +154,7 @@ namespace Brigit.Test
 				}
 			});
 
-			LinkedList branch = new LinkedList();
+			BrigitGraph branch = new BrigitGraph();
 			branch.Add(new Node()
 			{
 				Data = new Dialog("Diego", "You chose the first choice")
@@ -162,8 +162,75 @@ namespace Brigit.Test
 
 			constructed.AddBranch(constructed.Head, branch);
 
-
 			bool checker = conv.Equals(constructed);
+
+			Assert.AreEqual(true, checker);
+		}
+
+		[TestMethod]
+		public void ParseChoiceWithBranchNames()
+		{
+			TomeStream stream = GetStream("ChoiceWithBranchName.txt");
+			(BrigitGraph conv, var names) = BrigitParser.ParseDescision(stream);
+			BrigitGraph constructed = new BrigitGraph();
+
+			BrigitGraph subGraph = new BrigitGraph();
+			subGraph.Add(new Node()
+			{
+				Data = new Dialog("Char1", "We can mix both up")
+			});
+
+			constructed.Add(new Node()
+			{
+				Data = new Descision()
+				{
+					Choices = new List<Choice>()
+					{
+						new Choice("this goes to a branchname", 1),
+						new Choice("it ends withwhitespace or any none alpha character", 0),
+						new Choice("and it will work just fine", 1)
+					}
+				}
+			});
+			// this is the completed parsing
+			constructed.AddBranch(constructed.Head, subGraph);
+
+			// creating the dictionary
+			bool checker = conv.Equals(constructed);
+			checker &= names.ContainsKey("SomeName") && names.ContainsKey("OtherName");
+
+			if(checker)
+			{
+				(Node n, Choice ch) = names["SomeName"];
+				Descision decide = constructed.Head.Data as Descision;
+				checker &= n.Equals(constructed.Head);
+				checker &= ch.Equals(decide.Choices[0]);
+				
+				(n, ch) = names["OtherName"];
+				checker &= n.Equals(constructed.Head);
+				checker &= ch.Equals(decide.Choices[2]);
+			}
+
+			Assert.AreEqual(true, checker);
+		}
+
+		[TestMethod]
+		public void ParseBranchOnlyTest()
+		{
+			TomeStream stream = GetStream("ParseBranchOnlyTest.txt");
+			(string name, BrigitGraph graph) = BrigitParser.ParseBranch(stream);
+			BrigitGraph constructed = new BrigitGraph();
+			constructed.Add(new Node()
+			{
+				Data = new Dialog("Character1", "hello how are you")
+			});
+			constructed.Add(new Node()
+			{
+				Data = new Dialog("Diego", "That's a stupid name")
+			});
+
+			bool checker = name == "BranchName";
+			checker &= graph.Equals(constructed);
 
 			Assert.AreEqual(true, checker);
 		}

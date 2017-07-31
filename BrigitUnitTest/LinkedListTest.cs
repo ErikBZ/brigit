@@ -11,7 +11,7 @@ namespace Brigit.Test
 		// Tests to make sure that you can add a node just fine
 		public void AddNodeToLinkedList()
 		{
-			LinkedList ll = new LinkedList();
+			BrigitGraph ll = new BrigitGraph();
 			Node n1 = new Node()
 			{
 				Data = 1
@@ -29,7 +29,7 @@ namespace Brigit.Test
 		[TestMethod]
 		public void AddLinkedListToLinkedList()
 		{
-			LinkedList ll = new LinkedList();
+			BrigitGraph ll = new BrigitGraph();
 			Node n1 = new Node()
 			{
 				Data = 1
@@ -51,18 +51,18 @@ namespace Brigit.Test
 			Node nn1 = new Node() { Data = 4 };
 			Node nn2 = new Node() { Data = 5 };
 			Node nn3 = new Node() { Data = 6 };
-			LinkedList ll2 = new LinkedList();
+			BrigitGraph ll2 = new BrigitGraph();
 			ll2.Add(nn1);
 			ll2.Add(nn2);
 			ll2.Add(nn3);
 
-			ll.AddToEnd(ll2);
+			ll.Add(ll2);
 		}
 
 		[TestMethod]
 		public void AddLinkedListBranchToLinkedList()
 		{
-			LinkedList ll = new LinkedList();
+			BrigitGraph ll = new BrigitGraph();
 			Node n1 = new Node()
 			{
 				Data = 1
@@ -84,12 +84,26 @@ namespace Brigit.Test
 			Node nn1 = new Node() { Data = 4 };
 			Node nn2 = new Node() { Data = 5 };
 			Node nn3 = new Node() { Data = 6 };
-			LinkedList ll2 = new LinkedList();
+			BrigitGraph ll2 = new BrigitGraph();
 			ll2.Add(nn1);
 			ll2.Add(nn2);
 			ll2.Add(nn3);
 
 			ll.AddBranch(n2, ll2);
+		}
+
+		[TestMethod]
+		public void AddGraphInBetweenNodes()
+		{
+			BrigitGraph bg = new BrigitGraph();
+			bg.Add(new Node() { Data = 1 });
+			bg.Add(new Node() { Data = 3 });
+
+			BrigitGraph bg2 = new BrigitGraph();
+			bg2.Add(new Node() { Data = 6 });
+			bg2.Add(new Node() { Data = 7 });
+
+			bg.AddInBetween(bg.Head, bg2);
 		}
 	}
 }

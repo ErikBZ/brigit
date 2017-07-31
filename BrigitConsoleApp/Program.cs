@@ -12,7 +12,7 @@ namespace BrigitConsoleApp
 	{
 		static void Main(string[] args)
 		{
-			LinkedList ll = new LinkedList();
+			BrigitGraph ll = new BrigitGraph();
 			Node n1 = new Node()
 			{
 				Data = 1
@@ -34,7 +34,7 @@ namespace BrigitConsoleApp
 			Node nn1 = new Node() { Data = 4 };
 			Node nn2 = new Node() { Data = 5 };
 			Node nn3 = new Node() { Data = 6 };
-			LinkedList ll2 = new LinkedList();
+			BrigitGraph ll2 = new BrigitGraph();
 			ll2.Add(nn1);
 			ll2.Add(nn2);
 			ll2.Add(nn3);

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Brigit.Structure
 {
-	public class LinkedList
+	public class BrigitGraph
 	{
 		// impossible to have a linked list start with multiple heads
 		// since Descision, Dialog and BranchSelector are all guarteened to be before
@@ -14,13 +14,13 @@ namespace Brigit.Structure
 		public Node Head;
 		public List<Node> Tails;
 
-		public LinkedList()
+		public BrigitGraph()
 		{
 			Head = null;
 			Tails = new List<Node>();
 		}
 
-		public LinkedList(Node node)
+		public BrigitGraph(Node node)
 		{
 			Head = node;
 			Tails = new List<Node>() { node };
@@ -60,7 +60,7 @@ namespace Brigit.Structure
 		/// tails to the tail of this linked list
 		/// </summary>
 		/// <param name="ll"></param>
-		public void AddToEnd(LinkedList ll)
+		public void Add(BrigitGraph ll)
 		{
 			// this means that this linked list is 
 			// empty
@@ -87,7 +87,7 @@ namespace Brigit.Structure
 		/// <returns>The node where the branch was added</returns>
 		// this will consolodate the tails of this linkied list with the linked list
 		// that is being added
-		public Node AddBranch(Node node, LinkedList ll)
+		public Node AddBranch(Node node, BrigitGraph ll)
 		{
 			node.Next.Add(ll.Head);
 
@@ -97,6 +97,30 @@ namespace Brigit.Structure
 			}
 
 			return node;
+		}
+
+		/// <summary>
+		/// Adds a graph between give node and it's tails
+		/// </summary>
+		/// <param name="node"></param>
+		/// <param name="ll"></param>
+		public void AddInBetween(Node node, BrigitGraph ll)
+		{
+			if(node == null || ll == null)
+			{
+				throw new ArgumentNullException();
+			}
+			// adding tail first
+			// adding the head last so the next list isn't messed up
+			foreach(Node n in ll.Tails)
+			{
+				foreach(Node n2 in node.Next)
+				{
+					n.Next.Add(n2);
+				}
+			}
+
+			node.Next.Add(ll.Head);
 		}
 
 		/// <summary>
@@ -134,10 +158,10 @@ namespace Brigit.Structure
 
 		public override bool Equals(object obj)
 		{
-			LinkedList other;
-			if (obj is LinkedList)
+			BrigitGraph other;
+			if (obj is BrigitGraph)
 			{
-				other = obj as LinkedList;
+				other = obj as BrigitGraph;
 			}
 			else
 			{

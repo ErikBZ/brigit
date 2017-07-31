@@ -43,6 +43,7 @@ namespace Brigit.Structure.Exchange
 				Choice ch = obj as Choice;
 				bool equal = this.Text == ch.Text;
 				equal &= this.NextNode == ch.NextNode;
+				equal &= this.Attributes.Equals(ch.Attributes);
 
 				return equal;
 			}

@@ -1,7 +1,7 @@
 @player:
     this goes to a branchname*->SomeName
-    it ends withwhitespace or any none alpaha character*->{
+    it ends withwhitespace or any none alpha character*->{
         Char1:
             We can mix both up**
     } 
-    and it will work just fine**
+    and it will work just fine*->OtherName*

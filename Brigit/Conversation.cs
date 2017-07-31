@@ -15,7 +15,7 @@ namespace Brigit
 		// should be a unique name and indentifier
 		// will be the name of the file
 		public string ConversationName { get; set; }
-		private LinkedList ll;
+		private BrigitGraph ll;
 
 		private int tracker;
 		private Node curr;
@@ -23,10 +23,10 @@ namespace Brigit
 		public Conversation()
 		{
 			ConversationName = string.Empty;
-			ll = new LinkedList();
+			ll = new BrigitGraph();
 		}
 
-		public Conversation(LinkedList ll)
+		public Conversation(BrigitGraph ll)
 		{
 			ConversationName = "thingy";
 			this.ll = ll;

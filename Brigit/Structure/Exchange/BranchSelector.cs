@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Brigit.Structure.Exchange
 {
-	class BranchSelector
+	public class BranchSelector
 	{
 		List<Choice> Branches;
 	}
