@@ -80,8 +80,7 @@ namespace Brigit.Parser
 					{
 						(Node n, Choice ch) = BranchesToPlace[branchName];
 						ll.AddInBetween(n, subGraph);
-						Descision d = n.Data as Descision;
-						ch.NextNode = d.Choices.Count - 1;
+						ch.NextNode = n.Next.Count - 1;
 					}
 					else
 					{

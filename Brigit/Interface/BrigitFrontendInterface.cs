@@ -12,7 +12,7 @@ namespace Brigit.Interface
 	{
 		public static void Run(Conversation convo)
 		{
-			while(!convo.Complete())
+			while(!convo.Complete)
 			{
 				Renderable rend = convo.GetCurr();
 				PrintRenderable(rend);

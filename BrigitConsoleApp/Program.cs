@@ -5,46 +5,101 @@ using System.Text;
 using System.Threading.Tasks;
 using Brigit;
 using Brigit.Structure;
+using Brigit.Structure.Exchange;
+using Brigit.Parser;
+using Brigit.Parser.Stream;
+using System.IO;
 
 namespace BrigitConsoleApp
 {
-	class Program
-	{
-		static void Main(string[] args)
-		{
-			BrigitGraph ll = new BrigitGraph();
-			Node n1 = new Node()
-			{
-				Data = 1
-			};
-			ll.Add(n1);
+    class Program
+    {
+        static string RootDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
 
-			Node n2 = new Node()
-			{
-				Data = 2
-			};
-			ll.Add(n2);
+        static void Main(string[] args)
+        {
+            var tomeFile = args[0];
+            TomeStream stream = GetStream(tomeFile);
 
-			Node n3 = new Node()
-			{
-				Data = 3
-			};
-			ll.Add(n3);
+            BrigitGraph bg = BrigitParser.ParseBrigitGraph(stream);
+            Conversation conv = new Conversation(bg);
 
-			Node nn1 = new Node() { Data = 4 };
-			Node nn2 = new Node() { Data = 5 };
-			Node nn3 = new Node() { Data = 6 };
-			BrigitGraph ll2 = new BrigitGraph();
-			ll2.Add(nn1);
-			ll2.Add(nn2);
-			ll2.Add(nn3);
+            int next = 0;
 
-			ll.AddBranch(n2, ll2);
+            conv.StartNewRun();
 
-			string dotFile = ll.ToString();
+            while (!conv.Complete)
+            {
+                Info inf = conv.GetInfo();
 
-			Console.WriteLine(dotFile);
-			Console.ReadLine();
-		}
-	}
+                // printing info
+                switch (inf.type)
+                {
+                    case Info.Type.Choice:
+                        PrintChoice(inf.Text.ToArray());
+                        break;
+                    case Info.Type.Dialog:
+                        PrintDialog(inf.Text[0], inf.Character);
+                        break;
+                }
+
+                // getting the input from the player
+                bool askAgain = false;
+                do
+                {
+                    string input = Console.ReadLine();
+                    bool goodParse = int.TryParse(input, out next);
+                    if(goodParse && inf.type == Info.Type.Choice)
+                    {
+                        // setting to true here so I don't have have an else
+                        askAgain = true;
+
+                        if( next < inf.Text.Count && next > -1 )
+                        {
+                            // if the go to next returns false
+                            // then something went wrong
+                            if(!(conv.GoToNext(next)))
+                            {
+                                throw new Exception("The conversation could not step into the next section");
+                            }
+                            // everything is good, so don't ask the the player to input another number
+                            askAgain = false;
+                        }
+                   }
+                    else if(inf.type == Info.Type.Dialog)
+                    {
+                        conv.GoToNext();
+                        askAgain = false;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please ask enter a valid input");
+                    }
+                } while (askAgain);
+            }
+        }
+
+        public static void PrintDialog(string info, string ch="")
+        {
+            Console.WriteLine($"{ ch }");
+            Console.WriteLine($"\t{info}");
+        }
+
+        public static void PrintChoice(string[] stuff)
+        {
+            for (int i = 0; i < stuff.Length; i++)
+            {
+                Console.WriteLine($"\t {i}: {stuff[i]}");
+            }
+        }
+
+        public static TomeStream GetStream(string testFileName)
+        {
+            string[] tome = File.ReadAllLines($"{RootDirectory}\\BrigitUnitTest\\Tests\\{testFileName}");
+            string[] tomeNoComments = ComomentRemover.RemoveComments(tome);
+            TomeStream stream = new TomeStream(tomeNoComments);
+
+            return stream;
+        }
+    }
 }

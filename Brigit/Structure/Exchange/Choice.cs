@@ -36,7 +36,12 @@ namespace Brigit.Structure.Exchange
 			NextNode = next;
 		}
 
-		public override bool Equals(object obj)
+        public override string ToString()
+        {
+            return Text;
+        }
+
+        public override bool Equals(object obj)
 		{
 			if(obj is Choice)
 			{

@@ -109,6 +109,66 @@ namespace Brigit.Test
 		public void ParseTomeTest3Complete()
 		{
 			TomeStream stream = GetStream("TomeTest_3.txt");
+            var conv = BrigitParser.ParseBrigitGraph(stream);
+            var constructed = new BrigitGraph();
+
+            constructed.Add(new Node
+            {
+                Data = new Dialog("Diana", "I didn't want to be the one to forget")
+            });
+            constructed.Add(new Node
+            {
+                Data = new Dialog("Diego", "I thought of everything I'd never regret")
+            });
+
+            var choice = new Node()
+            {
+                Data = new Descision()
+                {
+                    Choices = new List<Choice>()
+                    {
+                        new Choice("A little time with you is all that I get", 2),
+                        new Choice("That's all we need because that's all we can take", 0),
+                        new Choice("I don't believe in him - his lips on the ground", 1),
+                        new Choice("I wanna take you back to the place by the rock", 1)
+                    }
+                }
+            };
+            constructed.Add(choice);
+
+            var diegoChoiceSubGraph = new BrigitGraph();
+            diegoChoiceSubGraph.Add(new Node()
+            {
+                Data = new Dialog("Diego", "One thing I never see the same when you're round")
+            });
+
+            // will probably check here to make sure this works
+            constructed.AddBranch(choice, diegoChoiceSubGraph);
+
+            constructed.Add(new Node() {
+                Data = new Dialog("Diana", "But no one gives us time anymore")
+            });
+
+            // chorus creation and then addition
+            var chorusSubGraph = new BrigitGraph();
+            chorusSubGraph.Add(new Node
+            {
+                Data = new Dialog("Diego", "I gotta be in your arms baby", "But far away I seek for your light",
+                    "I hold on because for you my heart keeps beating")
+            });
+
+            constructed.AddInBetween(choice, chorusSubGraph);
+
+            // the last thing that diego says
+
+            constructed.Add(new Node()
+            {
+                Data = new Dialog("Diego", "Will you be my light?")
+            });
+
+
+            bool checker = conv.Equals(constructed);
+            Assert.AreEqual(true, checker);
 		}
 	}
 }

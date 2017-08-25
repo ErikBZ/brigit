@@ -24,7 +24,12 @@ namespace Brigit.Structure.Exchange
 			Attributes = new AttributeManager();
 		}
 
-		public override bool Equals(object obj)
+        public override string ToString()
+        {
+            return Text;
+        }
+
+        public override bool Equals(object obj)
 		{
 			SpeechText other;
 			if (obj is SpeechText)

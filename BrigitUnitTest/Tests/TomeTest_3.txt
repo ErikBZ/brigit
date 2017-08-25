@@ -4,7 +4,7 @@ Diego:
     I thought of everything I'd never regret**
 
 @player:
-    A little time with you is all the I get*->Chorus
+    A little time with you is all that I get*->Chorus
     That's all we need because that's all we can take*->{
         Diego:
             One thing I never see the same when you're round**
@@ -13,14 +13,14 @@ Diego:
     I wanna take you back to the place by the rock**
 
 Diana:
-    But no one gives us time anymore
-
->DiegoBranch{
-    Diego:
-        I listened to your problems
-        now listen to mine*
-        I hold on because for you my heart keeps beating**
-}
+    But no one gives us time anymore**
 
 Diego:
     Will you be my light?**
+
+>Chorus{
+    Diego:
+        I gotta be in  your arms baby*
+        But far away I seek for your light*
+        I hold on because for you my heart keeps beating**
+}
