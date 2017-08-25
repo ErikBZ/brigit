@@ -14,7 +14,7 @@ namespace BrigitConsoleApp
 {
     class Program
     {
-        static string RootDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
+        static string RootDirectory = Directory.GetCurrentDirectory();
 
         static void Main(string[] args)
         {
@@ -95,7 +95,7 @@ namespace BrigitConsoleApp
 
         public static TomeStream GetStream(string testFileName)
         {
-            string[] tome = File.ReadAllLines($"{RootDirectory}\\BrigitUnitTest\\Tests\\{testFileName}");
+            string[] tome = File.ReadAllLines($"{RootDirectory}\\{testFileName}");
             string[] tomeNoComments = ComomentRemover.RemoveComments(tome);
             TomeStream stream = new TomeStream(tomeNoComments);
 
