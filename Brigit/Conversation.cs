@@ -151,7 +151,18 @@ namespace Brigit
                     // player chose their choice, and that choice object holds
                     // the info for the true next node
                     int nextNode = decide.Choices[playerChoice].NextNode;
-                    curr = curr.Next[nextNode];
+
+                    // it's possible to have branches and no next default.
+                    // if a choice has no where to go, it should return null
+                    // I.E if a choice points to an out of bounds index
+                    if(nextNode >= curr.Next.Count)
+                    {
+                        curr = null;
+                    }
+                    else
+                    {
+                        curr = curr.Next[nextNode];
+                    }
                     ResetLocals();
                 }
                 else
