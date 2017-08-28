@@ -2,6 +2,11 @@ Yulia:
     What the fuck is this*
     What are you doing?**
 
+Diego:
+    rabble*
+    Blah*
+    blah blah blah**
+
 @player:
     Nothing*->{
         Yulia:
