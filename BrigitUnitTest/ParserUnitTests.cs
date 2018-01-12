@@ -4,6 +4,7 @@ using Brigit.Parser;
 using Brigit.Structure;
 using Brigit.Structure.Exchange;
 using Brigit.Parser.Stream;
+using Brigit.Parser.Wrapper;
 using System.IO;
 using System.Collections.Generic;
 
@@ -114,7 +115,8 @@ namespace Brigit.Test
 		public void ParseSimpleChoiceWithDescisionMethod()
 		{
 			TomeStream stream = GetStream("SimpleChoiceNoBranches.txt");
-			(BrigitGraph conv, var notUsed) = BrigitParser.ParseDescision(stream);
+            var notUsed = new Dictionary<string, OpenChoice>();
+			BrigitGraph conv = BrigitParser.ParseDescision(stream, notUsed);
 			BrigitGraph constructed = new BrigitGraph();
 
 			constructed.Add(new Node()
@@ -139,7 +141,8 @@ namespace Brigit.Test
 		public void ParaseChoiceWithBranchesWithDescisionMethod()
 		{
 			TomeStream stream = GetStream("ChoiceWithBranches.txt");
-			(BrigitGraph conv, var thing) = BrigitParser.ParseDescision(stream);
+            var thing = new Dictionary<string, OpenChoice>();
+			BrigitGraph conv = BrigitParser.ParseDescision(stream, thing);
 			BrigitGraph constructed = new BrigitGraph();
 
 			constructed.Add(new Node()
@@ -171,7 +174,8 @@ namespace Brigit.Test
 		public void ParseChoiceWithBranchNames()
 		{
 			TomeStream stream = GetStream("ChoiceWithBranchName.txt");
-			(BrigitGraph conv, var names) = BrigitParser.ParseDescision(stream);
+            var names = new Dictionary<string, OpenChoice>();
+			BrigitGraph conv = BrigitParser.ParseDescision(stream, names);
 			BrigitGraph constructed = new BrigitGraph();
 
 			BrigitGraph subGraph = new BrigitGraph();
@@ -201,12 +205,17 @@ namespace Brigit.Test
 
 			if(checker)
 			{
-				(Node n, Choice ch) = names["SomeName"];
+                var openCh = names["SomeName"];
+                var n = openCh.EnclosingNode;
+                var ch = openCh.BranchingChoice;
+
 				Descision decide = constructed.Head.Data as Descision;
 				checker &= n.Equals(constructed.Head);
 				checker &= ch.Equals(decide.Choices[0]);
-				
-				(n, ch) = names["OtherName"];
+
+                openCh = names["OtherName"];
+                n = openCh.EnclosingNode;
+                ch = openCh.BranchingChoice;
 				checker &= n.Equals(constructed.Head);
 				checker &= ch.Equals(decide.Choices[2]);
 			}
@@ -218,7 +227,8 @@ namespace Brigit.Test
 		public void ParseBranchOnlyTest()
 		{
 			TomeStream stream = GetStream("ParseBranchOnlyTest.txt");
-			(string name, BrigitGraph graph) = BrigitParser.ParseBranch(stream);
+            String name = String.Empty;
+			BrigitGraph graph = BrigitParser.ParseBranch(stream, ref name);
 			BrigitGraph constructed = new BrigitGraph();
 			constructed.Add(new Node()
 			{
