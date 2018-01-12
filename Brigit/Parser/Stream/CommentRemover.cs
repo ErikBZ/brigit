@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Brigit.Parser.Stream
 {
@@ -34,7 +33,7 @@ namespace Brigit.Parser.Stream
 
 		public static void OnlyAddIfNotNullOrWhiteSpace(List<string> list, string str)
 		{
-			if (!String.IsNullOrEmpty(str) || !String.IsNullOrWhiteSpace(str))
+			if (!String.IsNullOrEmpty(str) || !(str != null && str.All(char.IsWhiteSpace)))
 			{
 				list.Add(str);
 			}

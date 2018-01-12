@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Brigit.Structure;
 using Brigit.Parser.Stream;
 using Brigit.Structure.Exchange;
@@ -36,8 +35,7 @@ namespace Brigit.Parser
 			ParsingState state = ParsingState.ExpectingMore;
 			while(state == ParsingState.ExpectingMore)
 			{
-				var (text, returnState) = ParseSpeechText(stream);
-				state = returnState;
+				var text = ParseSpeechText(stream, ref state);
 				data.Text.Add(text);
 			}
 
@@ -48,10 +46,10 @@ namespace Brigit.Parser
 			return node;
 		}
 
-		private static (SpeechText, ParsingState) ParseSpeechText(TomeStream stream)
+		private static SpeechText ParseSpeechText(TomeStream stream, ref ParsingState state)
 		{
 			SpeechText st = new SpeechText();
-			ParsingState state = ParsingState.ExpectingMore;
+			state = ParsingState.ExpectingMore;
 
 			// parse text here
 			string text = ParseAndCleanTextWithEscape(stream);
@@ -84,7 +82,7 @@ namespace Brigit.Parser
 
 			st.Text = text;
 
-			return (st, state);
+			return st;
 		}
 	}
 }

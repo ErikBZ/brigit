@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Brigit.Structure;
 using Brigit.Structure.Exchange;
 using Brigit.Parser.Stream;
@@ -11,9 +10,8 @@ namespace Brigit.Parser
 {
 	public static partial class BrigitParser
 	{
-		public static (string, BrigitGraph) ParseBranch(TomeStream stream)
+		public static BrigitGraph ParseBranch(TomeStream stream, ref string name)
 		{
-			string name = string.Empty;
 			BrigitGraph branchGraph = new BrigitGraph();
 
 			// parse away the > and the name
@@ -28,7 +26,7 @@ namespace Brigit.Parser
 			// parse like an ordinary tome after ward
 			branchGraph = ParseBrigitGraph(stream);
 
-			return (name, branchGraph);
+			return branchGraph;
 		}
 	}
 }

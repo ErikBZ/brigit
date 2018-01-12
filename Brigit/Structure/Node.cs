@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Brigit.Structure
 {
 	public class Node
 	{
 		// dyanmic for now until i figure out a beter way
-		public dynamic Data { get; set; }
+		public object Data { get; set; }
 		// empty list means there's nothing there
 		public List<Node> Next { get; set; }
 

@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Brigit.Parser.Stream;
 using Brigit.Structure.Exchange;
 using Brigit.Structure;
+using Brigit.Parser.Wrapper;
 
 namespace Brigit.Parser
 {
 	public partial class BrigitParser
 	{
-		public static (BrigitGraph, Dictionary<string, (Node, Choice)>) ParseDescision(TomeStream stream)
+		public static BrigitGraph ParseDescision(TomeStream stream, Dictionary<string, OpenChoice> branchEndings)
 		{
 			Descision descision = new Descision();
 			BrigitGraph ll = new BrigitGraph();
@@ -28,18 +28,12 @@ namespace Brigit.Parser
 			AssertChar(stream, ':');
 			Whitespace(stream);
 
-			// this is tracks the branchnames and where the
-			// the branches should be placed
-			Dictionary<string, (Node, Choice)> branchNameToNodeAndNode = new Dictionary<string, (Node, Choice)>();
-
 			ParsingState state = ParsingState.ExpectingMore;
 			while(state == ParsingState.ExpectingMore)
 			{
 				// parse the choice (same as parse text with esacape)
 				// parse attributes if there are any
-				Choice ch;
-
-				(ch, state) = ParseChoice(stream);
+				Choice ch = ParseChoice(stream, ref state);
 				// -1 is the place holder for now. will be set to an actual number
 				// or to the size of list
 				ch.NextNode = -1;
@@ -69,7 +63,8 @@ namespace Brigit.Parser
 					else
 					{
 						string BranchName = ParseOnlyTextNoEscape(stream);
-						branchNameToNodeAndNode.Add(BranchName, (root, ch));
+                        OpenChoice openCh = new OpenChoice(root, ch);
+						branchEndings.Add(BranchName, openCh);
 					}
 
 					// this means it has reach the end
@@ -91,7 +86,7 @@ namespace Brigit.Parser
 				}
 			}
 
-			return (ll, branchNameToNodeAndNode);
+            return ll;
 		}
 
 		private static bool ParseArrow(TomeStream stream)
@@ -105,16 +100,16 @@ namespace Brigit.Parser
 		}
 
 		// this uses the same method from the parse speech
-		private static (Choice, ParsingState) ParseChoice(TomeStream stream)
+		private static Choice ParseChoice(TomeStream stream, ref ParsingState state)
 		{
 			Choice choice = new Choice();
 			// the biggest difference these two have is the pointer to the index
-			(SpeechText st, ParsingState state) = ParseSpeechText(stream);
+			SpeechText st = ParseSpeechText(stream, ref state);
 
 			choice.Text = st.Text;
 			choice.Attributes = st.Attributes;
 
-			return (choice, state);
+			return choice;
 		}
 	}
 }

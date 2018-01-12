@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Brigit.Parser.Stream;
 using Brigit.Structure;
 using Brigit.Structure.Exchange;
+using Brigit.Parser.Wrapper;
 using Brigit.Attributes;
 
 namespace Brigit.Parser
@@ -14,7 +14,7 @@ namespace Brigit.Parser
 	// this can't be a static class i think
 	static public partial class BrigitParser
 	{
-		static Dictionary<string, (Node, Choice)> BranchesToPlace = new Dictionary<string, (Node, Choice)>();
+		static Dictionary<string, OpenChoice> BranchesToPlace = new Dictionary<string, OpenChoice>();
 		
 		public static Conversation Parse(string[] tome)
 		{
@@ -55,12 +55,12 @@ namespace Brigit.Parser
 				}
 				else if (c == '@')
 				{
-					// start parsing as a descision
-					BrigitGraph subGraph;
-					Dictionary<string, (Node, Choice)> branchesToNode;
-					(subGraph, branchesToNode) = ParseDescision(stream);
+                    // naybe use a struct here?
+                    Dictionary<string, OpenChoice> branchesToNode = new Dictionary<string, OpenChoice>();
+                    // TODO change signature of ParseDescision to (obj stream, Dict brachesToNode)
+					BrigitGraph subGraph = ParseDescision(stream, branchesToNode);
 
-					foreach(KeyValuePair<string, (Node,Choice)> kvp in branchesToNode)
+					foreach(KeyValuePair<string, OpenChoice> kvp in branchesToNode)
 					{
 						BranchesToPlace.Add(kvp.Key, kvp.Value);
 					}
@@ -74,11 +74,18 @@ namespace Brigit.Parser
 				}
 				else if(c == '>')
 				{
-					// this is a branch name
-					(string branchName, BrigitGraph subGraph) = ParseBranch(stream);
+                    // this is a branch name
+                    // TODO change signature of ParseBranch to ParseBranch(stream, ref string branchName) 
+                    // TODO i'll probably need a wrapper for the Node and Ch entires
+                    string branchName = String.Empty;
+					BrigitGraph subGraph = ParseBranch(stream, ref branchName);
 					if(BranchesToPlace.ContainsKey(branchName))
 					{
-						(Node n, Choice ch) = BranchesToPlace[branchName];
+						OpenChoice openCh = BranchesToPlace[branchName];
+                        Node n = openCh.EnclosingNode;
+                        Choice ch = openCh.BranchingChoice;
+
+
 						ll.AddInBetween(n, subGraph);
 						ch.NextNode = n.Next.Count - 1;
 					}

@@ -9,10 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Brigit</RootNamespace>
     <AssemblyName>Brigit</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
+    <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -37,12 +37,6 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="StyleCop, Version=4.7.1000.0, Culture=neutral, PublicKeyToken=f904653c63bc2738, processorArchitecture=MSIL">
-      <HintPath>..\packages\StyleCop.4.7.55\lib\net35\StyleCop.dll</HintPath>
-    </Reference>
-    <Reference Include="StyleCop.CSharp, Version=4.7.1000.0, Culture=neutral, PublicKeyToken=f904653c63bc2738, processorArchitecture=MSIL">
-      <HintPath>..\packages\StyleCop.4.7.55\lib\net35\StyleCop.CSharp.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -50,7 +44,6 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -66,7 +59,6 @@
     <Compile Include="Info.cs" />
     <Compile Include="Interface\BrigitFrontendInterface.cs" />
     <Compile Include="Interface\Renderable.cs" />
-    <Compile Include="IO\BrigitIO.cs" />
     <Compile Include="Parser\ParseAttributes.cs" />
     <Compile Include="Parser\ParseBranch.cs" />
     <Compile Include="Parser\ParseBranchSelector.cs" />
@@ -76,6 +68,7 @@
     <Compile Include="Parser\ParsingState.cs" />
     <Compile Include="Parser\Stream\CommentRemover.cs" />
     <Compile Include="Parser\Stream\TomeStream.cs" />
+    <Compile Include="Parser\Wrapper\OpenChoice.cs" />
     <Compile Include="Structure\Exchange\BranchSelector.cs" />
     <Compile Include="Structure\Exchange\Choice.cs" />
     <Compile Include="Structure\Exchange\Descision.cs" />
@@ -83,28 +76,20 @@
     <Compile Include="Structure\Exchange\SpeechText.cs" />
     <Compile Include="Structure\BrigitGraph.cs" />
     <Compile Include="Structure\Node.cs" />
-    <Compile Include="Structure\Old\Selection.cs" />
-    <Compile Include="Runtime\BrigitRuntime.cs" />
     <Compile Include="Attributes\Flags.cs" />
     <Compile Include="Attributes\GlobalFlags.cs" />
-    <Compile Include="Structure\Old\UserChoice.cs" />
-    <Compile Include="Structure\Old\Dialog.cs" />
-    <Compile Include="Structure\Old\DomAdmin.cs" />
-    <Compile Include="Structure\Old\DomTree.cs" />
-    <Compile Include="Structure\Old\NodeType.cs" />
-    <Compile Include="Structure\Old\TreeType.cs" />
-    <Compile Include="Structure\Old\DomNode.cs" />
-    <Compile Include="Structure\Old\GoodSortedList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="BrigitRules.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="IO\" />
+    <Folder Include="Runtime\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
