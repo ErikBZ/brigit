@@ -91,13 +91,17 @@ namespace Brigit.Parser
 					}
 					else
 					{
-						throw new Exception($"{branchName} not found in dictionary, could the name be mispelled");
+                        String msg = String.Format("{0} not found in dictionary, could the name be mispelled?",
+                                                    branchName);
+						throw new Exception(msg);
 					}
 				}
 				else
 				{
-					// panic here
-					throw new Exception($"Expected beginning of character name, branch or choice found {stream.PeekChar()} at {stream.Position}");
+                    // panic here
+                    String msg = String.Format("Expected beginning of character name, branch or chioce but found {0} at {1}",
+                                                stream.PeekChar(), stream.Position);
+					throw new Exception(msg);
 				}
 
 				Whitespace(stream);
@@ -237,7 +241,9 @@ namespace Brigit.Parser
 				case '*':
 					return '*';
 				default:
-					throw new Exception($"Error decoding char {c}. No such \\{c} character found");
+                    String msg = String.Format("Error decoding cha {0}. No such \\{0} character found",
+                                                c);
+					throw new Exception(msg);
 			}
 		}
 
@@ -245,7 +251,9 @@ namespace Brigit.Parser
 		{
 			if(stream.PeekChar() != c)
 			{
-				throw new Exception($"Expected {c} symbol but found { stream.PeekChar() }, at position {stream.Position}");
+                String msg = String.Format("Expected {0} symbol but found {1}, at position {2}",
+                                            c, stream.PeekChar(), stream.Position);
+				throw new Exception(msg);
 			}
 			stream.NextChar();
 			return true;
@@ -256,7 +264,9 @@ namespace Brigit.Parser
 			string name = ParseOnlyTextNoEscape(stream);
 			if(name != str)
 			{
-				throw new Exception($"Expected {str} symbol but found { name }, at position {stream.Position}");
+                String msg = String.Format("Expected {0} symbol but found {1}, at position {2}",
+                                            str, name, stream.Position);
+				throw new Exception(msg);
 			}
 			return true;
 		}

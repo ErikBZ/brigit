@@ -21,7 +21,8 @@ namespace Brigit.Parser
 			// check for colon
 			if(stream.PeekChar() != ':')
 			{
-				throw new Exception($"Expected :, found { stream.PeekChar() }, at { stream.Position }");
+                String msg = String.Format("Expected , found {0}, at {1}", stream.PeekChar(), stream.Position);
+				throw new Exception(msg);
 			}
 			else
 			{
@@ -61,7 +62,9 @@ namespace Brigit.Parser
 			}
 			else
 			{
-				throw new Exception($"Expected * to end speech parsing but found {stream.PeekChar()} at {stream.Position}");
+                String msg = String.Format("Expected * to end speech parsing but found {0} at {1}",
+                                            stream.PeekChar(), stream.Position);
+				throw new Exception(msg);
 			}
 
 			// parse the attribute

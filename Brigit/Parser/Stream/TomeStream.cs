@@ -15,7 +15,7 @@ namespace Brigit.Parser.Stream
 
 		public string Position
 		{
-			get { return $"Line: {lineNumber} Posiiton: {positionNumber}"; }
+            get { return String.Format("Line: {0} Position: {1}", lineNumber, positionNumber); }
 		}
 
 		public TomeStream()

@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Brigit.Parser;
 using Brigit.Structure;
 using Brigit.Structure.Exchange;
@@ -7,10 +6,11 @@ using Brigit.Parser.Stream;
 using Brigit.Parser.Wrapper;
 using System.IO;
 using System.Collections.Generic;
+using NUnit.Framework;
 
 namespace Brigit.Test
 {
-	[TestClass]
+	[TestFixture]
 	public class ParserUnitTests
 	{
 		const string RootDirectory = @"..\..\Tests\";
@@ -23,7 +23,7 @@ namespace Brigit.Test
 			return stream;
 		}
 
-		[TestMethod]
+		[Test]
 		public void ParseDialogTestTome()
 		{
 			string character = "Character1";
@@ -48,7 +48,7 @@ namespace Brigit.Test
 			Assert.AreEqual(true, passed);
 		}
 
-		[TestMethod]
+		[Test]
 		public void ParseDialogWithMultipleSpeechTexts()
 		{
 			TomeStream stream = GetStream("MultipleSpeechText.txt");
@@ -68,7 +68,7 @@ namespace Brigit.Test
 			Assert.AreEqual(true, passed);
 		}
 
-		[TestMethod]
+		[Test]
 		public void ParseConversationWithOnlyDialog()
 		{
 			TomeStream stream = GetStream("MultipleCharacterExchange.txt");
@@ -111,7 +111,7 @@ namespace Brigit.Test
 			Assert.AreEqual(true, checker);
 		}
 
-		[TestMethod]
+		[Test]
 		public void ParseSimpleChoiceWithDescisionMethod()
 		{
 			TomeStream stream = GetStream("SimpleChoiceNoBranches.txt");
@@ -137,7 +137,7 @@ namespace Brigit.Test
 			Assert.AreEqual(true, checker);
 		}
 
-		[TestMethod]
+		[Test]
 		public void ParaseChoiceWithBranchesWithDescisionMethod()
 		{
 			TomeStream stream = GetStream("ChoiceWithBranches.txt");
@@ -170,7 +170,7 @@ namespace Brigit.Test
 			Assert.AreEqual(true, checker);
 		}
 
-		[TestMethod]
+		[Test]
 		public void ParseChoiceWithBranchNames()
 		{
 			TomeStream stream = GetStream("ChoiceWithBranchName.txt");
@@ -223,7 +223,7 @@ namespace Brigit.Test
 			Assert.AreEqual(true, checker);
 		}
 
-		[TestMethod]
+		[Test]
 		public void ParseBranchOnlyTest()
 		{
 			TomeStream stream = GetStream("ParseBranchOnlyTest.txt");
@@ -245,7 +245,7 @@ namespace Brigit.Test
 			Assert.AreEqual(true, checker);
 		}
 
-		[TestMethod]
+		[Test]
 		public void CleanStringOfMultipleSpacesTest()
 		{
 			string dirtyString = "  hello    how are*(&^* you\n\n doing; ";
@@ -255,7 +255,7 @@ namespace Brigit.Test
 			Assert.AreEqual(true, checker);
 		}
 
-		[TestMethod]
+		[Test]
 		public void DecodeStringThatPassesTest()
 		{
 			string notDecoded = @"helo\n how\* are you doing\today";
@@ -265,15 +265,16 @@ namespace Brigit.Test
 			Assert.AreEqual(true, checker);
 		}
 
-		[TestMethod]
-		[ExpectedException(typeof(Exception))]
+		[Test]
 		public void DecodeStringThatFailsTest()
 		{
+            // arrange
 			string notDecoded = @"hello\t\y this should fail";
-			string decoded = BrigitParser.DecodeString(notDecoded);
+            // act and assert
+            Assert.Throws<Exception>(() => BrigitParser.DecodeString(notDecoded));
 		}
 
-		[TestMethod]
+		[Test]
 		public void LoadStringThenDecodeString()
 		{
 			TomeStream ts = GetStream("StringCleaning.txt");
