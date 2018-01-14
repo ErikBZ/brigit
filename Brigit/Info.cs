@@ -27,5 +27,12 @@ namespace Brigit
             Character = string.Empty;
             Text= new List<string>();
         }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("Character: ");
+            return sb.ToString();
+        }
     }
 }
