@@ -1,4 +1,3 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Brigit;
 using Brigit.Parser;
@@ -7,10 +6,11 @@ using Brigit.Structure;
 using Brigit.Structure.Exchange;
 using System.IO;
 using System.Collections.Generic;
+using NUnit.Framework;
 
 namespace Brigit.Test
 {
-	[TestClass]
+	[TestFixture]
 	public class ParseTomeTests
 		{
 		const string RootDirectory = @"..\..\Tests\";
@@ -23,7 +23,7 @@ namespace Brigit.Test
 			return stream;
 		}
 
-		[TestMethod]
+		[Test]
 		public void ParseTomeTest1Complete()
 		{
 			TomeStream stream = GetStream("TomeTest_1.txt");
@@ -51,7 +51,7 @@ namespace Brigit.Test
 			Assert.AreEqual(true, checker);
 		}
 
-		[TestMethod]
+		[Test]
 		public void ParseTomeTest2Complete()
 		{
 			TomeStream stream = GetStream("TomeTest_2.txt");
@@ -105,7 +105,7 @@ namespace Brigit.Test
 			Assert.AreEqual(true, checker);
 		}
 
-		[TestMethod]
+		[Test]
 		public void ParseTomeTest3Complete()
 		{
 			TomeStream stream = GetStream("TomeTest_3.txt");

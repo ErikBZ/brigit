@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Brigit.Attributes.ExpressionParser;
 using Brigit.Attributes.Operators;
 using Brigit.Attributes;
+// i'll be using NUnit from now on
+using NUnit.Framework;
 
 namespace Brigit.Test
 {
-	[TestClass]
+	[TestFixture]
 	public class ExpressionParserTest
 	{
-		[TestMethod]
+		[Test]
 		public void ParseExpression_ValidExpressionPassPreprocessor()
 		{
 			// arrange
@@ -23,7 +24,7 @@ namespace Brigit.Test
 			Assert.AreEqual(true, parsedWell);	
 		}
 
-		[TestMethod]
+		[Test]
 		public void ParseExpression_InvalidExpressionFailsPreprocessor()
 		{
 			// arrange
@@ -36,7 +37,7 @@ namespace Brigit.Test
 			Assert.AreEqual(false, parsedWell);	
 		}
 
-		[TestMethod]
+		[Test]
 		public void ParseExpression_ValidExpressionShouldEvaluateCorrectly()
 		{
 			// arrange

@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Brigit.Structure;
+using NUnit.Framework;
 
 namespace Brigit.Test
 {
-	[TestClass]
+	[TestFixture]
 	public class LinkedListTest
 	{
-		[TestMethod]
+		[Test]
 		// Tests to make sure that you can add a node just fine
 		public void AddNodeToLinkedList()
 		{
@@ -26,7 +26,7 @@ namespace Brigit.Test
 			string dotFile = ll.ToString();
 		}
 
-		[TestMethod]
+		[Test]
 		public void AddLinkedListToLinkedList()
 		{
 			BrigitGraph ll = new BrigitGraph();
@@ -59,7 +59,7 @@ namespace Brigit.Test
 			ll.Add(ll2);
 		}
 
-		[TestMethod]
+		[Test]
 		public void AddLinkedListBranchToLinkedList()
 		{
 			BrigitGraph ll = new BrigitGraph();
@@ -92,7 +92,7 @@ namespace Brigit.Test
 			ll.AddBranch(n2, ll2);
 		}
 
-		[TestMethod]
+		[Test]
 		public void AddGraphInBetweenNodes()
 		{
 			BrigitGraph bg = new BrigitGraph();
