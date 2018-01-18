@@ -13,7 +13,7 @@ namespace Brigit.Test
 	[TestFixture]
 	public class ParserUnitTests
 	{
-		const string RootDirectory = @"..\..\Tests\";
+		const string RootDirectory = @"E:\Users\zapat\Documents\brigit\BrigitUnitTest\Tests\";
 
 		public TomeStream GetStream(string testFileName)
 		{
