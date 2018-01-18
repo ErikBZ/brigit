@@ -16,11 +16,11 @@ namespace Brigit.Parser
 	{
 		static Dictionary<string, OpenChoice> BranchesToPlace = new Dictionary<string, OpenChoice>();
 		
-		public static Conversation Parse(string[] tome)
+		public static BrigitGraph Parse(TomeStream stream)
 		{
-			string[] processedTome = ComomentRemover.RemoveComments(tome);
-			// TODO stuff here
-			return new Conversation();
+            var bg = ParseBrigitGraph(stream);
+            // TODO stuff here
+            return bg;
 		}
 
 		public static void Whitespace(TomeStream stream)

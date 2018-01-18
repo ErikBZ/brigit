@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Brigit.Structure.Exchange;
 
 namespace Brigit
 {
@@ -10,22 +11,30 @@ namespace Brigit
     /// </summary>
     public class Info
     {
-        public enum Type { Choice, Dialog };
-
+        public enum Type { None, Dialog, Descision };
         public Type type;
-        public string Character;
-        /// <summary>
-        /// Lists of choices when this class responds with a choice
-        /// </summary>
-        public List<string> Text;
 
-        // extra stuff like "emotion", "time" and shit like that that are part of attribute manager
+        // all attributes are part of the singlet and descisions blocks already
+        public Descision Descision;
+        public DialogSinglet Dialog;
 
         public Info()
         {
+            type = Type.None;
+        }
+
+        // i've decided to make the node data it self viewable
+        public Info(Descision choices)
+        {
+            type = Type.Descision;
+            Descision = choices;
+        }
+
+        public Info(Dialog dialog, int speechBlock)
+        {
+            DialogSinglet singlet = new DialogSinglet(dialog.Character, dialog.Text[speechBlock]);
             type = Type.Dialog;
-            Character = string.Empty;
-            Text= new List<string>();
+            Dialog = singlet;
         }
 
         public override string ToString()

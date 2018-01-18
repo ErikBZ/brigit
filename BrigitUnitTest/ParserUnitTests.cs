@@ -18,7 +18,7 @@ namespace Brigit.Test
 		public TomeStream GetStream(string testFileName)
 		{
 			string[] tome = File.ReadAllLines(RootDirectory + testFileName);
-			string[] tomeNoComments = ComomentRemover.RemoveComments(tome);
+			string[] tomeNoComments = CommentRemover.RemoveComments(tome);
 			TomeStream stream = new TomeStream(tomeNoComments);
 			return stream;
 		}

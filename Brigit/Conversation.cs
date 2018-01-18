@@ -42,6 +42,7 @@ namespace Brigit
         }
 
         // gets the next text for the dialog
+        // i don't think i'll be using this anymore
         public Renderable GetCurr()
         {
             Renderable rend = new Renderable();
@@ -68,51 +69,21 @@ namespace Brigit
 
         public Info GetInfo()
         {
-            Info inf = new Info();
+            Info inf;
 
             if (curr.Data is Dialog)
             {
-                Dialog d = curr.Data as Dialog;
-                inf = ConvertToInfo(d, tracker);
+                inf = new Info(curr.Data as Dialog, tracker);
             }
             else if (curr.Data is Descision)
             {
-                Descision d = curr.Data as Descision;
-                inf = ConvertToInfo(d);
 
+                inf = new Info (curr.Data as Descision);
             }
             else
             {
                 throw new Exception("Data does not match");
             }
-
-            return inf;
-        }
-
-        public Info ConvertToInfo(Descision dec)
-        {
-            Info inf = new Info();
-            inf.Character = "player";
-
-            foreach (Choice ch in dec.Choices)
-            {
-                inf.Text.Add(ch.Text);
-            }
-
-            inf.type = Info.Type.Choice;
-
-            return inf;
-        }
-
-        public Info ConvertToInfo(Dialog dia, int tracker)
-        {
-            Info inf = new Info();
-
-            inf.Character = dia.Character;
-
-            inf.Text.Add(dia.Text[tracker].Text);
-
-            inf.type = Info.Type.Dialog;
 
             return inf;
         }
@@ -177,7 +148,6 @@ namespace Brigit
         {
             tracker = 0;
         }
-
 
 		private string DescisionToString(Descision dec)
 		{

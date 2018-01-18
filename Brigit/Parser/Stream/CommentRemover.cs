@@ -8,7 +8,7 @@ namespace Brigit.Parser.Stream
 	/// <summary>
 	/// Removes comments from a given array of strings
 	/// </summary>
-	public static class ComomentRemover
+	public static class CommentRemover
 	{
 		// as of right now only hashs will work correctly
 		public static string[] RemoveComments(string[] text)

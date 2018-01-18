@@ -18,7 +18,7 @@ namespace Brigit.Test
 		public TomeStream GetStream(string testFileName)
 		{
 			string[] tome = File.ReadAllLines(RootDirectory + testFileName);
-			string[] tomeNoComments = ComomentRemover.RemoveComments(tome);
+			string[] tomeNoComments = CommentRemover.RemoveComments(tome);
 			TomeStream stream = new TomeStream(tomeNoComments);
 			return stream;
 		}
@@ -170,5 +170,10 @@ namespace Brigit.Test
             bool checker = conv.Equals(constructed);
             Assert.AreEqual(true, checker);
 		}
+
+        [TestMethod]
+        public void TestConverstaionLoader()
+        {
+        }
 	}
 }
