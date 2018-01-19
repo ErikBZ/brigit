@@ -38,7 +38,13 @@ namespace Brigit.Structure.Exchange
 
 		public override int GetHashCode()
 		{
-			return base.GetHashCode();
+            int hash = 0;
+            foreach(Choice ch in Choices)
+            {
+                hash ^= ch.GetHashCode();
+            }
+            hash = (~0xf & hash) | Choices.Count();
+			return hash;
 		}
 	}
 }

@@ -16,9 +16,23 @@ namespace Brigit.Structure
 		{
 			Next = new List<Node>();
 		}
+
 		public override string ToString()
 		{
-			return Data.ToString();
+            int hash = GetHashCode();
+            StringBuilder sb = new StringBuilder();
+            if(Data is Exchange.Descision)
+            {
+                sb.Append("DescisionBlock_");
+            }
+            else if (Data is Exchange.Dialog)
+            {
+                sb.Append("DialogBlock_");
+            }
+
+            // adding the hash
+            sb.Append(hash.ToString("X4"));
+			return sb.ToString();
 		}
 
 		public override bool Equals(object obj)
@@ -35,7 +49,7 @@ namespace Brigit.Structure
 
 		public override int GetHashCode()
 		{
-			return base.GetHashCode();
+			return Data.GetHashCode();
 		}
 	}
 }

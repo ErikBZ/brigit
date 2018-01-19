@@ -59,7 +59,7 @@ namespace Brigit.Structure.Exchange
 
 		public override int GetHashCode()
 		{
-			return base.GetHashCode();
+            return Text.GetHashCode();
 		}
 	}
 }

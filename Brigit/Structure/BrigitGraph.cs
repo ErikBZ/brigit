@@ -144,7 +144,7 @@ namespace Brigit.Structure
 				// hopefully there are no cycles in the code
 				foreach(Node n in curr.Next)
 				{
-					sb.Append(curr.Data.ToString());
+					sb.Append(curr.ToString());
 					sb.Append(" -> ");
 					sb.Append(n.ToString());
 					sb.Append('\n');

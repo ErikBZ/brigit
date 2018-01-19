@@ -62,7 +62,13 @@ namespace Brigit.Structure.Exchange
 
 		public override int GetHashCode()
 		{
-			return base.GetHashCode();
+            int hash = 0;
+            foreach(SpeechText st in Text)
+            {
+                hash ^= st.GetHashCode();
+            }
+            hash = (~0xf & hash) | Text.Count;
+            return hash;
 		}
 	}
 }
