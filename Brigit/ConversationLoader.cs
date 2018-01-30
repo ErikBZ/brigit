@@ -22,7 +22,6 @@ namespace Brigit
             text = CommentRemover.RemoveComments(text);
             var tome = new TomeStream(text);
 
-            BrigitParser.Reset();
             // parsing here
             var bg = BrigitParser.Parse(tome);
 

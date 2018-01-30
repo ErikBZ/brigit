@@ -9,9 +9,9 @@ using Brigit.Parser.Wrapper;
 
 namespace Brigit.Parser
 {
-	public static partial class BrigitParser
+	public partial class BrigitParser
 	{
-		public static Node ParseDialog(TomeStream stream)
+		public Node ParseDialog(TomeStream stream)
 		{
 			Node node = new Node();
 			var data = new Dialog();
@@ -48,7 +48,7 @@ namespace Brigit.Parser
 			return node;
 		}
 
-		private static SpeechText ParseSpeechText(TomeStream stream, ref ParsingState state)
+		private SpeechText ParseSpeechText(TomeStream stream, ref ParsingState state)
 		{
 			SpeechText st = new SpeechText();
 			state = ParsingState.ExpectingMore;

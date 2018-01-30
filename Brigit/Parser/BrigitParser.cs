@@ -12,22 +12,26 @@ namespace Brigit.Parser
 {
 	// partial class this file keeps all the generic used by all methods
 	// this can't be a static class i think
-	static public partial class BrigitParser
+	public partial class BrigitParser
 	{
-		static Dictionary<string, OpenChoice> BranchesToPlace = new Dictionary<string, OpenChoice>();
+		Dictionary<string, OpenChoice> BranchesToPlace = new Dictionary<string, OpenChoice>();
+        TomeStream Stream;
+
+        // Constructor
+        // this class needs a stream so there will be no default constructor
+        public BrigitParser(TomeStream stream)
+        {
+            Stream = stream;
+        }
 		
 		public static BrigitGraph Parse(TomeStream stream)
 		{
-            var bg = ParseBrigitGraph(stream);
+            BrigitParser parser = new BrigitParser(stream);
+            var bg = parser.ParseBrigitGraph(stream);
             // TODO stuff here
             return bg;
 		}
         
-        public static void Reset()
-        {
-            BranchesToPlace = new Dictionary<string, OpenChoice>();
-        }
-
 		public static void Whitespace(TomeStream stream)
 		{
 			while (Char.IsWhiteSpace(stream.PeekChar()))
@@ -38,7 +42,7 @@ namespace Brigit.Parser
 
 		// public for testing purpose
 		// this chooses what is parsed next, IE a branch, a dialog or descision
-		public static BrigitGraph ParseBrigitGraph(TomeStream stream)
+		public BrigitGraph ParseBrigitGraph(TomeStream stream)
 		{
 			BrigitGraph ll = new BrigitGraph();
 
@@ -136,7 +140,7 @@ namespace Brigit.Parser
 		/// </summary>
 		/// <param name="stream"></param>
 		/// <returns></returns>
-		public static string ParseOnlyTextNoEscape(TomeStream stream)
+		public string ParseOnlyTextNoEscape(TomeStream stream)
 		{
 			StringBuilder sb = new StringBuilder();
 			
@@ -154,7 +158,7 @@ namespace Brigit.Parser
 		/// </summary>
 		/// <param name="stream"></param>
 		/// <returns></returns>
-		public static string ParseAndCleanTextWithEscape(TomeStream stream)
+		public string ParseAndCleanTextWithEscape(TomeStream stream)
 		{
 			StringBuilder sb = new StringBuilder();
 
@@ -188,7 +192,7 @@ namespace Brigit.Parser
 		/// </summary>
 		/// <param name="str"></param>
 		/// <returns></returns>
-		public static string CleanString(string str)
+		public string CleanString(string str)
 		{
 			StringBuilder sb = new StringBuilder();
 			int i = 0;
@@ -262,7 +266,7 @@ namespace Brigit.Parser
 			}
 		}
 
-		private static bool AssertChar(TomeStream stream, char c)
+		private bool AssertChar(TomeStream stream, char c)
 		{
 			if(stream.PeekChar() != c)
 			{
@@ -274,7 +278,7 @@ namespace Brigit.Parser
 			return true;
 		}
 
-		private static bool AssertAlphaDigitString(TomeStream stream, string str)
+		private bool AssertAlphaDigitString(TomeStream stream, string str)
 		{
 			string name = ParseOnlyTextNoEscape(stream);
 			if(name != str)

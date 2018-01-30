@@ -29,7 +29,8 @@ namespace Brigit.Test
 			string character = "Character1";
 			string text = "I'm going to say something";
 			TomeStream stream = GetStream("DialogTestTome.txt");
-			Node n = BrigitParser.ParseDialog(stream);
+            BrigitParser bParser = new BrigitParser(stream);
+			Node n = bParser.ParseDialog(stream);
 			bool passed = false;
 			if (n.Data is Dialog)
 			{
@@ -52,7 +53,8 @@ namespace Brigit.Test
 		public void ParseDialogWithMultipleSpeechTexts()
 		{
 			TomeStream stream = GetStream("MultipleSpeechText.txt");
-			Node n = BrigitParser.ParseDialog(stream);
+            BrigitParser bParser = new BrigitParser(stream);
+			Node n = bParser.ParseDialog(stream);
 
 			var other = new Dialog()
 			{
@@ -72,7 +74,8 @@ namespace Brigit.Test
 		public void ParseConversationWithOnlyDialog()
 		{
 			TomeStream stream = GetStream("MultipleCharacterExchange.txt");
-			BrigitGraph conv = BrigitParser.ParseBrigitGraph(stream);
+            BrigitParser bParser = new BrigitParser(stream);
+			BrigitGraph conv = bParser.ParseBrigitGraph(stream);
 
 			BrigitGraph constructed = new BrigitGraph();
 			// lol this looks digusting
@@ -90,33 +93,14 @@ namespace Brigit.Test
 			Assert.AreEqual(true, checker);
 		}
 
-		public void ParseConversationExchangeWithAttributes()
-		{
-			TomeStream stream = GetStream(".txt");
-			BrigitGraph conv = BrigitParser.ParseBrigitGraph(stream);
-
-			BrigitGraph constructed = new BrigitGraph();
-			// lol this looks digusting
-			constructed.Add(new Node()
-			{
-				Data = new Dialog("Diego", "Heyo!")
-			});
-			constructed.Add(new Node()
-			{
-				Data = new Dialog("Diana", "Hey whatsup?")
-			});
-
-			bool checker = conv.Equals(constructed);
-
-			Assert.AreEqual(true, checker);
-		}
 
 		[Test]
 		public void ParseSimpleChoiceWithDescisionMethod()
 		{
 			TomeStream stream = GetStream("SimpleChoiceNoBranches.txt");
             var notUsed = new Dictionary<string, OpenChoice>();
-			BrigitGraph conv = BrigitParser.ParseDescision(stream, notUsed);
+            BrigitParser bParser = new BrigitParser(stream);
+			BrigitGraph conv = bParser.ParseDescision(stream, notUsed);
 			BrigitGraph constructed = new BrigitGraph();
 
 			constructed.Add(new Node()
@@ -142,7 +126,8 @@ namespace Brigit.Test
 		{
 			TomeStream stream = GetStream("ChoiceWithBranches.txt");
             var thing = new Dictionary<string, OpenChoice>();
-			BrigitGraph conv = BrigitParser.ParseDescision(stream, thing);
+            BrigitParser bParser = new BrigitParser(stream);
+			BrigitGraph conv = bParser.ParseDescision(stream, thing);
 			BrigitGraph constructed = new BrigitGraph();
 
 			constructed.Add(new Node()
@@ -175,7 +160,8 @@ namespace Brigit.Test
 		{
 			TomeStream stream = GetStream("ChoiceWithBranchName.txt");
             var names = new Dictionary<string, OpenChoice>();
-			BrigitGraph conv = BrigitParser.ParseDescision(stream, names);
+            BrigitParser bParser = new BrigitParser(stream);
+			BrigitGraph conv = bParser.ParseDescision(stream, names);
 			BrigitGraph constructed = new BrigitGraph();
 
 			BrigitGraph subGraph = new BrigitGraph();
@@ -228,7 +214,8 @@ namespace Brigit.Test
 		{
 			TomeStream stream = GetStream("ParseBranchOnlyTest.txt");
             String name = String.Empty;
-			BrigitGraph graph = BrigitParser.ParseBranch(stream, ref name);
+            BrigitParser bParser = new BrigitParser(stream);
+			BrigitGraph graph = bParser.ParseBranch(stream, ref name);
 			BrigitGraph constructed = new BrigitGraph();
 			constructed.Add(new Node()
 			{
@@ -249,7 +236,8 @@ namespace Brigit.Test
 		public void CleanStringOfMultipleSpacesTest()
 		{
 			string dirtyString = "  hello    how are*(&^* you\n\n doing; ";
-			string clean = BrigitParser.CleanString(dirtyString);
+            BrigitParser bParser = new BrigitParser(new TomeStream());
+			string clean = bParser.CleanString(dirtyString);
 			bool checker = clean.Equals("hello how are*(&^* you doing;");
 
 			Assert.AreEqual(true, checker);
@@ -278,7 +266,8 @@ namespace Brigit.Test
 		public void LoadStringThenDecodeString()
 		{
 			TomeStream ts = GetStream("StringCleaning.txt");
-			string decoded = BrigitParser.ParseAndCleanTextWithEscape(ts);
+            BrigitParser bParser = new BrigitParser(ts);
+			string decoded = bParser.ParseAndCleanTextWithEscape(ts);
 			bool checker = decoded.Equals("This\nis going*to s\\ay something");
 
 			Assert.AreEqual(true, checker);

@@ -11,7 +11,7 @@ namespace Brigit.Parser
 {
 	public partial class BrigitParser
 	{
-		public static BrigitGraph ParseDescision(TomeStream stream, Dictionary<string, OpenChoice> branchEndings)
+		public BrigitGraph ParseDescision(TomeStream stream, Dictionary<string, OpenChoice> branchEndings)
 		{
 			Descision descision = new Descision();
 			BrigitGraph ll = new BrigitGraph();
@@ -92,7 +92,7 @@ namespace Brigit.Parser
             return ll;
 		}
 
-		private static bool ParseArrow(TomeStream stream)
+		private bool ParseArrow(TomeStream stream)
 		{
 			if(stream.PeekChar() == '-')
 			{
@@ -103,7 +103,7 @@ namespace Brigit.Parser
 		}
 
 		// this uses the same method from the parse speech
-		private static Choice ParseChoice(TomeStream stream, ref ParsingState state)
+		private Choice ParseChoice(TomeStream stream, ref ParsingState state)
 		{
 			Choice choice = new Choice();
 			// the biggest difference these two have is the pointer to the index

@@ -19,7 +19,7 @@ namespace Brigit.Parser
 		const string SETEMOTE = "Emt";
 
 		// starts at ( and eats away the closing paren
-		public static AttributeManager ParseAttributes(TomeStream stream)
+		public AttributeManager ParseAttributes(TomeStream stream)
 		{
 			AttributeManager am = new AttributeManager();
 

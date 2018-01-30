@@ -8,9 +8,9 @@ using Brigit.Parser.Stream;
 
 namespace Brigit.Parser
 {
-	public static partial class BrigitParser
+	public partial class BrigitParser
 	{
-		public static BrigitGraph ParseBranch(TomeStream stream, ref string name)
+		public BrigitGraph ParseBranch(TomeStream stream, ref string name)
 		{
 			BrigitGraph branchGraph = new BrigitGraph();
 

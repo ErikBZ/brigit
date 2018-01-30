@@ -27,7 +27,8 @@ namespace Brigit.Test
 		public void ParseTomeTest1Complete()
 		{
 			TomeStream stream = GetStream("TomeTest_1.txt");
-			BrigitGraph conv = BrigitParser.ParseBrigitGraph(stream);
+            BrigitParser bParser = new BrigitParser(stream);
+			BrigitGraph conv = bParser.ParseBrigitGraph(stream);
 
 			BrigitGraph constructed = new BrigitGraph();
 			constructed.Add(new Node(){
@@ -55,7 +56,8 @@ namespace Brigit.Test
 		public void ParseTomeTest2Complete()
 		{
 			TomeStream stream = GetStream("TomeTest_2.txt");
-			BrigitGraph conv = BrigitParser.ParseBrigitGraph(stream);
+            BrigitParser bParser = new BrigitParser(stream);
+			BrigitGraph conv = bParser.ParseBrigitGraph(stream);
 
 			BrigitGraph constructed = new BrigitGraph();
 			constructed.Add(new Node(){
@@ -110,12 +112,9 @@ namespace Brigit.Test
         // because of the recurisve nature of the ToString function i wrote
 		public void ParseTomeTest3Complete()
 		{
-            // hot fix
-            // the parser should probably not be all static
-            // since it is consuming a stream
-            BrigitParser.Reset();
 			TomeStream stream = GetStream("TomeTest_3.txt");
-            var conv = BrigitParser.ParseBrigitGraph(stream);
+            BrigitParser bParser = new BrigitParser(stream);
+            var conv = bParser.ParseBrigitGraph(stream);
             var constructed = new BrigitGraph();
 
             constructed.Add(new Node
