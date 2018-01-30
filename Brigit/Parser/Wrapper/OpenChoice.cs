@@ -13,6 +13,7 @@ namespace Brigit.Parser.Wrapper
     {
         public Node EnclosingNode;
         public Choice BranchingChoice;
+        public Node TailNode;
 
         public OpenChoice(Node node, Choice ch)
         {

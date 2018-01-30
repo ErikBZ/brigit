@@ -106,8 +106,14 @@ namespace Brigit.Test
 		}
 
 		[Test]
+        // The multiple lines to the tail node are being created
+        // because of the recurisve nature of the ToString function i wrote
 		public void ParseTomeTest3Complete()
 		{
+            // hot fix
+            // the parser should probably not be all static
+            // since it is consuming a stream
+            BrigitParser.Reset();
 			TomeStream stream = GetStream("TomeTest_3.txt");
             var conv = BrigitParser.ParseBrigitGraph(stream);
             var constructed = new BrigitGraph();
@@ -121,6 +127,7 @@ namespace Brigit.Test
                 Data = new Dialog("Diego", "I thought of everything I'd never regret")
             });
 
+            // looks like they're routing to the wrong places
             var choice = new Node()
             {
                 Data = new Descision()
@@ -143,8 +150,10 @@ namespace Brigit.Test
             });
 
             // will probably check here to make sure this works
+            // the error may happen some where around here
             constructed.AddBranch(choice, diegoChoiceSubGraph);
 
+            // everything seems fine up to this point
             constructed.Add(new Node() {
                 Data = new Dialog("Diana", "But no one gives us time anymore")
             });
@@ -157,7 +166,9 @@ namespace Brigit.Test
                     "I hold on because for you my heart keeps beating")
             });
 
-            constructed.AddInBetween(choice, chorusSubGraph);
+            // this right here is fucked up
+            // trying to fix in with the new method
+            constructed.AddInBetween(choice, constructed.Tails, chorusSubGraph);
 
             // the last thing that diego says
 

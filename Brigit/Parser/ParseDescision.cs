@@ -43,6 +43,9 @@ namespace Brigit.Parser
 				// or there is an arrow pointing to a sub branch or a branch name
 
 				// Parseing.Expecting more implies that the arrow maybe still be here
+                // Some branches have multiple "nexts" where the next either points to the same node
+                // or to two different ones within the same branching pattern.
+                //  It's the addition of the nodes that's wrong 
 				if (ParseArrow(stream))
 				{
 					// whitespace

@@ -5,6 +5,7 @@ using System.Text;
 using Brigit.Structure;
 using Brigit.Parser.Stream;
 using Brigit.Structure.Exchange;
+using Brigit.Parser.Wrapper;
 
 namespace Brigit.Parser
 {
@@ -43,7 +44,7 @@ namespace Brigit.Parser
 			// everything has been completed for this section.
 			// ParseSpeechText will eat the final *
 			node.Data = data;
-			
+
 			return node;
 		}
 

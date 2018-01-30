@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Brigit.IO
 {
-    static class TomeReader
+    public static class TomeReader
     {
         static string ProjectPath = "";
         public static string[] ReadTextFile(string filepath)

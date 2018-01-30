@@ -115,26 +115,16 @@ namespace Brigit
             }
             else if (curr.Data is Descision)
             {
+                // ohhh this already did the thing. woops
+                // removing functionality so that the choice is made on the frontend
+                // but verfied here
                 Descision decide = curr.Data as Descision;
-                if (playerChoice < decide.Choices.Count)
+                if (playerChoice < curr.Next.Count)
                 {
-                    // player chose their choice, and that choice object holds
-                    // the info for the true next node
-                    int nextNode = decide.Choices[playerChoice].NextNode;
-
-                    // it's possible to have branches and no next default.
-                    // if a choice has no where to go, it should return null
-                    // I.E if a choice points to an out of bounds index
-                    if(nextNode >= curr.Next.Count)
-                    {
-                        curr = null;
-                    }
-                    else
-                    {
-                        curr = curr.Next[nextNode];
-                    }
+                    curr = curr.Next[playerChoice];
                     ResetLocals();
                 }
+                // The descision was invalid and should not move forward
                 else
                 {
                     return false;

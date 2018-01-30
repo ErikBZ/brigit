@@ -1,0 +1,23 @@
+# these are comments and are ignored by the compiler
+
+# this is a dialog box for a given character
+Diana{
+    I didn't want to be the one to forget*
+}
+
+# this is a choice given to the player
+[
+    A little time with you is all that I get*->Chorus
+]
+
+# this is a named branch that should be pointed to somewhere else
+-Chrous{
+   Diego{
+       I gotta be in you arms baby*
+       But far away I seek the light*
+   }
+
+   Diana{
+       Yayyy*
+   }
+}

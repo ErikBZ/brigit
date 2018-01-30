@@ -61,6 +61,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="BrigitGraphTest.cs" />
     <Compile Include="ExpressionParserTest.cs" />
     <Compile Include="LinkedListTest.cs" />
     <Compile Include="ParserUnitTests.cs" />

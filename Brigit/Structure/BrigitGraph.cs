@@ -103,6 +103,10 @@ namespace Brigit.Structure
 		/// </summary>
 		/// <param name="node"></param>
 		/// <param name="ll"></param>
+        // TODO fix this. It's is not working the way it's intended to
+        // it's creating too many tails
+        // I have to know what the "tail" is in this case.
+        // this makes the graphs next nodes all of the nodes or choices that were previously added
 		public void AddInBetween(Node node, BrigitGraph ll)
 		{
 			if(node == null || ll == null)
@@ -122,6 +126,26 @@ namespace Brigit.Structure
 			node.Next.Add(ll.Head);
 		}
 
+        public void AddInBetween(Node node, List<Node> tails, BrigitGraph ll)
+        {
+            if(node == null || ll == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            // make it availble to the node
+            node.Next.Add(ll.Head);
+
+            // the tail will be the next node of the nodes
+            foreach(Node n in ll.Tails)
+            {
+                foreach(Node n2 in tails)
+                {
+                    n.Next.Add(n2);
+                }
+            }
+        }
+
 		/// <summary>
 		/// Set's a node somewhere inside of the linked list as a tail 
 		/// </summary>
@@ -131,6 +155,9 @@ namespace Brigit.Structure
 			this.Tails.Add(node);
 		}
 
+        // Nodes with multiple paths feeding into it
+        // will have their own links to the tail node,
+        // even when they feed into another single node in the process
 		public override string ToString()
 		{
 			StringBuilder sb = new StringBuilder();

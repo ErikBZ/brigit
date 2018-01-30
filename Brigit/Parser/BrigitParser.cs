@@ -22,6 +22,11 @@ namespace Brigit.Parser
             // TODO stuff here
             return bg;
 		}
+        
+        public static void Reset()
+        {
+            BranchesToPlace = new Dictionary<string, OpenChoice>();
+        }
 
 		public static void Whitespace(TomeStream stream)
 		{
@@ -51,6 +56,17 @@ namespace Brigit.Parser
 					// this one is simple. parse the dialog. then add
 					// it to the list
 					Node n = ParseDialog(stream);
+
+                    // for the new AddInBetween function
+                    foreach(KeyValuePair<string, OpenChoice> kvp in BranchesToPlace)
+                    {
+                        if(kvp.Value.TailNode == null)
+                        {
+                            kvp.Value.TailNode = n;
+                            break;
+                        }
+                    }
+
 					ll.Add(n);
 				}
 				else if (c == '@')
@@ -85,8 +101,7 @@ namespace Brigit.Parser
                         Node n = openCh.EnclosingNode;
                         Choice ch = openCh.BranchingChoice;
 
-
-						ll.AddInBetween(n, subGraph);
+						ll.AddInBetween(n, new List<Node>() {openCh.TailNode}, subGraph);
 						ch.NextNode = n.Next.Count - 1;
 					}
 					else

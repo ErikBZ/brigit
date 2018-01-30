@@ -40,7 +40,23 @@ namespace Brigit
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("Character: ");
+            switch (type)
+            {
+                case Type.Descision:
+                    for(int i=0;i<Descision.Choices.Count;i++)
+                    {
+                        sb.Append(String.Format("{0}: {1}", i, Descision.Choices[i]));
+                        if(i < Descision.Choices.Count - 1)
+                        {
+                            sb.Append("\n");
+                        }
+                    }
+                    break;
+                case Type.Dialog:
+                    sb.Append(String.Format("{0}: {1}", Dialog.Character, Dialog.Text));
+                    break;
+            }
+
             return sb.ToString();
         }
     }

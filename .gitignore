@@ -10,6 +10,7 @@
 *.swp
 *.ctom
 *.xml
+*.gv
 LogoSketches/
 math/
 [Bb]ugs/
