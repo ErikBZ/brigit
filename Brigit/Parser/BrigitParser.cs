@@ -24,6 +24,11 @@ namespace Brigit.Parser
             Stream = stream;
         }
 		
+        public BrigitGraph Parse()
+        {
+            return ParseBrigitGraph(Stream);
+        }
+
 		public static BrigitGraph Parse(TomeStream stream)
 		{
             BrigitParser parser = new BrigitParser(stream);

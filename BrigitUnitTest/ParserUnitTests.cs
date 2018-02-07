@@ -4,6 +4,7 @@ using Brigit.Structure;
 using Brigit.Structure.Exchange;
 using Brigit.Parser.Stream;
 using Brigit.Parser.Wrapper;
+using Brigit.Attributes;
 using System.IO;
 using System.Collections.Generic;
 using NUnit.Framework;
@@ -272,5 +273,27 @@ namespace Brigit.Test
 
 			Assert.AreEqual(true, checker);
 		}
+
+        [Test]
+        public void Parse_Flag_Setting_Valid_Parameter()
+        {
+            //assemble
+            string valid = "[SetT: yes this    \nwill work    ]";
+            TomeStream stream = new TomeStream(new string[] { valid });
+            BrigitParser bParser = new BrigitParser(stream);
+
+            AttributeManager constructed = new AttributeManager();
+            constructed.SetFlags.Add("yes", Flag.True);
+            constructed.SetFlags.Add("this", Flag.True);
+            constructed.SetFlags.Add("will", Flag.True);
+            constructed.SetFlags.Add("work", Flag.True);
+
+            // act
+            var manager = bParser.ParseAttributes(stream);
+
+            // assert
+            bool checker = manager.Equals(constructed);
+            Assert.AreEqual(true, checker);
+        }
 	}
 }

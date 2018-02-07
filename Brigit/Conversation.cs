@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using Brigit.Structure;
 using Brigit.Structure.Exchange;
-using Brigit.Interface;
+using Brigit.Attributes;
+using Brigit.Attributes.Operators;
 
 namespace Brigit
 {
@@ -16,6 +17,10 @@ namespace Brigit
         public string ConversationName { get; set; }
         private BrigitGraph ll;
 
+        // the Flags
+        private static Dictionary<string, Flag> GlobalFlags;
+        private Dictionary<string, Flag> LocalFlags;
+
         private int tracker;
         private Node curr;
 
@@ -25,6 +30,7 @@ namespace Brigit
         {
             ConversationName = string.Empty;
             ll = new BrigitGraph();
+            LocalFlags = new Dictionary<string, Flag>();
         }
 
         public Conversation(BrigitGraph ll)
@@ -32,6 +38,7 @@ namespace Brigit
             ConversationName = "thingy";
             this.ll = ll;
             curr = ll.Head;
+            LocalFlags = new Dictionary<string, Flag>();
         }
 
         public void StartNewRun()
@@ -39,32 +46,6 @@ namespace Brigit
             // resets stuff
             tracker = 0;
             curr = ll.Head;
-        }
-
-        // gets the next text for the dialog
-        // i don't think i'll be using this anymore
-        public Renderable GetCurr()
-        {
-            Renderable rend = new Renderable();
-
-            if (curr.Data is Dialog)
-            {
-                Dialog dia = curr.Data as Dialog;
-                rend.CharacterName = dia.Character;
-                rend.Info = dia.Text[tracker].Text;
-            }
-            else if (curr.Data is Descision)
-            {
-                Descision decide = curr.Data as Descision;
-                rend.CharacterName = "Player";
-                rend.Info = DescisionToString(decide);
-            }
-            else
-            {
-
-            }
-
-            return rend;
         }
 
         public Info GetInfo()

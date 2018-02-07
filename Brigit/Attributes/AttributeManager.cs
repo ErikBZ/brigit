@@ -66,7 +66,7 @@ namespace Brigit.Attributes
                     {
                         // Since we're basically using intergers with for the Flag values
                         // we can just check their equality
-                        dictionariesEqual = dictionariesEqual && !(kvp.Value == flags2[kvp.Key]);
+                        dictionariesEqual = dictionariesEqual && (kvp.Value == flags2[kvp.Key]);
                     }
                     else
                     {

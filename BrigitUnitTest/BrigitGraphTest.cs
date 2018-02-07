@@ -100,5 +100,42 @@ namespace Brigit.Test
             // assert
             Assert.AreEqual(expected, result);
         }
+
+        [Test]
+        public void TomeTest4_Graph_Traversal_Choice_0()
+        {
+            int[] choices = new int[] { 0 };
+            var conv = ConversationLoader.CreateConversation(String.Format(root, "TomeTest_4.txt"));
+
+            //action
+            string result = TraverseGraph(conv, choices);
+            string expected = "Diego: Hey what's happening\n" +
+                              "0: This sets one to true-- 0\n" +
+                              "Person: Hey\n" +
+                              "Person: Blah\n" +
+                              "Other: Heyo" +
+                              "Other: What is going on";
+
+            //assert
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test]
+        public void TomeTest4_Graph_Traversal_Choice_1()
+        {
+            // assemble
+            int[] choices = new int[] { 1 };
+            var conv = ConversationLoader.CreateConversation(String.Format(root, "TomeTest_4.txt"));
+
+            // action
+            string result = TraverseGraph(conv, choices);
+            string expected = "Diego: Hey what's happening:\n" +
+                            "1: This sets two to true-- 0\n" +
+                            "Person: Hello\n" +
+                            "Person: Blah\n";
+
+            // assert
+            Assert.AreEqual(expected, result);
+        }
     }
 }

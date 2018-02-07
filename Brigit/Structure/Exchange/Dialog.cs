@@ -15,14 +15,14 @@ namespace Brigit.Structure.Exchange
 		public Dialog()
 		{
 			Character = string.Empty;
-			Attributes = null;
+			Attributes = new AttributeManager();
 			Text = new List<SpeechText>();
 		}
 
 		// for easier testing and stuff but i could use it at the end of parsing
 		public Dialog(string character, params string[] speech)
 		{
-			Attributes = null;
+			Attributes = new AttributeManager();
 			Character = character;
 			Text = new List<SpeechText>();
 

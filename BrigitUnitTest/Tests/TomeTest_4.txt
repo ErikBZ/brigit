@@ -1,0 +1,15 @@
+Diego:
+    Hey what's happening**
+
+@player:
+    This sets one to true*[SetT: one]
+    This sets two to true*[SetT: two]*
+
+Person:
+    Hello*[ReqFlg: two]
+    Hey*[ReqFlg: one]
+    Blah**
+
+Other:
+    heyo*
+    What is going on**[ReqFlg: one]

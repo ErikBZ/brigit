@@ -38,6 +38,12 @@ namespace Brigit.Attributes.ExpressionParser
             expres.Push(null);
             IExpression expression = null;
 
+            // expception handling
+            if(opts.Count == 0 && vars.Count != 1)
+            {
+                throw new Exception("An expression with multiple variables requires and operation");
+            }
+
             // whlie we still have operations to use
             while(opts.Count > 0)
             {
@@ -90,6 +96,11 @@ namespace Brigit.Attributes.ExpressionParser
                         }
                     }while(temp == null && expres.Count > 0);
                 }
+            }
+            // yay for hotfix!
+            if(expression == null && vars.Count == 1)
+            {
+                expression = new Variable(vars.Pop());
             }
 
             return expression;
@@ -157,6 +168,7 @@ namespace Brigit.Attributes.ExpressionParser
         }
         
         // making sure the string is well formated
+        // only checks parens
         public static bool Preprocess(string exp)
         {
             // checks for paren balances

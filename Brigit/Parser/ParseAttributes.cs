@@ -50,17 +50,17 @@ namespace Brigit.Parser
 				}
 				else if (keyword.StartsWith(TRUEFLAGS) || keyword.StartsWith(" " + TRUEFLAGS))
 				{
-					string[] flagsToSetTrue = value.Split(' ');
+					string[] flagsToSetTrue = value.Split(null);
 					SetFlagArrayTo(Flag.True, flagsToSetTrue, am);
 				}
 				else if (keyword.StartsWith(FALSEFLAGS) || keyword.StartsWith(" " + FALSEFLAGS))
 				{
-					string[] falseFlags = value.Split(' ');
+					string[] falseFlags = value.Split(null);
 					SetFlagArrayTo(Flag.False, falseFlags, am);
 				}
 				else if (keyword.StartsWith(DONTCARE) || keyword.StartsWith(" " + DONTCARE))
 				{
-					string[] dontCareFlags = value.Split(' ');
+					string[] dontCareFlags = value.Split(null);
 					SetFlagArrayTo(Flag.DontCare, dontCareFlags, am);
 				}
 				else if (keyword.StartsWith(SETEMOTE) || keyword.StartsWith(" " + SETEMOTE))
@@ -76,7 +76,11 @@ namespace Brigit.Parser
 
 		private static void SetFlagArrayTo(Flag f, String[] flagNames, AttributeManager am)
 		{
-			foreach (string name in flagNames)
+            // only using the variables i want
+            // this is faster than culling the array before hand
+            // or manipulating the string
+            var query = from x in flagNames where x.Length != 0 select x;
+			foreach (var name in query)
 			{
 				am.SetFlags.Add(name, f);
 			}

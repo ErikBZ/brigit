@@ -41,6 +41,11 @@ namespace Brigit.Parser
 				data.Text.Add(text);
 			}
 
+            if(stream.PeekChar() == '[')
+            {
+                data.Attributes = ParseAttributes(stream);
+            }
+
 			// everything has been completed for this section.
 			// ParseSpeechText will eat the final *
 			node.Data = data;

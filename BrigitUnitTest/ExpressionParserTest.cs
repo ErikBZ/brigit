@@ -3,14 +3,43 @@ using System.Collections.Generic;
 using Brigit.Attributes.ExpressionParser;
 using Brigit.Attributes.Operators;
 using Brigit.Attributes;
+using Brigit.Parser.Stream;
 // i'll be using NUnit from now on
 using NUnit.Framework;
 
 namespace Brigit.Test
 {
-	[TestFixture]
-	public class ExpressionParserTest
-	{
+    [TestFixture]
+    public class ExpressionParserTest
+    {
+        [Test]
+        public void Parse_Expression_Valid_Expression_Single_Variable()
+        {
+            // arrange
+            string expression = "var1";
+
+            //act
+            bool parsedWell = BrigitExpressionParser.Preprocess(expression);
+            var exp = BrigitExpressionParser.Parse(expression);
+            var expected = new Variable("var1");
+
+            // assert
+            bool checker = parsedWell && expected.Equals(exp);
+            Assert.AreEqual(true, checker);
+        }
+
+        [Test]
+        public void Parse_Expression_Invalid()
+        {
+            // arrange
+            string expression = "var1 var2";
+
+            // act
+            bool parsed = BrigitExpressionParser.Preprocess(expression);
+
+            Assert.Throws<Exception>( () => BrigitExpressionParser.Parse(expression));
+        }
+
 		[Test]
 		public void ParseExpression_ValidExpressionPassPreprocessor()
 		{
@@ -58,7 +87,6 @@ namespace Brigit.Test
 			}
 
 			result = exp.Evaluate(locals, globals);
-
 
 			// assert
 			Assert.AreEqual(expected, result);
