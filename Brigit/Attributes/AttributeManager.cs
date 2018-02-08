@@ -29,7 +29,7 @@ namespace Brigit.Attributes
 
 			Length = string.Empty;
 
-			Expression = new Variable("TRUE");
+			Expression = new Tautalogy();
 		}
 
         public override bool Equals(object obj)

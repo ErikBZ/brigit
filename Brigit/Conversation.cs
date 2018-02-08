@@ -59,7 +59,9 @@ namespace Brigit
             else if (curr.Data is Descision)
             {
 
-                inf = new Info (curr.Data as Descision);
+                var data = curr.Data as Descision;
+                data = GetAvailableChoices(data);
+                inf = new Info (data);
             }
             else
             {
@@ -69,50 +71,117 @@ namespace Brigit
             return inf;
         }
 
-        // go to next MUST return true other wise we should stop execution since something went wrong
-        public bool GoToNext(int playerChoice = 0)
+        // takes a Descision and creates a new block with
+        // the avaiable choices a player can make
+        public Descision GetAvailableChoices(Descision data)
         {
-            // check first if this conv is complete
-            if (curr.Next.Count == 0)
+            var payload = new Descision();
+
+            for(int i=0; i<data.Choices.Count;i++)
             {
-                curr = null;
-                return true;
+                var newChoice = new Choice();
+                newChoice.Attributes = data.Choices[i].Attributes;
+                newChoice.Text = data.Choices[i].Text;
+                newChoice.NextNode = i;
+                payload.Choices.Add(newChoice);
             }
 
-            // if Data is a dialog i can ignore next
-            // this will almost never fail
-            if (curr.Data is Dialog)
+            return payload;
+        }
+
+        // go to next MUST return true other wise we should stop execution since something went wrong
+        public bool Next(int playerChoice = 0)
+        {
+            do
             {
-                Dialog dia = curr.Data as Dialog;
-                tracker++;
-                // off by 1 error. this should check for equality as well
-                // since tracker starts at 0 and count starts at 1
-                if (tracker >= dia.Text.Count)
+                // this will almost never fail
+                if (curr.Data is Dialog)
                 {
-                    // very simple way of doing things
-                    curr = curr.Next[0];
-                    ResetLocals();
+                    curr = DialogNext(curr);
                 }
-            }
-            else if (curr.Data is Descision)
-            {
-                // ohhh this already did the thing. woops
-                // removing functionality so that the choice is made on the frontend
-                // but verfied here
-                Descision decide = curr.Data as Descision;
-                if (playerChoice < curr.Next.Count)
+                else if (curr.Data is Descision)
                 {
-                    curr = curr.Next[playerChoice];
-                    ResetLocals();
+                    // ohhh this already did the thing. woops
+                    // removing functionality so that the choice is made on the frontend
+                    // but verfied here
+                    var next = ChoiceNext(curr, playerChoice);
+
+                    // there was a viable next node but something went wrong
+                    if (next == null && curr.Next.Count != 0)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        curr = next;
+                    }
                 }
-                // The descision was invalid and should not move forward
-                else
-                {
-                    return false;
-                }
-            }
+            } while (!IsValidState());
 
             return true;
+        }
+
+        // choice is the index of the chosen choice in the list
+        // not of the next node
+        private Node ChoiceNext(Node curr, int choice)
+        {
+            Descision data = curr.Data as Descision;
+            if(choice < data.Choices.Count)
+            {
+                ResetLocals();
+                int next = data.Choices[choice].NextNode;
+                SetFlags(data.Choices[choice].Attributes.SetFlags);
+                return curr.Next[next];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private Node DialogNext(Node curr)
+        {
+            Dialog dia = curr.Data as Dialog;
+            SetFlags(dia.Text[tracker].Attributes.SetFlags);
+
+            tracker++;
+            var next = curr;
+            if(tracker >= dia.Text.Count)
+            {
+                next = curr.Next.Count != 0 ? curr.Next[0] : null;
+                tracker = 0;
+            }
+
+            return next;
+        }
+
+        private bool IsValidState()
+        {
+            if (Complete || curr.Data is Descision)
+            {
+                return true;
+            }
+            else if(curr.Data is Dialog)
+            {
+                var data = curr.Data as Dialog;
+                var text = data.Text[tracker];
+                return data.Attributes.Expression.Evaluate(LocalFlags, null) == Flag.True &&
+                       text.Attributes.Expression.Evaluate(LocalFlags, null) == Flag.True;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        // this takes an attribute manager and sets the local or global flags
+        private void SetFlags(Dictionary<String, Flag> flags)
+        {
+            var dict = flags;
+            foreach(KeyValuePair<string, Flag> kvp in dict)
+            {
+                LocalFlags.Add(kvp.Key, kvp.Value);
+            }
         }
 
         private void ResetLocals()

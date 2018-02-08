@@ -54,6 +54,7 @@
     <Compile Include="Attributes\Operators\IExpression.cs" />
     <Compile Include="Attributes\Operators\Mux.cs" />
     <Compile Include="Attributes\Operators\Or.cs" />
+    <Compile Include="Attributes\Operators\Tautalogy.cs" />
     <Compile Include="Attributes\Operators\Variable.cs" />
     <Compile Include="Conversation.cs" />
     <Compile Include="ConversationLoader.cs" />

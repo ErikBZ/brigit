@@ -26,13 +26,17 @@ namespace Brigit.Attributes.Operators
 			return;
 		}
 
-		public Flag Evaluate(Dictionary<string, Flag> locals, Dictionary<string, Flag> globals)
-		{
-			if (locals.ContainsKey(variableName))
+        public Flag Evaluate(Dictionary<string, Flag> locals, Dictionary<string, Flag> globals)
+        {
+            if (variableName == "TRUE")
+            {
+                return Flag.True;
+            }
+			else if (locals != null && locals.ContainsKey(variableName))
 			{
 				return locals[variableName];
 			}
-			else if(globals.ContainsKey(variableName))
+			else if(globals != null && globals.ContainsKey(variableName))
 			{
 				return globals[variableName];
 			}

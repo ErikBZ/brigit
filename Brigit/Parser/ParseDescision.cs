@@ -71,7 +71,7 @@ namespace Brigit.Parser
 					}
 
 					// this means it has reach the end
-					if(stream.PeekChar() == '*')
+					if(stream.PeekChar() == '*' || stream.PeekChar() == '}')
 					{
 						state = ParsingState.Complete;
 						stream.NextChar();

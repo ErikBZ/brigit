@@ -20,9 +20,9 @@ namespace Brigit.Parser
 			data.Character = ParseOnlyTextNoEscape(stream);
 
 			// check for colon
-			if(stream.PeekChar() != ':')
+			if(stream.PeekChar() != ':' && stream.PeekChar() != '{')
 			{
-                String msg = String.Format("Expected , found {0}, at {1}", stream.PeekChar(), stream.Position);
+                String msg = String.Format("Expected : or {, found {0}, at {1}", stream.PeekChar(), stream.Position);
 				throw new Exception(msg);
 			}
 			else
@@ -53,37 +53,37 @@ namespace Brigit.Parser
 			return node;
 		}
 
-		private SpeechText ParseSpeechText(TomeStream stream, ref ParsingState state)
-		{
-			SpeechText st = new SpeechText();
-			state = ParsingState.ExpectingMore;
+        private SpeechText ParseSpeechText(TomeStream stream, ref ParsingState state)
+        {
+            SpeechText st = new SpeechText();
+            state = ParsingState.ExpectingMore;
 
-			// parse text here
-			string text = ParseAndCleanTextWithEscape(stream);
+            // parse text here
+            string text = ParseAndCleanTextWithEscape(stream);
 
-			// make sure the text ends in a star
-			if (stream.PeekChar() == '*')
-			{
-				stream.NextChar();
-			}
-			else
-			{
+            // make sure the text ends in a star
+            if (stream.PeekChar() == '*')
+            {
+                stream.NextChar();
+            }
+            else
+            {
                 String msg = String.Format("Expected * to end speech parsing but found {0} at {1}",
                                             stream.PeekChar(), stream.Position);
-				throw new Exception(msg);
-			}
+                throw new Exception(msg);
+            }
 
-			// parse the attribute
-			if (stream.PeekChar() == '[')
-			{
-				// this closes the paren for us if there is any
-				st.Attributes = ParseAttributes(stream);
-			}
+            // parse the attribute
+            if (stream.PeekChar() == '[')
+            {
+                // this closes the paren for us if there is any
+                st.Attributes = ParseAttributes(stream);
+            }
 
-			// check if it ended
-			// at this point we know there is at least 1 star
-			// if this is true then this will be the last speech text
-			if(stream.PeekChar() == '*')
+            // check if it ended
+            // at this point we know there is at least 1 star
+            // if this is true then this will be the last speech text
+            if (stream.PeekChar() == '*' || stream.PeekChar() == '}')
 			{
 				stream.NextChar();
 				state = ParsingState.Complete;

@@ -234,7 +234,7 @@ namespace Brigit.Test
             });
 
             // second dialog node
-            var dialog2 = new Dialog("Other", "heyo", "What is going on");
+            var dialog2 = new Dialog("Other", "Heyo", "What is going on");
             dialog2.Attributes.Expression = new Variable("one");
 
             constructed.Add(new Node()
