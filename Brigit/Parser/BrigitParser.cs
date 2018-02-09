@@ -180,7 +180,7 @@ namespace Brigit.Parser
 				}
 				else
 				{
-					sb.Append(stream.NextChar());	
+					sb.Append(stream.NextChar());
 				}
 			}
 

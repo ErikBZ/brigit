@@ -20,7 +20,7 @@ namespace Brigit.Parser
 			data.Character = ParseOnlyTextNoEscape(stream);
 
 			// check for colon
-			if(stream.PeekChar() != ':' && stream.PeekChar() != '{')
+			if(stream.PeekChar() != '{')
 			{
                 String msg = String.Format("Expected : or {, found {0}, at {1}", stream.PeekChar(), stream.Position);
 				throw new Exception(msg);
@@ -80,10 +80,12 @@ namespace Brigit.Parser
                 st.Attributes = ParseAttributes(stream);
             }
 
+            Whitespace(stream);
+
             // check if it ended
             // at this point we know there is at least 1 star
             // if this is true then this will be the last speech text
-            if (stream.PeekChar() == '*' || stream.PeekChar() == '}')
+            if (stream.PeekChar() == '}')
 			{
 				stream.NextChar();
 				state = ParsingState.Complete;

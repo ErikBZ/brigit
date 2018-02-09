@@ -1,7 +1,7 @@
-Diego:
+Diego{
     Heyo!*
     How ya doing?*
-    You look cute today**
-Diana:
-    Haha thanks*
-    I'm fine, how are you?**
+    You look cute today*
+}
+
+Diana{ Haha thanks* I'm fine, how are you?* }

@@ -1,10 +1,13 @@
-Diego:
-    Hello**
+Diego{
+    Hello*
+}
 
-@player:
+@player{
     Fuck you*
     Hello*
-    Blahblah**
+    Blahblah*
+}
 
-Diego:
-    Ok**
+Diego{
+    Ok*
+}

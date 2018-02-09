@@ -1,4 +1,5 @@
-@player:
+@player{
     You have either this choice*
     Or this other choice too*[]
-    Maybe one more choice as well**
+    Maybe one more choice as well*
+}

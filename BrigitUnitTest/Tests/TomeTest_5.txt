@@ -1,4 +1,4 @@
-@player:
+@player{
     choice 1*[SetT: one]
     choice 2*[SetT: two]
 }

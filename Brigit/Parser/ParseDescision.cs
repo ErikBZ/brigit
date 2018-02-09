@@ -25,7 +25,7 @@ namespace Brigit.Parser
 			// first parse away the @player:
 			AssertChar(stream, '@');
 			AssertAlphaDigitString(stream, "player");
-			AssertChar(stream, ':');
+			AssertChar(stream, '{');
 			Whitespace(stream);
 
 			ParsingState state = ParsingState.ExpectingMore;
@@ -71,7 +71,7 @@ namespace Brigit.Parser
 					}
 
 					// this means it has reach the end
-					if(stream.PeekChar() == '*' || stream.PeekChar() == '}')
+					if(stream.PeekChar() == '}')
 					{
 						state = ParsingState.Complete;
 						stream.NextChar();

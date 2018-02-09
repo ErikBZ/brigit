@@ -1,19 +1,19 @@
-Yulia:
+Yulia{
     What the fuck is this*
-    What are you doing?**
+    What are you doing?*
+}
 
-@player:
+@player{
     Nothing*->{
-        Yulia:
-            You're lying**
-        Diego:
-            Yeah she is**
+        Yulia{ You're lying* }
+        Diego{ Yeah she is* }
     } 
     Everything*
     Go away*->{
-        Yulia:
-            NO**
-    }*
+        Yulia{ NO* }
+    }
+}
 
-Diego:
-    There's a lot of yelling going on right now**
+Diego{
+    There's a lot of yelling going on right now*
+}

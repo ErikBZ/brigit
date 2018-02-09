@@ -1,15 +1,19 @@
-Diego:
-    Hey what's happening**
+Diego{
+    Hey what's happening*
+}
 
-@player:
+@player{
     This sets one to true*[SetT: one]
-    This sets two to true*[SetT: two]*
+    This sets two to true*[SetT: two]
+}
 
-Person:
+Person{
     Hello*[ReqFlg: two]
     Hey*[ReqFlg: one]
-    Blah**
+    Blah*
+}
 
-Other:
+Other{
     Heyo*
-    What is going on**[ReqFlg: one]
+    What is going on*
+}[ReqFlg: one]

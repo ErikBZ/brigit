@@ -1,7 +1,9 @@
-@player:
+@player{
     this goes to a branchname*->SomeName
     it ends withwhitespace or any none alpha character*->{
-        Char1:
-            We can mix both up**
+        Char1{
+            We can mix both up*
+        }
     } 
-    and it will work just fine*->OtherName*
+    and it will work just fine*->OtherName
+}

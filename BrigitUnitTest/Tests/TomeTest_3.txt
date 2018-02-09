@@ -1,26 +1,33 @@
-Diana:
-    I didn't want to be the one to forget**
-Diego:
-    I thought of everything I'd never regret**
+Diana{
+    I didn't want to be the one to forget*
+}
+Diego{
+    I thought of everything I'd never regret*
+}
 
-@player:
+@player{
     A little time with you is all that I get*->Chorus
     That's all we need because that's all we can take*->{
-        Diego:
-            One thing I never see the same when you're round**
+        Diego{
+            One thing I never see the same when you're round*
+        }
     }
     I don't believe in him - his lips on the ground*
-    I wanna take you back to the place by the rock**
+    I wanna take you back to the place by the rock*
+}
 
-Diana:
-    But no one gives us time anymore**
+Diana{
+    But no one gives us time anymore*
+}
 
-Diego:
-    Will you be my light?**
+Diego{
+    Will you be my light?*
+}
 
 >Chorus{
-    Diego:
+    Diego{
         I gotta be in  your arms baby*
         But far away I seek for your light*
-        I hold on because for you my heart keeps beating**
+        I hold on because for you my heart keeps beating*
+    }
 }
