@@ -67,6 +67,11 @@ namespace Brigit.Parser
 				{
 					am.Emote = value;
 				}
+				else
+				{
+					// TODO make these better
+					throw new Exception("Keyword " + keyword + " is not valid");
+				}
 			}
 
 			AssertChar(stream, ']');

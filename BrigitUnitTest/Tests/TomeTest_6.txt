@@ -1,0 +1,23 @@
+Spongebob{ I'm ready* }
+@player{
+    Path 1*[SetT: one]
+    Path 2*[SetT: two]
+    Path 3*
+}
+
+Squidward{ Arghhh* }[ReqFlg: two]
+
+{
+    one*->PEARL
+    two*->{
+        Patrick{ SPONGEBOB* }
+    }
+    _*
+}
+
+Sandy{ Karate chop* }
+MrKrabs{ I like money* }[ReqFlg: one]
+
+>PEARL{
+    Pearl{ Daddy* }
+}

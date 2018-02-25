@@ -9,10 +9,14 @@ namespace Brigit.Structure.Exchange
 	public class Descision
 	{
 		public List<Choice> Choices { get; set; }
+        // false if you want the block to get the next node on it's own
+        // by evaluating the attributes of each choice
+        public bool Interactive { get; set; }
 
 		public Descision()
 		{
 			Choices = new List<Choice>();
+            Interactive = true;
 		}
 
 		public override bool Equals(object obj)
@@ -24,6 +28,7 @@ namespace Brigit.Structure.Exchange
 			Descision other = obj as Descision;
 			int i = 0;
 			bool equal = this.Choices.Count == other.Choices.Count;
+            equal &= this.Interactive == other.Interactive;
 
 			while(i < Choices.Count && equal)
 			{

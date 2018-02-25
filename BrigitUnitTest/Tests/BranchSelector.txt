@@ -1,0 +1,10 @@
+{
+    x|s*->SomeBranch
+    b&d*->{
+        Diego{ Hi* }
+    }
+    # this is always required
+    _*->{
+        James{ Hello* }
+    }
+}

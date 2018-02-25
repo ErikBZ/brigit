@@ -31,12 +31,18 @@ namespace Brigit.Test
                         errorOccured = !(conv.Next());
                         break;
                     case Info.Type.Descision:
-                        int ch = choices[choiceTracker];
-                        int next = inf.Descision.Choices[ch].NextNode;
-                        sb.Append(String.Format("{0}: ", ch));
-                        sb.Append(inf.Descision.Choices[ch].ToString());
-                        // going to the next node specificed by the choice
-                        errorOccured = !(conv.Next(ch));
+                        if(choices.Length > choiceTracker && inf.Descision.Interactive)
+                        {
+                            errorOccured = !(conv.Next(choices[choiceTracker]));
+                            int ch = choices[choiceTracker];
+                            sb.Append(String.Format("{0}: ", ch));
+                            sb.Append(inf.Descision.Choices[ch].ToString());
+                            choiceTracker++;
+                        }
+                        else
+                        {
+                            errorOccured = conv.Next();
+                        }
                         break;
                 }
                 sb.Append("\n");
@@ -174,6 +180,61 @@ namespace Brigit.Test
                               "Other: done\n" +
                               "Last: Hey\n";
 
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test]
+        public void TomeTest6_Graph_Traversal_Choice_1()
+        {
+            //assemble
+            int[] choices = new int[] { 0 };
+            var conv = ConversationLoader.CreateConversation(String.Format(root, "TomeTest_6.txt"));
+
+            //act
+            string result = TraverseGraph(conv, choices);
+            string expected = "Spongebob: I'm ready\n" +
+                              "0: Path 1\n" +
+                              "Pearl: Daddy\n" +
+                              "Sandy: Karate chop\n" +
+                              "MrKrabs: I like money\n";
+
+            //assert
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test]
+        public void TomeTest6_Graph_Traversal_Choice_2()
+        {
+            //assemble
+            int[] choices = new int[] { 1 };
+            var conv = ConversationLoader.CreateConversation(String.Format(root, "TomeTest_6.txt"));
+
+            //act
+            string result = TraverseGraph(conv, choices);
+            string expected = "Spongebob: I'm ready\n" +
+                              "1: Path 2\n" +
+                              "Squidward: Arghhh\n" +
+                              "Patrick: SPONGEBOB\n" +
+                              "Sandy: Karate chop\n";
+
+            //assert
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test]
+        public void TomeTest6_Graph_Traversal_Choice_3()
+        {
+            //avegers assemble
+            int[] choices = new int[] { 2 };
+            var conv = ConversationLoader.CreateConversation(String.Format(root, "TomeTest_6.txt"));
+
+            //act
+            string result = TraverseGraph(conv, choices);
+            string expected = "Spongebob: I'm ready\n" +
+                              "2: Path 3\n" +
+                              "Sandy: Karate chop\n";
+
+            //assert
             Assert.AreEqual(expected, result);
         }
     }

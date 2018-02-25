@@ -37,7 +37,7 @@ namespace Brigit.Parser
             return bg;
 		}
         
-		public static void Whitespace(TomeStream stream)
+		public static void EatWhitespace(TomeStream stream)
 		{
 			while (Char.IsWhiteSpace(stream.PeekChar()))
 			{
@@ -54,7 +54,7 @@ namespace Brigit.Parser
 			while (!(stream.Complete() || stream.PeekChar() == '}'))
 			{
 				// getting rid of some beginning whitespace
-				Whitespace(stream);
+				EatWhitespace(stream);
 
 				// the real parsing starts here
 				// can't use switch need to use if elses
@@ -67,6 +67,9 @@ namespace Brigit.Parser
 					Node n = ParseDialog(stream);
 
                     // for the new AddInBetween function
+                    // this will only work for whatever comes next. This isn't very good
+                    // if there's multiple branches to place
+                    // TODO make this functionality work better with dummy tail in the subgraphs
                     foreach(KeyValuePair<string, OpenChoice> kvp in BranchesToPlace)
                     {
                         if(kvp.Value.TailNode == null)
@@ -93,9 +96,12 @@ namespace Brigit.Parser
 					// adding the dictionary entries to this
 					ll.Add(subGraph);
 				}
-				else if (c == '^')
+				else if (c == '{')
 				{
-					// this is a branch selector
+                    // this is a branch selector
+                    // we can just pass in the big dictionary
+                    BrigitGraph subGraph = ParseBranchSelector(BranchesToPlace);
+                    ll.Add(subGraph);
 				}
 				else if(c == '>')
 				{
@@ -128,7 +134,7 @@ namespace Brigit.Parser
 					throw new Exception(msg);
 				}
 
-				Whitespace(stream);
+				EatWhitespace(stream);
 			}
 
 			if(!stream.Complete())
@@ -294,5 +300,15 @@ namespace Brigit.Parser
 			}
 			return true;
 		}
+
+        private string FetchNonStarSubString()
+        {
+            StringBuilder sb = new StringBuilder(); 
+            while(Stream.PeekChar() != '*')
+            {
+                sb.Append(Stream.NextChar());
+            }
+            return sb.ToString();
+        }
 	}
 }

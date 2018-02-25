@@ -26,7 +26,7 @@ namespace Brigit.Parser
 			AssertChar(stream, '@');
 			AssertAlphaDigitString(stream, "player");
 			AssertChar(stream, '{');
-			Whitespace(stream);
+			EatWhitespace(stream);
 
 			ParsingState state = ParsingState.ExpectingMore;
 			while(state == ParsingState.ExpectingMore)
@@ -49,7 +49,7 @@ namespace Brigit.Parser
 				if (ParseArrow(stream))
 				{
 					// whitespace
-					Whitespace(stream);
+					EatWhitespace(stream);
 					// either it's a branch 
 					if (stream.PeekChar() == '{')
 					{

@@ -41,7 +41,7 @@ namespace Brigit.Attributes.ExpressionParser
             // expception handling
             if(opts.Count == 0 && vars.Count != 1)
             {
-                throw new Exception("An expression with multiple variables requires and operation");
+                throw new Exception("An expression with multiple variables requires an operation");
             }
 
             // whlie we still have operations to use

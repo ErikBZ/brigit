@@ -32,7 +32,7 @@ namespace Brigit.Parser
 
 			// parsing the text then attributes of the text
 			// getting rid of the starting whitespace
-			Whitespace(stream);
+			EatWhitespace(stream);
 
 			ParsingState state = ParsingState.ExpectingMore;
 			while(state == ParsingState.ExpectingMore)
@@ -80,7 +80,7 @@ namespace Brigit.Parser
                 st.Attributes = ParseAttributes(stream);
             }
 
-            Whitespace(stream);
+            EatWhitespace(stream);
 
             // check if it ended
             // at this point we know there is at least 1 star

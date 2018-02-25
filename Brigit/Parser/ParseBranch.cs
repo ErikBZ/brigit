@@ -20,7 +20,7 @@ namespace Brigit.Parser
 			name = ParseOnlyTextNoEscape(stream);
 
 			// whitespace can be between the name and the opener
-			Whitespace(stream);
+			EatWhitespace(stream);
 			AssertChar(stream, '{');
 
 			// parse like an ordinary tome after ward

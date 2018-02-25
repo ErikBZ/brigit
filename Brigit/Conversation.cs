@@ -104,7 +104,7 @@ namespace Brigit
                     // ohhh this already did the thing. woops
                     // removing functionality so that the choice is made on the frontend
                     // but verfied here
-                    var next = ChoiceNext(curr, playerChoice);
+                    var next = BranchingNext(curr, playerChoice);
 
                     // there was a viable next node but something went wrong
                     if (next == null && curr.Next.Count != 0)
@@ -123,20 +123,55 @@ namespace Brigit
 
         // choice is the index of the chosen choice in the list
         // not of the next node
-        private Node ChoiceNext(Node curr, int choice)
+        private Node BranchingNext(Node curr, int choice)
         {
             Descision data = curr.Data as Descision;
+            int next = data.Interactive ? ChoiceNext(data, choice) : SelectorNext(data);
+            return next == -1 ? null : curr.Next[next];
+        }
+
+        private int ChoiceNext(Descision data, int choice)
+        {
             if(choice < data.Choices.Count)
             {
                 ResetLocals();
                 int next = data.Choices[choice].NextNode;
                 SetFlags(data.Choices[choice].Attributes.SetFlags);
-                return curr.Next[next];
+                return next;
             }
             else
             {
-                return null;
+                return -1;
             }
+        }
+
+        /// <summary>
+        /// Selects the proper branch in a non-interactive descsion block. The descision is made
+        /// by the evaluation of the current flag state.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        private int SelectorNext(Descision data)
+        {
+            int next = -1;
+            int i = 0;
+            Choice ch;
+
+            // getting the choice that evaluates to true
+            // only gets the first
+            // others will be ignored
+            do
+            {
+                ch = data.Choices[i];
+                i++;
+            } while (i < data.Choices.Count && Flag.True != ch.Attributes.Expression.Evaluate(LocalFlags, GlobalFlags));
+
+            if(i-1 < data.Choices.Count)
+            {
+                next = ch.NextNode;
+            }
+
+            return next;
         }
 
         private Node DialogNext(Node curr)
@@ -157,9 +192,14 @@ namespace Brigit
 
         private bool IsValidState()
         {
-            if (Complete || curr.Data is Descision)
+            if (Complete)
             {
                 return true;
+            }
+            else if(curr.Data is Descision)
+            {
+                var data = curr.Data as Descision;
+                return data.Interactive;
             }
             else if(curr.Data is Dialog)
             {

@@ -8,6 +8,7 @@ using Brigit.Attributes;
 using System.IO;
 using System.Collections.Generic;
 using NUnit.Framework;
+using Brigit.Attributes.ExpressionParser;
 
 namespace Brigit.Test
 {
@@ -293,6 +294,62 @@ namespace Brigit.Test
 
             // assert
             bool checker = manager.Equals(constructed);
+            Assert.AreEqual(true, checker);
+        }
+
+        [Test]
+        public void Parse_Branch_Selection()
+        {
+            //assemble
+            TomeStream stream = GetStream("BranchSelector.txt");
+            BrigitParser bParser = new BrigitParser(stream);
+
+            BrigitGraph constructed = new BrigitGraph();
+            Dictionary<string, OpenChoice> endings = new Dictionary<string, OpenChoice>();
+
+            Descision descision = new Descision();
+            descision.Interactive = false;
+            var ch1 = new Choice();
+            ch1.Attributes.Expression = BrigitExpressionParser.Parse("x|s");
+            ch1.NextNode = 2;
+            var ch2 = new Choice();
+            ch2.Attributes.Expression = BrigitExpressionParser.Parse("b&d");
+            ch2.NextNode = 0;
+            var ch3 = new Choice();
+            ch3.NextNode = 1;
+            descision.Choices = new List<Choice>()
+            {
+                ch1, ch2, ch3
+            };
+
+            Node root = new Node() {
+                Data = descision
+            };
+
+            constructed.Add(root);
+            // adding the branches
+            Node br1 = new Node()
+            {
+                Data = new Dialog("Diego", "Hi")
+            };
+            BrigitGraph bg1 = new BrigitGraph();
+            bg1.Add(br1);
+
+            Node br2 = new Node()
+            {
+                Data = new Dialog("James", "Hello")
+            };
+            BrigitGraph bg2 = new BrigitGraph();
+            bg2.Add(br2);
+
+            constructed.AddBranch(root, bg1);
+            constructed.AddBranch(root, bg2);
+
+            //act
+            BrigitGraph bg = bParser.ParseBranchSelector(endings);
+
+            //assert
+            bool checker = bg.Equals(constructed);
             Assert.AreEqual(true, checker);
         }
 	}
