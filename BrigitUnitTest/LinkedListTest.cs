@@ -93,7 +93,7 @@ namespace Brigit.Test
 		}
 
 		[Test]
-		public void AddGraphInBetweenNodes()
+		public void Add_Graph_In_Between_Nodes()
 		{
 			BrigitGraph bg = new BrigitGraph();
 			bg.Add(new Node() { Data = 1 });

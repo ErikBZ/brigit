@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 using Brigit.IO;
 using NUnit.Framework;
 using Brigit;
@@ -12,6 +13,7 @@ namespace Brigit.Test
     public class BrigitGraphTest
     {
         string root = @"E:\Users\zapat\Documents\brigit\BrigitUnitTest\Tests\{0}";
+
         public string TraverseGraph(Conversation conv, int[] choices)
         {
             int choiceTracker = 0;
@@ -55,7 +57,7 @@ namespace Brigit.Test
         {
             // arrange
             int[] choices = new int[] { 0 };
-            var conv = ConversationLoader.CreateConversation(String.Format(root, "TomeTest_2.txt"));
+            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_2.txt"));
 
             // act
             string result = TraverseGraph(conv, choices);
@@ -73,7 +75,7 @@ namespace Brigit.Test
         public void TomeTest3_Graph_Traversal_Choice_2()
         {
             int[] choices = new int[] { 2 };
-            var conv = ConversationLoader.CreateConversation(String.Format(root, "TomeTest_3.txt"));
+            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_3.txt"));
 
             string result = TraverseGraph(conv, choices);
             string expected = "Diana: I didn't want to be the one to forget\n" +
@@ -92,7 +94,7 @@ namespace Brigit.Test
             // for descisions these correspond to the chosen choice not the branch
             // assemble
             int[] choices = new int[] { 0 };
-            var conv = ConversationLoader.CreateConversation(String.Format(root, "TomeTest_3.txt"));
+            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_3.txt"));
 
             // action
             string result = TraverseGraph(conv, choices);
@@ -113,7 +115,7 @@ namespace Brigit.Test
         public void TomeTest4_Graph_Traversal_Choice_0()
         {
             int[] choices = new int[] { 0 };
-            var conv = ConversationLoader.CreateConversation(String.Format(root, "TomeTest_4.txt"));
+            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_4.txt"));
 
             //action
             string result = TraverseGraph(conv, choices);
@@ -133,7 +135,7 @@ namespace Brigit.Test
         {
             // assemble
             int[] choices = new int[] { 1 };
-            var conv = ConversationLoader.CreateConversation(String.Format(root, "TomeTest_4.txt"));
+            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_4.txt"));
 
             // action
             string result = TraverseGraph(conv, choices);
@@ -150,7 +152,7 @@ namespace Brigit.Test
         public void TomeTest5_Graph_Traversal_Choice_0()
         {
             int[] choices = new int[] { 0 };
-            var conv = ConversationLoader.CreateConversation(String.Format(root, "TomeTest_5.txt"));
+            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_5.txt"));
 
             //action
             string result = TraverseGraph(conv, choices);
@@ -170,7 +172,7 @@ namespace Brigit.Test
         public void TomeTest5_Graph_Traversal_Choice_1()
         {
             int[] choices = new int[] { 1 };
-            var conv = ConversationLoader.CreateConversation(String.Format(root, "TomeTest_5.txt"));
+            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_5.txt"));
 
             // action
             string result = TraverseGraph(conv, choices);
@@ -188,7 +190,7 @@ namespace Brigit.Test
         {
             //assemble
             int[] choices = new int[] { 0 };
-            var conv = ConversationLoader.CreateConversation(String.Format(root, "TomeTest_6.txt"));
+            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_6.txt"));
 
             //act
             string result = TraverseGraph(conv, choices);
@@ -207,7 +209,7 @@ namespace Brigit.Test
         {
             //assemble
             int[] choices = new int[] { 1 };
-            var conv = ConversationLoader.CreateConversation(String.Format(root, "TomeTest_6.txt"));
+            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_6.txt"));
 
             //act
             string result = TraverseGraph(conv, choices);
@@ -226,7 +228,7 @@ namespace Brigit.Test
         {
             //avegers assemble
             int[] choices = new int[] { 2 };
-            var conv = ConversationLoader.CreateConversation(String.Format(root, "TomeTest_6.txt"));
+            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_6.txt"));
 
             //act
             string result = TraverseGraph(conv, choices);

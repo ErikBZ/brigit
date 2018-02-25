@@ -14,11 +14,10 @@ namespace Brigit.Test
     [TestFixture]
     public class ParseTomeTests
     {
-        const string RootDirectory = @"E:\Users\zapat\Documents\brigit\BrigitUnitTest\Tests\";
-
         public TomeStream GetStream(string testFileName)
         {
-            string[] tome = File.ReadAllLines(RootDirectory + testFileName);
+			string path = Path.Combine(Config.TomePath, testFileName);
+            string[] tome = File.ReadAllLines(path);
             string[] tomeNoComments = CommentRemover.RemoveComments(tome);
             TomeStream stream = new TomeStream(tomeNoComments);
             return stream;

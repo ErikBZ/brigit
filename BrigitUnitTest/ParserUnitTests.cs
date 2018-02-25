@@ -15,11 +15,10 @@ namespace Brigit.Test
 	[TestFixture]
 	public class ParserUnitTests
 	{
-		const string RootDirectory = @"E:\Users\zapat\Documents\brigit\BrigitUnitTest\Tests\";
-
 		public TomeStream GetStream(string testFileName)
 		{
-			string[] tome = File.ReadAllLines(RootDirectory + testFileName);
+			string path = Path.Combine(Config.TomePath, testFileName);
+			string[] tome = File.ReadAllLines(path);
 			string[] tomeNoComments = CommentRemover.RemoveComments(tome);
 			TomeStream stream = new TomeStream(tomeNoComments);
 			return stream;
@@ -267,6 +266,7 @@ namespace Brigit.Test
 		[Test]
 		public void LoadStringThenDecodeString()
 		{
+			string thing = Config.TomePath;
 			TomeStream ts = GetStream("StringCleaning.txt");
             BrigitParser bParser = new BrigitParser(ts);
 			string decoded = bParser.ParseAndCleanTextWithEscape(ts);
