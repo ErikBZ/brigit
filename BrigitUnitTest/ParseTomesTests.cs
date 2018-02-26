@@ -24,7 +24,7 @@ namespace Brigit.Test
         }
 
         [Test]
-        public void ParseTomeTest1Complete()
+        public void Parse_TomeTest1()
         {
             TomeStream stream = GetStream("TomeTest_1.txt");
             BrigitParser bParser = new BrigitParser(stream);
@@ -53,7 +53,7 @@ namespace Brigit.Test
         }
 
         [Test]
-        public void ParseTomeTest2Complete()
+        public void Parse_TomeTest2()
         {
             TomeStream stream = GetStream("TomeTest_2.txt");
             BrigitParser bParser = new BrigitParser(stream);
@@ -110,7 +110,7 @@ namespace Brigit.Test
         [Test]
         // The multiple lines to the tail node are being created
         // because of the recurisve nature of the ToString function i wrote
-        public void ParseTomeTest3Complete()
+        public void Parse_TomeTest3()
         {
             TomeStream stream = GetStream("TomeTest_3.txt");
             BrigitParser bParser = new BrigitParser(stream);
@@ -182,7 +182,7 @@ namespace Brigit.Test
         }
 
         [Test]
-        public void ParseTomeTest4_With_Attributes()
+        public void Parse_TomeTest4_WithAttributes()
         {
             TomeStream stream = GetStream("TomeTest_4.txt");
             BrigitParser brigitP = new BrigitParser(stream);

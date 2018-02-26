@@ -25,7 +25,7 @@ namespace Brigit.Test
 		}
 
 		[Test]
-		public void ParseDialogTestTome()
+		public void Parse_SimpleDialog()
 		{
 			string character = "Character1";
 			string text = "I'm going to say something";
@@ -51,7 +51,7 @@ namespace Brigit.Test
 		}
 
 		[Test]
-		public void ParseDialogWithMultipleSpeechTexts()
+		public void Parse_Dialog_WithMultipleSpeechTexts()
 		{
 			TomeStream stream = GetStream("MultipleSpeechText.txt");
             BrigitParser bParser = new BrigitParser(stream);
@@ -72,7 +72,7 @@ namespace Brigit.Test
 		}
 
 		[Test]
-		public void ParseConversationWithOnlyDialog()
+		public void Parse_MultipleDialog()
 		{
 			TomeStream stream = GetStream("MultipleCharacterExchange.txt");
             BrigitParser bParser = new BrigitParser(stream);
@@ -96,7 +96,7 @@ namespace Brigit.Test
 
 
 		[Test]
-		public void ParseSimpleChoiceWithDescisionMethod()
+		public void Parse_ChoiceFollowedByDialog()
 		{
 			TomeStream stream = GetStream("SimpleChoiceNoBranches.txt");
             var notUsed = new Dictionary<string, OpenChoice>();
@@ -123,7 +123,7 @@ namespace Brigit.Test
 		}
 
 		[Test]
-		public void ParaseChoiceWithBranchesWithDescisionMethod()
+		public void Parse_Choice_WithBakedInBranch()
 		{
 			TomeStream stream = GetStream("ChoiceWithBranches.txt");
             var thing = new Dictionary<string, OpenChoice>();
@@ -157,7 +157,7 @@ namespace Brigit.Test
 		}
 
 		[Test]
-		public void ParseChoiceWithBranchNames()
+		public void Parse_Choice_WithBranchNames()
 		{
 			TomeStream stream = GetStream("ChoiceWithBranchName.txt");
             var names = new Dictionary<string, OpenChoice>();
@@ -211,7 +211,7 @@ namespace Brigit.Test
 		}
 
 		[Test]
-		public void ParseBranchOnlyTest()
+		public void Parse_NamedBranch()
 		{
 			TomeStream stream = GetStream("ParseBranchOnlyTest.txt");
             String name = String.Empty;
@@ -234,7 +234,7 @@ namespace Brigit.Test
 		}
 
 		[Test]
-		public void CleanStringOfMultipleSpacesTest()
+		public void Clean_StringOfMultipleSpacesTest()
 		{
 			string dirtyString = "  hello    how are*(&^* you\n\n doing; ";
             BrigitParser bParser = new BrigitParser(new TomeStream());
@@ -245,7 +245,7 @@ namespace Brigit.Test
 		}
 
 		[Test]
-		public void DecodeStringThatPassesTest()
+		public void Decode_String_WithValidEscapes()
 		{
 			string notDecoded = @"helo\n how\* are you doing\today";
 			string decoded = BrigitParser.DecodeString(notDecoded);
@@ -255,7 +255,7 @@ namespace Brigit.Test
 		}
 
 		[Test]
-		public void DecodeStringThatFailsTest()
+		public void Decode_String_WithInvalidEscapes()
 		{
             // arrange
 			string notDecoded = @"hello\t\y this should fail";
@@ -264,7 +264,7 @@ namespace Brigit.Test
 		}
 
 		[Test]
-		public void LoadStringThenDecodeString()
+		public void Load_String_ThenDecodeString()
 		{
 			string thing = Config.TomePath;
 			TomeStream ts = GetStream("StringCleaning.txt");
@@ -276,7 +276,7 @@ namespace Brigit.Test
 		}
 
         [Test]
-        public void Parse_Flag_Setting_Valid_Parameter()
+        public void Parse_Flag_SettingValidParameter()
         {
             //assemble
             string valid = "[SetT: yes this    \nwill work    ]";
@@ -298,7 +298,7 @@ namespace Brigit.Test
         }
 
         [Test]
-        public void Parse_Branch_Selection()
+        public void Parse_BranchSelection()
         {
             //assemble
             TomeStream stream = GetStream("BranchSelector.txt");

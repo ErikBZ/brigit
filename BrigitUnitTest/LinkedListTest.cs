@@ -7,9 +7,12 @@ namespace Brigit.Test
 	[TestFixture]
 	public class LinkedListTest
 	{
+		// TODO add more linkedlist manipulation tests
+		// or create constructed linked lists to verify
+
 		[Test]
 		// Tests to make sure that you can add a node just fine
-		public void AddNodeToLinkedList()
+		public void Add_NodeToLinkList_NoException()
 		{
 			BrigitGraph ll = new BrigitGraph();
 			Node n1 = new Node()
@@ -27,7 +30,7 @@ namespace Brigit.Test
 		}
 
 		[Test]
-		public void AddLinkedListToLinkedList()
+		public void Add_LinkedListToLinkedList_NoException()
 		{
 			BrigitGraph ll = new BrigitGraph();
 			Node n1 = new Node()
@@ -60,7 +63,7 @@ namespace Brigit.Test
 		}
 
 		[Test]
-		public void AddLinkedListBranchToLinkedList()
+		public void Add_BranchingLinkedListToLinkedList_NoException()
 		{
 			BrigitGraph ll = new BrigitGraph();
 			Node n1 = new Node()
@@ -93,8 +96,7 @@ namespace Brigit.Test
 		}
 
 		[Test]
-		public void Add_Graph_In_Between_Nodes()
-		{
+		public void Add_GraphInBetweenNodes_NoException(){
 			BrigitGraph bg = new BrigitGraph();
 			bg.Add(new Node() { Data = 1 });
 			bg.Add(new Node() { Data = 3 });

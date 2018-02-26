@@ -4,16 +4,16 @@ using Brigit.Attributes.ExpressionParser;
 using Brigit.Attributes.Operators;
 using Brigit.Attributes;
 using Brigit.Parser.Stream;
-// i'll be using NUnit from now on
 using NUnit.Framework;
 
 namespace Brigit.Test
 {
+	// TODO much like LinkedListTest I should try writing more tests
     [TestFixture]
     public class ExpressionParserTest
     {
         [Test]
-        public void Parse_Expression_Valid_Expression_Single_Variable()
+        public void Parse_SingleVaribaleExpression()
         {
             // arrange
             string expression = "var1";
@@ -29,7 +29,7 @@ namespace Brigit.Test
         }
 
         [Test]
-        public void Parse_Expression_Invalid()
+        public void Parse_TwoVariableExpresssionWithNoOperator_Fails()
         {
             // arrange
             string expression = "var1 var2";
@@ -41,7 +41,7 @@ namespace Brigit.Test
         }
 
 		[Test]
-		public void ParseExpression_ValidExpressionPassPreprocessor()
+		public void Preprocess_ValidExpression()
 		{
 			// arrange
 			string expression = "var1 | var2 | (var1 & var3)";
@@ -54,7 +54,7 @@ namespace Brigit.Test
 		}
 
 		[Test]
-		public void ParseExpression_InvalidExpressionFailsPreprocessor()
+		public void Preprocess_InvalidExpression_ExpectException()
 		{
 			// arrange
 			string expression = "var1 & var2 | (var1 & var3)";
@@ -67,7 +67,7 @@ namespace Brigit.Test
 		}
 
 		[Test]
-		public void ParseExpression_ValidExpressionShouldEvaluateCorrectly()
+		public void Evalute_TwoVariablesAndedTogether()
 		{
 			// arrange
 			string expression = "var1 & var2";

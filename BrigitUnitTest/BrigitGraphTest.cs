@@ -53,7 +53,7 @@ namespace Brigit.Test
         }
 
         [Test]
-        public void TomeTest2_Graph_Traversal_Choice_1()
+        public void Traverse_TomeTest2_WithChoice0()
         {
             // arrange
             int[] choices = new int[] { 0 };
@@ -72,7 +72,7 @@ namespace Brigit.Test
         }
 
         [Test]
-        public void TomeTest3_Graph_Traversal_Choice_2()
+        public void Traverse_TomeTest3_WithChoice2_UsingBakedInBranches()
         {
             int[] choices = new int[] { 2 };
             var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_3.txt"));
@@ -88,7 +88,7 @@ namespace Brigit.Test
         }
 
         [Test]
-        public void TomeTest3_Graph_Traversal_Choice_0()
+        public void Traverse_TomeTest3_WithChoice0_UsingBranchName()
         {
             // These are inputs, for the traversal
             // for descisions these correspond to the chosen choice not the branch
@@ -112,7 +112,7 @@ namespace Brigit.Test
         }
 
         [Test]
-        public void TomeTest4_Graph_Traversal_Choice_0()
+        public void Traverse_TomeTest4_Choice0_CheckingForFlagRequirements()
         {
             int[] choices = new int[] { 0 };
             var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_4.txt"));
@@ -131,7 +131,7 @@ namespace Brigit.Test
         }
 
         [Test]
-        public void TomeTest4_Graph_Traversal_Choice_1()
+        public void Traverse_TomeTest4_Choice1_CheckingForFlagRequirements()
         {
             // assemble
             int[] choices = new int[] { 1 };
@@ -149,7 +149,7 @@ namespace Brigit.Test
         }
 
         [Test]
-        public void TomeTest5_Graph_Traversal_Choice_0()
+        public void Traverse_TomeTest5_Choice0_CheckingForMixedFlagRequirements()
         {
             int[] choices = new int[] { 0 };
             var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_5.txt"));
@@ -169,7 +169,7 @@ namespace Brigit.Test
         }
 
         [Test]
-        public void TomeTest5_Graph_Traversal_Choice_1()
+        public void Traverse_TomeTest5_Choice1_CheckingForBlockSkipping()
         {
             int[] choices = new int[] { 1 };
             var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_5.txt"));
@@ -186,7 +186,7 @@ namespace Brigit.Test
         }
 
         [Test]
-        public void TomeTest6_Graph_Traversal_Choice_1()
+        public void Traverse_TomeTest6_Choice0_CheckingBranchNameSelection()
         {
             //assemble
             int[] choices = new int[] { 0 };
@@ -205,7 +205,7 @@ namespace Brigit.Test
         }
 
         [Test]
-        public void TomeTest6_Graph_Traversal_Choice_2()
+        public void Traverse_TomeTest6_Choice1_CheckingBakedInBranchSelection()
         {
             //assemble
             int[] choices = new int[] { 1 };
@@ -224,7 +224,7 @@ namespace Brigit.Test
         }
 
         [Test]
-        public void TomeTest6_Graph_Traversal_Choice_3()
+        public void Traverse_TomeTest6_Choice2_CheckingPassingSelection()
         {
             //avegers assemble
             int[] choices = new int[] { 2 };
