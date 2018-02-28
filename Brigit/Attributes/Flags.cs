@@ -1,4 +1,5 @@
 ﻿using System;
+using Brigit;
 
 namespace Brigit.Attributes
 {

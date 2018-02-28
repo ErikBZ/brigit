@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Brigit.Attributes;
 using Brigit.Attributes.ExpressionParser;
 using Brigit.Attributes.Operators;
-using Brigit.Attributes;
-using Brigit.Parser.Stream;
 using NUnit.Framework;
 
 namespace Brigit.Test

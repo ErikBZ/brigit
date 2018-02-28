@@ -1,13 +1,13 @@
 ﻿using System;
-using Brigit.Parser;
-using Brigit.Structure;
-using Brigit.Structure.Exchange;
-using Brigit.Parser.Stream;
-using Brigit.Parser.Wrapper;
-using Brigit.Attributes;
 using System.IO;
 using System.Collections.Generic;
 using NUnit.Framework;
+using Brigit.Attributes;
+using Brigit.Parser.Stream;
+using Brigit.Structure;
+using Brigit.Parser;
+using Brigit.Structure.Exchange;
+using Brigit.Parser.Wrapper;
 using Brigit.Attributes.ExpressionParser;
 
 namespace Brigit.Test

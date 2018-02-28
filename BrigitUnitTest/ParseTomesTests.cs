@@ -4,10 +4,10 @@ using Brigit.Parser;
 using Brigit.Parser.Stream;
 using Brigit.Structure;
 using Brigit.Structure.Exchange;
-using Brigit.Attributes.Operators;
 using System.IO;
 using System.Collections.Generic;
 using NUnit.Framework;
+using Brigit.Attributes.Operators;
 
 namespace Brigit.Test
 {
