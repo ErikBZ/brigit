@@ -71,7 +71,6 @@
     <Compile Include="Parser\Stream\CommentRemover.cs" />
     <Compile Include="Parser\Stream\TomeStream.cs" />
     <Compile Include="Parser\Wrapper\OpenChoice.cs" />
-    <Compile Include="Structure\Exchange\Branch.cs" />
     <Compile Include="Structure\Exchange\BranchSelector.cs" />
     <Compile Include="Structure\Exchange\Choice.cs" />
     <Compile Include="Structure\Exchange\Descision.cs" />

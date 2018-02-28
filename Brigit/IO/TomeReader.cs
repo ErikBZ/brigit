@@ -5,7 +5,6 @@ namespace Brigit.IO
 {
     public static class TomeReader
     {
-        static string ProjectPath = "";
         public static string[] ReadTextFile(string filepath)
         {
             if (!File.Exists(filepath))

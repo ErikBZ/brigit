@@ -37,6 +37,10 @@ namespace Brigit.Parser.Stream
 			{
 				list.Add(str);
 			}
+			else
+			{
+				list.Add(" ");
+			}
 		}
 	}
 }
