@@ -127,7 +127,7 @@ namespace Brigit
         {
             Descision data = curr.Data as Descision;
             int next = data.Interactive ? ChoiceNext(data, choice) : SelectorNext(data);
-            return next == -1 ? null : curr.Next[next];
+            return next == -1 || curr.Next.Count == 0 ? null : curr.Next[next];
         }
 
         private int ChoiceNext(Descision data, int choice)
