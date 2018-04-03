@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>0.1.0</version>
+    <title>Brigit</title>
+    <authors>Erik Zapata</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A language that helps create branching story lines and dialog trees</description>
+    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <copyright>Copyright 2018</copyright>
+  </metadata>
+</package>
