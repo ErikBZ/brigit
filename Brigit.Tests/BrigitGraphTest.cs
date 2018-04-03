@@ -12,8 +12,6 @@ namespace Brigit.Test
     [TestFixture]
     public class BrigitGraphTest
     {
-        string root = @"E:\Users\zapat\Documents\brigit\BrigitUnitTest\Tests\{0}";
-
         public string TraverseGraph(Conversation conv, int[] choices)
         {
             int choiceTracker = 0;
