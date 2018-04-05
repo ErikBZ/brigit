@@ -17,7 +17,7 @@ namespace Brigit.Parser
 			var data = new Dialog();
 
 			// first things first, parse character name and then semicolon
-			data.Character = ParseOnlyTextNoEscape(stream);
+			data.Character = ParseCharacterName(stream);
 
 			// check for colon
 			if(stream.PeekChar() != '{')
