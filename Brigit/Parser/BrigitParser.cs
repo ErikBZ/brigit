@@ -181,6 +181,11 @@ namespace Brigit.Parser
 				sb.Append(stream.NextChar());
 			}
 
+			if (!char.IsLetterOrDigit(sb[sb.Length - 1]))
+			{
+				throw new Exceptions.InvalidCharacterNameException("Character name string should only end in alpha numeric character.");
+			}
+
 			return sb.ToString();
 		}
 
