@@ -9,7 +9,7 @@ namespace Brigit.IO
         {
             if (!File.Exists(filepath))
             {
-                throw new Exception("File path does not exists");
+                throw new FileNotFoundException(String.Format("File path does not exists: {0}", filepath));
             }
 
             string[] stream = File.ReadAllLines(filepath);

@@ -61,6 +61,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Info.cs" />
     <Compile Include="IO\TomeReader.cs" />
+    <Compile Include="Parser\Exceptions\InvalidCharacterNameException.cs" />
     <Compile Include="Parser\ParseAttributes.cs" />
     <Compile Include="Parser\ParseBranch.cs" />
     <Compile Include="Parser\ParseBranchSelector.cs" />
