@@ -164,32 +164,6 @@ namespace Brigit.Parser
 		}
 
 		/// <summary>
-		/// Parse a character name. Allows for spaces, dashes, single quotes and dots
-		/// </summary>
-		/// <param name="stream"></param>
-		/// <returns></returns>
-		public string ParseCharacterName(TomeStream stream)
-		{
-			StringBuilder sb = new StringBuilder();
-
-			while(Char.IsLetterOrDigit(stream.PeekChar()) ||
-				  stream.PeekChar() == '.' ||
-				  stream.PeekChar() == '\'' ||
-				  stream.PeekChar() == '-' ||
-				  stream.PeekChar() == ' ')
-			{
-				sb.Append(stream.NextChar());
-			}
-
-			if (!char.IsLetterOrDigit(sb[sb.Length - 1]))
-			{
-				throw new Exceptions.InvalidCharacterNameException("Character name string should only end in alpha numeric character.");
-			}
-
-			return sb.ToString();
-		}
-
-		/// <summary>
 		/// Parses text that can have escape characters and cleans up the string
 		/// by removing double \t, \n and spaces
 		/// </summary>

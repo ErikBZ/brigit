@@ -53,7 +53,37 @@ namespace Brigit.Parser
 			return node;
 		}
 
-        private SpeechText ParseSpeechText(TomeStream stream, ref ParsingState state)
+		/// <summary>
+		/// Parse a character name. Allows for spaces, dashes, single quotes and dots
+		/// </summary>
+		/// <param name="stream"></param>
+		/// <returns></returns>
+		public string ParseCharacterName(TomeStream stream)
+		{
+			StringBuilder sb = new StringBuilder();
+			HashSet<char> charsToAllow = new HashSet<char>(new char[] {'.', '\'', '-', '(', ')', ' '});
+
+			while (stream.PeekChar() != '{')
+			{
+				if (Char.IsLetterOrDigit(stream.PeekChar()) || charsToAllow.Contains(stream.PeekChar()))
+				{
+					sb.Append(stream.NextChar());
+				}
+				else
+				{
+					throw new Exceptions.InvalidCharacterNameException(String.Format("Character name cannot contain: '{0}'. Location: {1}", stream.PeekChar(), stream.Position));
+				}
+			}
+
+			// for now just remove spaces at the end of the string
+			if (!char.IsLetterOrDigit(sb[sb.Length - 1]))
+			{
+			}
+
+			return sb.ToString();
+		}
+
+		private SpeechText ParseSpeechText(TomeStream stream, ref ParsingState state)
         {
             SpeechText st = new SpeechText();
             state = ParsingState.ExpectingMore;
