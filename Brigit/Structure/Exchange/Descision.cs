@@ -6,7 +6,7 @@ using Brigit.Attributes;
 
 namespace Brigit.Structure.Exchange
 {
-	public class Descision
+	public class Descision : ExchangeUnit
 	{
 		public List<Choice> Choices { get; set; }
         // false if you want the block to get the next node on it's own

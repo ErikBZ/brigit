@@ -7,7 +7,7 @@ namespace Brigit.Structure.Exchange
 {
     // a signle instance of a dialog quote, a Dialog can be split into multiple singlets
     // this is mostly used by the client side renderer
-    public class DialogSinglet
+    public class DialogSinglet : ExchangeUnit
     {
         public string Character { get; set; }
         public SpeechText Text { get; set; }

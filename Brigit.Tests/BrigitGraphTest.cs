@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using Brigit.IO;
 using NUnit.Framework;
+using Brigit.Structure.Exchange;
 using Brigit;
 
 namespace Brigit.Test
@@ -31,12 +32,13 @@ namespace Brigit.Test
                         errorOccured = !(conv.Next());
                         break;
                     case Info.Type.Descision:
-                        if(choices.Length > choiceTracker && inf.Descision.Interactive)
+						var descision = inf.Data as Descision;
+                        if(choices.Length > choiceTracker && descision.Interactive)
                         {
                             errorOccured = !(conv.Next(choices[choiceTracker]));
                             int ch = choices[choiceTracker];
                             sb.Append(String.Format("{0}: ", ch));
-                            sb.Append(inf.Descision.Choices[ch].ToString());
+                            sb.Append(descision.Choices[ch].ToString());
                             choiceTracker++;
                         }
                         else

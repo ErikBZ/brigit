@@ -77,6 +77,7 @@
     <Compile Include="Structure\Exchange\Descision.cs" />
     <Compile Include="Structure\Exchange\Dialog.cs" />
     <Compile Include="Structure\Exchange\DialogSinglet.cs" />
+    <Compile Include="Structure\Exchange\ExchangeUnit.cs" />
     <Compile Include="Structure\Exchange\SpeechText.cs" />
     <Compile Include="Structure\BrigitGraph.cs" />
     <Compile Include="Structure\Node.cs" />

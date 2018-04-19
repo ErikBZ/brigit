@@ -15,8 +15,7 @@ namespace Brigit
         public Type type;
 
         // all attributes are part of the singlet and descisions blocks already
-        public Descision Descision;
-        public DialogSinglet Dialog;
+		public ExchangeUnit Data;
 
         public Info()
         {
@@ -27,14 +26,14 @@ namespace Brigit
         public Info(Descision choices)
         {
             type = Type.Descision;
-            Descision = choices;
+            Data = choices;
         }
 
         public Info(Dialog dialog, int speechBlock)
         {
             DialogSinglet singlet = new DialogSinglet(dialog.Character, dialog.Text[speechBlock]);
             type = Type.Dialog;
-            Dialog = singlet;
+            Data = singlet;
         }
 
         public override string ToString()
@@ -43,17 +42,19 @@ namespace Brigit
             switch (type)
             {
                 case Type.Descision:
-                    for(int i=0;i<Descision.Choices.Count;i++)
+					var descision = Data as Descision;
+                    for(int i=0;i<descision.Choices.Count;i++)
                     {
-                        sb.Append(String.Format("{0}: {1}", i, Descision.Choices[i]));
-                        if(i < Descision.Choices.Count - 1)
+                        sb.Append(String.Format("{0}: {1}", i, descision.Choices[i]));
+                        if(i < descision.Choices.Count - 1)
                         {
                             sb.Append("\n");
                         }
                     }
                     break;
                 case Type.Dialog:
-                    sb.Append(String.Format("{0}: {1}", Dialog.Character, Dialog.Text));
+					var dialog = Data as DialogSinglet;
+                    sb.Append(String.Format("{0}: {1}", dialog.Character, dialog.Text));
                     break;
             }
 
