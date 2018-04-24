@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
 
 namespace Brigit.Attributes.Operators
 {
+	[DataContract]
 	public class Variable : IExpression
 	{
+		[DataMember]
 		string variableName;
 
 		public Variable()

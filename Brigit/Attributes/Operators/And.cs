@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace Brigit.Attributes.Operators
 {
+	[KnownType(typeof(Tautalogy))]
+	[DataContract]
     public class And:IExpression
     {
+		[DataMember]
 		private List<IExpression> ExpList;
 
         public And()

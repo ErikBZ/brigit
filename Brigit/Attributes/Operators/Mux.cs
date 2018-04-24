@@ -1,11 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace Brigit.Attributes.Operators
 {
 	// Mux is a better way to describe what this operation does
+	[KnownType(typeof(Tautalogy))]
+	[DataContract]
 	public class Mux:IExpression
     {
+		[DataMember]
 		private List<IExpression> ExpList;
 
 		public Mux()

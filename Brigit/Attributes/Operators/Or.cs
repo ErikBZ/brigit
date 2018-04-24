@@ -1,11 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace Brigit.Attributes.Operators
 {
+	[KnownType(typeof(Tautalogy))]
+	[DataContract]
 	public class Or : IExpression
 	{
+		[DataMember]
 		private List<IExpression> ExpList;
+
 		public Or()
 		{
 			ExpList = new List<IExpression>();
