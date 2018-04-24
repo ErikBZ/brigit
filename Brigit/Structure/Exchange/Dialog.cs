@@ -2,14 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
 using Brigit.Attributes;
 
 namespace Brigit.Structure.Exchange
 {
+	[DataContract]
 	public class Dialog
 	{
+		[DataMember]
 		public string Character { get; set; }
+		[DataMember]
 		public AttributeManager Attributes { get; set; }
+		[DataMember]
 		public List<SpeechText> Text { get; set; }
 
 		public Dialog()

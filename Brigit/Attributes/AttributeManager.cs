@@ -3,21 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Brigit.Attributes.Operators;
+using System.Runtime.Serialization;
 
 namespace Brigit.Attributes
 {
+	/// <summary>
+	/// Manages what attribute a node holds. Attributes are overidden by least specific to most specfic.
+	/// A singleton's attributes override a nodes attributs
+	/// </summary>
+	[KnownType(typeof(Variable))]
+	[KnownType(typeof(And))]
+	[KnownType(typeof(Mux))]
+	[KnownType(typeof(Or))]
+	[DataContract]
 	public class AttributeManager
 	{
 		// Flags
+		[DataMember]
 		public IExpression Expression { get; set; }
 
+		[DataMember]
 		public Dictionary<string, Flag> SetFlags { get; set; }
 
 
         // emote for the saying
+		[DataMember]
         public string Emote { get; set; }
 
         // duration of the dialog
+		[DataMember]
         public string Length { get; set; }
 
 
@@ -29,7 +43,7 @@ namespace Brigit.Attributes
 
 			Length = string.Empty;
 
-			Expression = new Tautalogy();
+			Expression = new Variable("TRUE");
 		}
 
         public override bool Equals(object obj)

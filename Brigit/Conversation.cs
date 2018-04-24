@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
 using Brigit.Structure;
 using Brigit.Structure.Exchange;
 using Brigit.Attributes;
@@ -10,11 +11,18 @@ using Brigit.Attributes.Operators;
 namespace Brigit
 {
     // what we are aiming for
+	[KnownType(typeof(Dialog))]
+	[KnownType(typeof(Descision))]
+	[KnownType(typeof(ExchangeUnit))]
+	[DataContract]
     public class Conversation
     {
         // should be a unique name and indentifier
         // will be the name of the file
+		// only members that need to be serialized
+		[DataMember]
         public string ConversationName { get; set; }
+		[DataMember]
         private BrigitGraph ll;
 
         // the Flags

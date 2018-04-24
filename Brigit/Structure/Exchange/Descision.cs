@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
 using Brigit.Attributes;
 
 namespace Brigit.Structure.Exchange
 {
+	[DataContract]
 	public class Descision : ExchangeUnit
 	{
+		[DataMember]
 		public List<Choice> Choices { get; set; }
         // false if you want the block to get the next node on it's own
         // by evaluating the attributes of each choice
+		[DataMember]
         public bool Interactive { get; set; }
 
 		public Descision()

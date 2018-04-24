@@ -4,7 +4,6 @@ using System.Runtime.Serialization;
 
 namespace Brigit.Attributes.Operators
 {
-	[KnownType(typeof(Tautalogy))]
 	[DataContract]
     public class And:IExpression
     {

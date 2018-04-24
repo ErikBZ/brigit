@@ -40,7 +40,8 @@ namespace Brigit.Parser
                 IExpression exp;
                 if (expression == "_")
                 {
-                    exp = new Tautalogy();
+                    //exp = new Tautalogy();
+					exp = new Variable("TRUE");
                 }
                 else
                 {

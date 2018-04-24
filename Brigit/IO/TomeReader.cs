@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.Serialization;
+using Brigit.Structure.Exchange;
 
 namespace Brigit.IO
 {
@@ -15,5 +17,19 @@ namespace Brigit.IO
             string[] stream = File.ReadAllLines(filepath);
             return stream;
         }
+
+		public static void SaveTomeFile(string filepath, Conversation conv)
+		{
+			DataContractSerializer dcs = new DataContractSerializer(typeof(Conversation));
+			FileStream fs = new FileStream(filepath, FileMode.Create);
+			dcs.WriteObject(fs, conv);
+		}
+
+		public static void SaveChoiceToFile(string filePath, Choice choice)
+		{
+			DataContractSerializer dcs = new DataContractSerializer(typeof(Choice));
+			FileStream fs = new FileStream("E:/Users/zapat/Documents/brigit/some.tome", FileMode.Create);
+			dcs.WriteObject(fs, choice);
+		}
     }
 }
