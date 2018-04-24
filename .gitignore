@@ -11,6 +11,11 @@
 *.ctom
 *.xml
 *.gv
+
+# User specififed files
+*.tome
+
+# User Specified Folders
 LogoSketches/
 math/
 [Bb]ugs/
