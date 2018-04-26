@@ -13,7 +13,7 @@ namespace Brigit.Test
     [TestFixture]
     public class BrigitGraphTest
     {
-        public string TraverseGraph(Conversation conv, int[] choices)
+        public static string TraverseGraph(Conversation conv, int[] choices)
         {
             int choiceTracker = 0;
             StringBuilder sb = new StringBuilder();
