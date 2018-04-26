@@ -25,6 +25,8 @@ namespace Brigit
 		[DataMember]
         private BrigitGraph ll;
 
+		public BrigitGraph Graph { get { return ll; } }
+
         // the Flags
         private static Dictionary<string, Flag> GlobalFlags;
         private Dictionary<string, Flag> LocalFlags;
@@ -250,6 +252,17 @@ namespace Brigit
 			}
 
 			return sb.ToString();
+		}
+
+		public override bool Equals(object obj)
+		{
+			if(!(obj is Conversation))
+			{
+				return false;
+			}
+
+			var other = obj as Conversation;
+			return ll.Equals(other.ll);
 		}
 	}
 }
