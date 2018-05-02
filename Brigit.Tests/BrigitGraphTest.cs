@@ -18,7 +18,7 @@ namespace Brigit.Test
             int choiceTracker = 0;
             StringBuilder sb = new StringBuilder();
             // action
-            conv.StartNewRun();
+            conv.Start();
             bool errorOccured = false;
             while (!conv.Complete && !errorOccured)
             {

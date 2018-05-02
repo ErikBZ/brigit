@@ -8,6 +8,7 @@ using Brigit;
 using Brigit.Structure.Exchange;
 using NUnit.Framework;
 using System.Runtime.Serialization;
+using System.Diagnostics;
 
 namespace Brigit.Test
 {
@@ -15,18 +16,18 @@ namespace Brigit.Test
 	class SerializeCompiledTomeTest
 	{
 		[Test]
-		public void Serialize_Choice()
-		{
-			Choice ch = new Choice("This is a choice?", 1);
-			TomeReader.SaveChoiceToFile("", ch);
-		}
-
-		[Test]
 		public void Serialize_TomeTest1()
 		{
+			Stopwatch watch = new Stopwatch();
+			watch.Start();
 			Conversation conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_1.txt"));
+			string textFileAndCompile = watch.Elapsed.TotalSeconds.ToString();
+
 			TomeReader.SaveTomeFile(Path.Combine(Config.TomePath, @"Tomes\TomeTest1.tome"), conv);
+
+			watch.Restart();
 			Conversation newConv = TomeReader.OpenTomeFile(Path.Combine(Config.TomePath, @"Tomes\TomeTest1.tome"));
+			string deserialzedTome = watch.Elapsed.TotalSeconds.ToString();
 
 			bool areEqual = conv.Equals(newConv);
 
@@ -36,10 +37,17 @@ namespace Brigit.Test
 		[Test]
 		public void Serialize_TomeTest2()
 		{
+			Stopwatch watch = new Stopwatch();
 			// set up
+			watch.Start();
 			var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_2.txt"));
+			string compile = watch.Elapsed.TotalSeconds.ToString();
+
 			TomeReader.SaveTomeFile(Path.Combine(Config.TomePath, @"Tomes\TomeTest2.tome"), conv);
+
+			watch.Restart();
 			var newConv = TomeReader.OpenTomeFile(Path.Combine(Config.TomePath, @"Tomes\TomeTest2.tome"));
+			string deserialize = watch.Elapsed.TotalSeconds.ToString();
 
 			var areEqual = conv.Equals(newConv);
 

@@ -49,12 +49,5 @@ namespace Brigit.IO
 
 			return conv;
 		}
-
-		public static void SaveChoiceToFile(string filePath, Choice choice)
-		{
-			DataContractSerializer dcs = new DataContractSerializer(typeof(Choice));
-			FileStream fs = new FileStream("E:/Users/zapat/Documents/brigit/some.tome", FileMode.Create);
-			dcs.WriteObject(fs, choice);
-		}
     }
 }

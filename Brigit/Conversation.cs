@@ -25,8 +25,6 @@ namespace Brigit
 		[DataMember]
         private BrigitGraph ll;
 
-		public BrigitGraph Graph { get { return ll; } }
-
         // the Flags
         private static Dictionary<string, Flag> GlobalFlags;
         private Dictionary<string, Flag> LocalFlags;
@@ -40,7 +38,6 @@ namespace Brigit
         {
             ConversationName = string.Empty;
             ll = new BrigitGraph();
-            LocalFlags = new Dictionary<string, Flag>();
         }
 
         public Conversation(BrigitGraph ll)
@@ -48,14 +45,14 @@ namespace Brigit
             ConversationName = "thingy";
             this.ll = ll;
             curr = ll.Head;
-            LocalFlags = new Dictionary<string, Flag>();
         }
 
-        public void StartNewRun()
+        public void Start()
         {
             // resets stuff
             tracker = 0;
             curr = ll.Head;
+			LocalFlags = new Dictionary<string, Flag>();
         }
 
         public Info GetInfo()

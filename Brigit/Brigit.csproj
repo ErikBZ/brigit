@@ -52,7 +52,9 @@
     <Compile Include="Attributes\ExpressionParser\BrigitExpressionParser.cs" />
     <Compile Include="Attributes\Operators\And.cs" />
     <Compile Include="Attributes\Operators\IExpression.cs" />
+    <Compile Include="Attributes\Operators\LessThan.cs" />
     <Compile Include="Attributes\Operators\Mux.cs" />
+    <Compile Include="Attributes\Operators\Not.cs" />
     <Compile Include="Attributes\Operators\Or.cs" />
     <Compile Include="Attributes\Operators\Variable.cs" />
     <Compile Include="Conversation.cs" />
