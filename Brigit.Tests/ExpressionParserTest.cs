@@ -28,6 +28,56 @@ namespace Brigit.Test
             Assert.AreEqual(true, checker);
         }
 
+		[Test]
+		public void Parse_ValidAndExpression()
+		{
+			// arrange
+			string expression = "v1 & v2 & v3";
+			var expected = new And();
+			expected.Add(new Variable("v1"));
+			expected.Add(new Variable("v2"));
+			expected.Add(new Variable("v3"));
+
+			// act
+			var exp = BrigitExpressionParser.Parse(expression);
+			bool passed = exp != null ? exp.Equals(expected) : false;
+
+			Assert.AreEqual(true, passed);
+		}
+
+		[Test]
+		public void Parse_ValidCombinationExpression()
+		{
+			string expression = "v1 & (v2 | v3) & (v2 ^ v3)";
+			var expected = new And();
+			expected.Add(new Variable("v1"));
+			var innerOr = new Or();
+			innerOr.Add(new Variable("v2"));
+			innerOr.Add(new Variable("v3"));
+			var innerMutex = new Mux();
+			innerMutex.Add(new Variable("v2"));
+			innerMutex.Add(new Variable("v3"));
+			expected.Add(innerOr);
+			expected.Add(innerMutex);
+
+			// act
+			var exp = BrigitExpressionParser.Parse(expression);
+			bool passed = exp != null ? exp.Equals(expected) : false;
+
+			Assert.AreEqual(true, passed);
+		}
+
+		public void Parse_EmptyString()
+		{
+			// arrange
+			string expression = "";
+			// i don't actually know what to expect. Return null maybe or error?
+			var expected = new Variable();
+
+			// act
+			var exp = BrigitExpressionParser.Parse(expression);
+		}
+
         [Test]
         public void Parse_TwoVariableExpresssionWithNoOperator_Fails()
         {
@@ -64,6 +114,25 @@ namespace Brigit.Test
 
 			// assert
 			Assert.AreEqual(false, parsedWell);	
+		}
+
+		[Test]
+		public void Preprocess_Valid_LesserThan()
+		{
+			string expression = "var1 <= 5";
+
+			bool parsed = BrigitExpressionParser.Preprocess(expression);
+
+			Assert.AreEqual(true, parsed);
+		}
+
+		public void Preprocess_Valid_Combination()
+		{
+			string expression = "var2 & (var1 == 2)";
+
+			IExpression parsed = BrigitExpressionParser.Preprocess(expression) ? BrigitExpressionParser.Parse(expression) : null;
+
+			Assert.AreEqual(true, !(parsed == null));
 		}
 
 		[Test]
