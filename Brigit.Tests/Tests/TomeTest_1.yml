@@ -1,0 +1,15 @@
+graph:
+- dialog:
+  character: Diego
+  speech:
+  - text: Hello
+
+- decision:
+  - choice: Fuck you
+  - choice: Hello
+  - choice: Blahblah
+
+- dialog:
+  character: Diego
+  speech:
+  - text: Ok

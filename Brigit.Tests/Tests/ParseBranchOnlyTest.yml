@@ -1,0 +1,11 @@
+brightGraph:
+- branch: SomeName
+  graph:
+  - dialog:
+    character: Character1
+    speech:
+    - text: Hello how are you?
+  - dialog:
+    character: Diego
+    speech:
+    - text: That's a stupid name

@@ -1,0 +1,35 @@
+graph:
+- decision:
+  - choice: choice 1
+    setTrue:
+    - one
+  - choice: choice 2
+    setTrue:
+    - two
+
+- dialog:
+  character: Person
+  onlyIf: one
+  speech:
+  - text: hello
+  - text: how
+  - text: are you
+
+- dialog:
+  character: Other
+  speech:
+  - text: Another one
+  - text: something
+    onlyIf: two
+  - text: done
+
+- dialog:
+  character: More
+  speech:
+  - text: Blah 
+    onlyIf: one
+
+- dialog:
+  character: Last
+  speech:
+  - text: Hey

@@ -1,0 +1,9 @@
+graph:
+- descision:
+  - choice: This is one choice
+    inlineBranch:
+    - dialog:
+      character: Diego
+      speech:
+      - text: You chose the first choice
+  - choice: Second chioce is here after the branch

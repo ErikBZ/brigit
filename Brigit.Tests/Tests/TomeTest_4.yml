@@ -1,0 +1,29 @@
+brigitGraph:
+  - dialog:
+    character: Diego
+    speech:
+      - Hey what's happening
+  
+  - descision:
+    - choice: This sets one to true
+      setTrue:
+        - one
+    - choice: This sets two to true
+      setTrue:
+        - two
+  
+  - dialog:
+    character: Person
+    speech:
+      - text: Hello
+        onlyIf: one
+      - text: Hey
+        onlyIf: two
+      - text: Blah
+  
+  - dialog: 
+    character: Other
+    onlyIf: one
+    speech:
+      - text: Heyo
+      - text: What's going on

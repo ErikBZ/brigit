@@ -1,0 +1,8 @@
+brigitGraph:
+- dialog:
+  character: Diego
+  speech:
+  - text: Where\n
+  - text: \tAre
+  - text: The
+  - text: White Women?
