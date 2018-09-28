@@ -1,0 +1,18 @@
+# fork in the road 
+graph:
+- fork:
+  - path: x|s
+    branch: SomeBranch
+  - path: b&d
+    inlineBranch:
+    - dialog:
+      character: Diego
+      speech:
+      - Hi
+  - path:
+    default: true
+    inlineBranch:
+    - dialog:
+      character: James
+      speech:
+      - Hello

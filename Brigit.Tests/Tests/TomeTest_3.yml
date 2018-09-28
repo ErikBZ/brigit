@@ -1,0 +1,42 @@
+branches:
+- graph: &Chorus
+  - dialog:
+    character: Diego
+    speech:
+    - text: I gotta be in your arms baby
+    - text: But far away I seek for your light
+    - text: I hold on because for you my heart keeps beating
+
+graph:
+- dialog:
+  character: Diana
+  speech:
+  - text: I didn't want to be the one to forget
+
+- dialog:
+  character: Diego
+  speech:
+  - text: I thought of everything I'd never regret
+
+- decision:
+  - choice: A little time with you is all that I get
+    graph: *Chorus
+  - choice: That's all we need because that's all we can take
+    graph:
+    - dialog:
+      character: Diego
+      speech:
+      - text: One thing I never see the same when you're round
+
+  - choice: I don't believe in him - his lips on the ground
+  - choice: I wanna take you back to the place by the rock
+
+- dialog:
+  character: Diana
+  speech:
+  - text: But no one gives us time anymore
+
+- dialog:
+  character: Diego
+  speech:
+  - text: Will you be my light?

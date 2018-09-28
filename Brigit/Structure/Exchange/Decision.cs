@@ -8,7 +8,7 @@ using Brigit.Attributes;
 namespace Brigit.Structure.Exchange
 {
 	[DataContract]
-	public class Descision : ExchangeUnit
+	public class Decision : ExchangeUnit
 	{
 		[DataMember]
 		public List<Choice> Choices { get; set; }
@@ -17,7 +17,7 @@ namespace Brigit.Structure.Exchange
 		[DataMember]
         public bool Interactive { get; set; }
 
-		public Descision()
+		public Decision()
 		{
 			Choices = new List<Choice>();
             Interactive = true;
@@ -25,11 +25,11 @@ namespace Brigit.Structure.Exchange
 
 		public override bool Equals(object obj)
 		{
-			if(!(obj is Descision))
+			if(!(obj is Decision))
 			{
 				return false;
 			}
-			Descision other = obj as Descision;
+			Decision other = obj as Decision;
 			int i = 0;
 			bool equal = this.Choices.Count == other.Choices.Count;
             equal &= this.Interactive == other.Interactive;

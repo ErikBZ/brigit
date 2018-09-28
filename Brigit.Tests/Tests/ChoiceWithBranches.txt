@@ -1,8 +1,0 @@
-@player{
-    This is one choice*[]->{
-        Diego{
-            You chose the first choice*
-        }
-    }
-    Second choice is here after the branch*
-}

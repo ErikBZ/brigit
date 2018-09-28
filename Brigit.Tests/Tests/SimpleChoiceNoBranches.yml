@@ -1,0 +1,5 @@
+graph:
+- descsion:
+  - choice: You have either this choice
+  - choice: Or this other choice
+  - choice: Maybe one more choice as well

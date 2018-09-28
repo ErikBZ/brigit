@@ -1,6 +1,0 @@
->BranchName{
-    Character1{hello how are you*}
-    Diego{
-        That's a stupid name*
-    }
-}

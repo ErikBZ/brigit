@@ -24,14 +24,14 @@ namespace Brigit.Parser
 			// TODO replace this fix with a more elegant solution
 			// hot fix used for resetting the open choices
 			List<string> branches = new List<string>();
-            Descision selector = new Descision();
+            Decision selector = new Decision();
             selector.Interactive = false;
             BrigitGraph graph = new BrigitGraph();
             Node root = new Node()
             {
                 Data = selector
             };
-            graph.Add(root);
+            graph.AddNode(root);
 
             while (Stream.PeekChar() != '}')
             {

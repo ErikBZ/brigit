@@ -63,10 +63,6 @@ namespace Brigit.Parser
 					string[] dontCareFlags = value.Split(null);
 					SetFlagArrayTo(Flag.DontCare, dontCareFlags, am);
 				}
-				else if (keyword.StartsWith(SETEMOTE) || keyword.StartsWith(" " + SETEMOTE))
-				{
-					am.Emote = value;
-				}
 				else
 				{
 					// TODO make these better

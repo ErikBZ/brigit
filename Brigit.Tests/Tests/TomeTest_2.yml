@@ -1,0 +1,31 @@
+graph:
+- dialog:
+  character: Yulia
+  speech:
+  - text: What the fuck is this
+  - text: What are you doing?
+
+- decision:
+  - choice: Nothing
+
+    graph:
+    - dialog:
+      character: Yulia
+      speech:
+      - text: You're lying
+    - dialog:
+      character: Diego
+      speech:
+      - text: Yeah she is
+  - choice: Everything
+  - choice: Go away
+    graph:
+    - dialog:
+      character: Yulia 
+      speech:
+      - text: NO
+
+- dialog:
+  character: Diego
+  speech:
+  - text: There's a lot of yelling going on right now

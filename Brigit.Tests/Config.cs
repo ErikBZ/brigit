@@ -14,7 +14,9 @@ namespace Brigit.Test
 		[OneTimeSetUp]
 		public void SetUp()
 		{
-			TomePath = Environment.GetEnvironmentVariable("brigit_test");
-		}
+            //			TomePath = Environment.GetEnvironmentVariable("brigit_test");
+            TomePath = @"C:\Users\Brandon\Documents\Projects\brigit\Brigit.Tests\Tests";
+
+        }
 	}
 }

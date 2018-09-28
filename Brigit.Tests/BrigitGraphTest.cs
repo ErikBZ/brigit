@@ -32,7 +32,7 @@ namespace Brigit.Test
                         errorOccured = !(conv.Next());
                         break;
                     case Info.Type.Descision:
-						var descision = inf.Data as Descision;
+						var descision = inf.Data as Decision;
                         if(choices.Length > choiceTracker && descision.Interactive)
                         {
                             errorOccured = !(conv.Next(choices[choiceTracker]));
@@ -57,7 +57,7 @@ namespace Brigit.Test
         {
             // arrange
             int[] choices = new int[] { 0 };
-            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_2.txt"));
+            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_2.yml"));
 
             // act
             string result = TraverseGraph(conv, choices);
@@ -75,7 +75,7 @@ namespace Brigit.Test
         public void Traverse_TomeTest3_WithChoice2_UsingBakedInBranches()
         {
             int[] choices = new int[] { 2 };
-            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_3.txt"));
+            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_3.yml"));
 
             string result = TraverseGraph(conv, choices);
             string expected = "Diana: I didn't want to be the one to forget\n" +
@@ -94,7 +94,7 @@ namespace Brigit.Test
             // for descisions these correspond to the chosen choice not the branch
             // assemble
             int[] choices = new int[] { 0 };
-            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_3.txt"));
+            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_3.yml"));
 
             // action
             string result = TraverseGraph(conv, choices);
@@ -115,16 +115,16 @@ namespace Brigit.Test
         public void Traverse_TomeTest4_Choice0_CheckingForFlagRequirements()
         {
             int[] choices = new int[] { 0 };
-            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_4.txt"));
+            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_4.yml"));
 
             //action
             string result = TraverseGraph(conv, choices);
             string expected = "Diego: Hey what's happening\n" +
                               "0: This sets one to true\n" +
-                              "Person: Hey\n" +
+                              "Person: Hello\n" +
                               "Person: Blah\n" +
                               "Other: Heyo\n" +
-                              "Other: What is going on\n";
+                              "Other: What's going on\n";
 
             //assert
             Assert.AreEqual(expected, result);
@@ -135,13 +135,13 @@ namespace Brigit.Test
         {
             // assemble
             int[] choices = new int[] { 1 };
-            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_4.txt"));
+            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_4.yml"));
 
             // action
             string result = TraverseGraph(conv, choices);
             string expected = "Diego: Hey what's happening\n" +
                             "1: This sets two to true\n" +
-                            "Person: Hello\n" +
+                            "Person: Hey\n" +
                             "Person: Blah\n";
 
             // assert
@@ -152,7 +152,7 @@ namespace Brigit.Test
         public void Traverse_TomeTest5_Choice0_CheckingForMixedFlagRequirements()
         {
             int[] choices = new int[] { 0 };
-            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_5.txt"));
+            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_5.yml"));
 
             //action
             string result = TraverseGraph(conv, choices);
@@ -172,7 +172,7 @@ namespace Brigit.Test
         public void Traverse_TomeTest5_Choice1_CheckingForBlockSkipping()
         {
             int[] choices = new int[] { 1 };
-            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_5.txt"));
+            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_5.yml"));
 
             // action
             string result = TraverseGraph(conv, choices);
@@ -190,7 +190,7 @@ namespace Brigit.Test
         {
             //assemble
             int[] choices = new int[] { 0 };
-            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_6.txt"));
+            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_6.yml"));
 
             //act
             string result = TraverseGraph(conv, choices);
@@ -209,7 +209,7 @@ namespace Brigit.Test
         {
             //assemble
             int[] choices = new int[] { 1 };
-            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_6.txt"));
+            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_6.yml"));
 
             //act
             string result = TraverseGraph(conv, choices);
@@ -228,7 +228,7 @@ namespace Brigit.Test
         {
             //avegers assemble
             int[] choices = new int[] { 2 };
-            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_6.txt"));
+            var conv = ConversationLoader.CreateConversation(Path.Combine(Config.TomePath, "TomeTest_6.yml"));
 
             //act
             string result = TraverseGraph(conv, choices);

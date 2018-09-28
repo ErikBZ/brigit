@@ -1,0 +1,34 @@
+graph:
+- dialog:
+  character: Diego
+  speech:
+    - text: Hey what's happening
+
+- decision:
+  - choice: This sets one to true
+    attr:
+      setTrue:
+        - one
+  - choice: This sets two to true
+    attr:
+      setTrue:
+        - two
+
+- dialog:
+  character: Person
+  speech:
+    - text: Hello
+      attr:
+        onlyIf: one
+    - text: Hey
+      attr:
+        onlyIf: two
+    - text: Blah
+
+- dialog: 
+  character: Other
+  attr:
+    onlyIf: one
+  speech:
+    - text: Heyo
+    - text: What's going on

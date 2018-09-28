@@ -1,2 +1,0 @@
-﻿Character1{
-	I'm going to say something*}

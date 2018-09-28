@@ -1,0 +1,14 @@
+# Other stuff is up here
+graph:
+- dialog:
+  character: Diego
+  speech:
+  - text: Heyo!
+  - text: How ya doing?
+  - text: You look cute today
+
+- dialog:
+  character: Diana
+  speech:
+  - text: Haha thanks.
+  - text: I'm fine, how are you?

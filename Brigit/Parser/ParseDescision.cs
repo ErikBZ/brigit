@@ -13,14 +13,14 @@ namespace Brigit.Parser
 	{
 		public BrigitGraph ParseDescision(TomeStream stream, Dictionary<string, OpenChoice> branchEndings)
 		{
-			Descision descision = new Descision();
+			Decision descision = new Decision();
 			BrigitGraph ll = new BrigitGraph();
 			Node root = new Node()
 			{
 				Data = descision
 			};
 
-			ll.Add(root);
+			ll.AddNode(root);
 
 			// first parse away the @player:
 			AssertChar(stream, '@');

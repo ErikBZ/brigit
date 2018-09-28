@@ -1,0 +1,12 @@
+graph:
+- descsion:
+  - choice: This goes to a branch name
+    gotoBranch: SomeName
+  - choice: This ends with whitespace or non-alpha character. BTW this is old information
+    inlineBranch:
+    - dialog:
+      character: Char1
+      speech:
+      - text: We can mix both up
+  - choice: And it will work just fine
+    gotoBranch: OtherName

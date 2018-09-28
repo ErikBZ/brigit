@@ -25,24 +25,12 @@ namespace Brigit.Attributes
 		[DataMember]
 		public Dictionary<string, Flag> SetFlags { get; set; }
 
-
-        // emote for the saying
-		[DataMember]
-        public string Emote { get; set; }
-
-        // duration of the dialog
-		[DataMember]
-        public string Length { get; set; }
-
+        public Dictionary<string, string> ExtraAttributes { get; set; }
 
 		public AttributeManager()
 		{
 			SetFlags = new Dictionary<string, Flag>();
-
-			Emote = string.Empty;
-
-			Length = string.Empty;
-
+            ExtraAttributes = new Dictionary<string, string>();
 			Expression = new Variable("TRUE");
 		}
 
@@ -57,9 +45,16 @@ namespace Brigit.Attributes
             {
                 AttributeManager am = (AttributeManager)obj;
 				equal = FlagsAreEqual(SetFlags, am.SetFlags);
-				equal &= Emote.Equals(am.Emote);
-				equal &= Length.Equals(am.Length);
 				equal &= Expression.Equals(am.Expression);
+
+                foreach( KeyValuePair<string, string> kvp in ExtraAttributes)
+                {
+                    if (!am.ExtraAttributes.ContainsKey(kvp.Key) || !am.ExtraAttributes[kvp.Key].Equals(kvp.Value))
+                    {
+                        equal = false;
+                        break;
+                    }
+                }
             }
 
             return equal;

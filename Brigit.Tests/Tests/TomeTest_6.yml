@@ -1,0 +1,55 @@
+branches:
+- branch: &pearl
+  graph:
+    - dialog: 
+      character: Pearl
+      speech:
+      - text: Daddy!
+
+graph:
+- dialog:
+  character: Spongebob
+  speech:
+  - text: I'm Ready
+
+- decision:
+  - choice: Path 1
+    attr:
+      setTrue:
+      - one
+  - choice: Path 2
+    attr:
+      setTrue:
+      - two
+  - choice: Path 3
+
+- dialog:
+  character: Squidward
+  attr:
+    onlyIf: two
+  speech:
+    - text: Arghhh
+  
+- fork:
+  - path: one
+    graph: *pearl
+  - path: two
+    graph:
+    - dialog:
+      character: Patrick
+      speech:
+      - text: SPONGEBOB
+  - path:
+    default: true
+
+- dialog:
+  character: Sandy
+  speech:
+  - text: Karate chop
+
+- dialog:
+  character: Mr.Krabs
+  attr:
+    onlyIf: one
+  speech:
+  - text: I like money
