@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\NUnit3TestAdapter.3.9.0\build\net35\NUnit3TestAdapter.props" Condition="Exists('..\packages\NUnit3TestAdapter.3.9.0\build\net35\NUnit3TestAdapter.props')" />
+  <Import Project="..\packages\NUnit.3.10.1\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.10.1\build\NUnit.props')" />
+  <Import Project="..\packages\NUnit3TestAdapter.3.10.0\build\net35\NUnit3TestAdapter.props" Condition="Exists('..\packages\NUnit3TestAdapter.3.10.0\build\net35\NUnit3TestAdapter.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -68,10 +69,22 @@
     <Compile Include="ParseTomesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="SerializeCompiledTomeTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Tests\BranchSelector.yml" />
+    <None Include="Tests\ChoiceWithBranches.yml" />
+    <None Include="Tests\ChoiceWithBranchName.yml" />
+    <None Include="Tests\MultipleCharacterExchange.yml" />
+    <None Include="Tests\MultipleSpeechText.yml" />
+    <None Include="Tests\ParseBranchOnlyTest.yml" />
+    <None Include="Tests\SimpleChoiceNoBranches.yml" />
+    <None Include="Tests\TomeTest_1.yml" />
+    <None Include="Tests\TomeTest_2.yml" />
+    <None Include="Tests\TomeTest_3.yml" />
+    <None Include="Tests\TomeTest_4.yml" />
+    <None Include="Tests\TomeTest_5.yml" />
+    <None Include="Tests\TomeTest_6.yml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Brigit\Brigit.csproj">
@@ -87,19 +100,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Tests\ChoiceWithBranches.txt" />
-    <Content Include="Tests\DialogTestTome.txt" />
-    <Content Include="Tests\MultipleCharacterExchange.txt" />
-    <Content Include="Tests\MultipleSpeechText.txt" />
-    <Content Include="Tests\SimpleChoiceNoBranches.txt" />
-    <Content Include="Tests\StringCleaning.txt" />
-    <Content Include="Tests\TomeTest_1.txt" />
-    <Content Include="Tests\TomeTest_2.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.3.9.0\lib\net40\nunit.framework.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="nunit.framework, Version=3.10.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.10.1\lib\net40\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.dll</HintPath>
@@ -114,6 +116,7 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\NUnit3TestAdapter.3.9.0\build\net35\NUnit3TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit3TestAdapter.3.9.0\build\net35\NUnit3TestAdapter.props'))" />
+    <Error Condition="!Exists('..\packages\NUnit3TestAdapter.3.10.0\build\net35\NUnit3TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit3TestAdapter.3.10.0\build\net35\NUnit3TestAdapter.props'))" />
+    <Error Condition="!Exists('..\packages\NUnit.3.10.1\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit.3.10.1\build\NUnit.props'))" />
   </Target>
 </Project>

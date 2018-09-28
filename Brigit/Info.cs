@@ -23,7 +23,7 @@ namespace Brigit
         }
 
         // i've decided to make the node data it self viewable
-        public Info(Descision choices)
+        public Info(Decision choices)
         {
             type = Type.Descision;
             Data = choices;
@@ -42,7 +42,7 @@ namespace Brigit
             switch (type)
             {
                 case Type.Descision:
-					var descision = Data as Descision;
+					var descision = Data as Decision;
                     for(int i=0;i<descision.Choices.Count;i++)
                     {
                         sb.Append(String.Format("{0}: {1}", i, descision.Choices[i]));

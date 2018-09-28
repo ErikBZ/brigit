@@ -79,7 +79,7 @@ namespace Brigit.Parser
                         }
                     }
 
-					ll.Add(n);
+					ll.AddNode(n);
 				}
 				else if (c == '@')
 				{
@@ -94,14 +94,14 @@ namespace Brigit.Parser
 					}
 
 					// adding the dictionary entries to this
-					ll.Add(subGraph);
+					ll.AddGraph(subGraph);
 				}
 				else if (c == '{')
 				{
                     // this is a branch selector
                     // we can just pass in the big dictionary
                     BrigitGraph subGraph = ParseBranchSelector(BranchesToPlace);
-                    ll.Add(subGraph);
+                    ll.AddGraph(subGraph);
 				}
 				else if(c == '>')
 				{

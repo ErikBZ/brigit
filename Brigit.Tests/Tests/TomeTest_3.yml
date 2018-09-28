@@ -1,3 +1,12 @@
+branches:
+- graph: &Chorus
+  - dialog:
+    character: Diego
+    speech:
+    - text: I gotta be in your arms baby
+    - text: But far away I seek for your light
+    - text: I hold on because for you my heart keeps beating
+
 graph:
 - dialog:
   character: Diana
@@ -10,18 +19,17 @@ graph:
   - text: I thought of everything I'd never regret
 
 - decision:
-  - choice: A little time with you is all the I get
-    gotoBranch: Chorus
-
-  - choice: That's all we need becuase that's all we can take
-    inlineBranch:
+  - choice: A little time with you is all that I get
+    graph: *Chorus
+  - choice: That's all we need because that's all we can take
+    graph:
     - dialog:
       character: Diego
       speech:
       - text: One thing I never see the same when you're round
 
   - choice: I don't believe in him - his lips on the ground
-  - choice: I wnna take you back to the place by the rock
+  - choice: I wanna take you back to the place by the rock
 
 - dialog:
   character: Diana
@@ -31,13 +39,4 @@ graph:
 - dialog:
   character: Diego
   speech:
-  - text: Will you be my light
-
-- branch: Chorus
-  graph:
-  - dialog:
-    character: Diego
-    speech:
-    - text: I gotta be in your arms baby
-    - text: But far away I seek for you light
-    - text: I hold on because for you my heart keeps beating
+  - text: Will you be my light?

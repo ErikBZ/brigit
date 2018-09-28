@@ -17,11 +17,17 @@ namespace Brigit.Structure
 			Next = new List<Node>();
 		}
 
+        public Node(object data)
+        {
+            Data = data;
+            Next = new List<Node>();
+        }
+
 		public override string ToString()
 		{
             int hash = GetHashCode();
             StringBuilder sb = new StringBuilder();
-            if(Data is Exchange.Descision)
+            if(Data is Exchange.Decision)
             {
                 sb.Append("DescisionBlock_");
             }

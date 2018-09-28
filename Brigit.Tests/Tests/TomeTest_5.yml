@@ -1,15 +1,18 @@
 graph:
 - decision:
   - choice: choice 1
-    setTrue:
-    - one
+    attr:
+      setTrue:
+      - one
   - choice: choice 2
-    setTrue:
-    - two
+    attr:
+      setTrue:
+      - two
 
 - dialog:
   character: Person
-  onlyIf: one
+  attr:
+    onlyIf: one
   speech:
   - text: hello
   - text: how
@@ -20,14 +23,16 @@ graph:
   speech:
   - text: Another one
   - text: something
-    onlyIf: two
+    attr:
+      onlyIf: two
   - text: done
 
 - dialog:
   character: More
   speech:
   - text: Blah 
-    onlyIf: one
+    attr:
+      onlyIf: one
 
 - dialog:
   character: Last

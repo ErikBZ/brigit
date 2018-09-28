@@ -12,7 +12,7 @@ namespace Brigit
 {
     // what we are aiming for
 	[KnownType(typeof(Dialog))]
-	[KnownType(typeof(Descision))]
+	[KnownType(typeof(Decision))]
 	[KnownType(typeof(ExchangeUnit))]
 	[DataContract]
     public class Conversation
@@ -63,10 +63,10 @@ namespace Brigit
             {
                 inf = new Info(curr.Data as Dialog, tracker);
             }
-            else if (curr.Data is Descision)
+            else if (curr.Data is Decision)
             {
 
-                var data = curr.Data as Descision;
+                var data = curr.Data as Decision;
                 data = GetAvailableChoices(data);
                 inf = new Info (data);
             }
@@ -80,9 +80,9 @@ namespace Brigit
 
         // takes a Descision and creates a new block with
         // the avaiable choices a player can make
-        public Descision GetAvailableChoices(Descision data)
+        public Decision GetAvailableChoices(Decision data)
         {
-            var payload = new Descision();
+            var payload = new Decision();
 
             for(int i=0; i<data.Choices.Count;i++)
             {
@@ -106,7 +106,7 @@ namespace Brigit
                 {
                     curr = DialogNext(curr);
                 }
-                else if (curr.Data is Descision)
+                else if (curr.Data is Decision)
                 {
                     // ohhh this already did the thing. woops
                     // removing functionality so that the choice is made on the frontend
@@ -132,12 +132,12 @@ namespace Brigit
         // not of the next node
         private Node BranchingNext(Node curr, int choice)
         {
-            Descision data = curr.Data as Descision;
+            Decision data = curr.Data as Decision;
             int next = data.Interactive ? ChoiceNext(data, choice) : SelectorNext(data);
             return next == -1 || curr.Next.Count == 0 ? null : curr.Next[next];
         }
 
-        private int ChoiceNext(Descision data, int choice)
+        private int ChoiceNext(Decision data, int choice)
         {
             if(choice < data.Choices.Count)
             {
@@ -158,7 +158,7 @@ namespace Brigit
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        private int SelectorNext(Descision data)
+        private int SelectorNext(Decision data)
         {
             int next = -1;
             int i = 0;
@@ -203,9 +203,9 @@ namespace Brigit
             {
                 return true;
             }
-            else if(curr.Data is Descision)
+            else if(curr.Data is Decision)
             {
-                var data = curr.Data as Descision;
+                var data = curr.Data as Decision;
                 return data.Interactive;
             }
             else if(curr.Data is Dialog)
@@ -236,7 +236,7 @@ namespace Brigit
             tracker = 0;
         }
 
-		private string DescisionToString(Descision dec)
+		private string DescisionToString(Decision dec)
 		{
 			StringBuilder sb = new StringBuilder();
 

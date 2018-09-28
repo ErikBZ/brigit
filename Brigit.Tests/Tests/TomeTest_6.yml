@@ -1,23 +1,55 @@
-Spongebob{ I'm ready* }
-@player{
-    Path 1*[SetT: one]
-    Path 2*[SetT: two]
-    Path 3*
-}
+branches:
+- branch: &pearl
+  graph:
+    - dialog: 
+      character: Pearl
+      speech:
+      - text: Daddy!
 
-Squidward{ Arghhh* }[ReqFlg: two]
+graph:
+- dialog:
+  character: Spongebob
+  speech:
+  - text: I'm Ready
 
-{
-    one*->PEARL
-    two*->{
-        Patrick{ SPONGEBOB* }
-    }
-    _*
-}
+- decision:
+  - choice: Path 1
+    attr:
+      setTrue:
+      - one
+  - choice: Path 2
+    attr:
+      setTrue:
+      - two
+  - choice: Path 3
 
-Sandy{ Karate chop* }
-MrKrabs{ I like money* }[ReqFlg: one]
+- dialog:
+  character: Squidward
+  attr:
+    onlyIf: two
+  speech:
+    - text: Arghhh
+  
+- fork:
+  - path: one
+    graph: *pearl
+  - path: two
+    graph:
+    - dialog:
+      character: Patrick
+      speech:
+      - text: SPONGEBOB
+  - path:
+    default: true
 
->PEARL{
-    Pearl{ Daddy* }
-}
+- dialog:
+  character: Sandy
+  speech:
+  - text: Karate chop
+
+- dialog:
+  character: Mr.Krabs
+  attr:
+    onlyIf: one
+  speech:
+  - text: I like money

@@ -27,7 +27,7 @@ namespace Brigit.Structure.Exchange
 		{
 			Attributes = new AttributeManager();
 			Text = string.Empty;
-			NextNode = -1;
+			NextNode = 0;
 		}
 
 		public Choice(string text)

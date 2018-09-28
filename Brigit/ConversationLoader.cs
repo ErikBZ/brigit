@@ -1,9 +1,11 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using Brigit.IO;
 using Brigit.Parser;
 using Brigit.Parser.Stream;
+using YamlDotNet.RepresentationModel;
 using Brigit.Structure;
 
 namespace Brigit
@@ -16,18 +18,18 @@ namespace Brigit
         public static Conversation CreateConversation(string filepath)
         {
             // Getting the text file
-            string[] text = TomeReader.ReadTextFile(filepath);
+            var yaml = new YamlStream();
+            var reader = new StringReader(File.ReadAllText(filepath));
 
             // preprocess
-            text = CommentRemover.RemoveComments(text);
-            var tome = new TomeStream(text);
+            yaml.Load(reader);
+            var rootMapNode = (YamlMappingNode)yaml.Documents[0].RootNode;
 
             // parsing here
-            var bg = BrigitParser.Parse(tome);
+            var brigitParser = new BrigitYamlParser(rootMapNode);
+            var bg = brigitParser.CreateGraphFromYaml();
 
-            var conv = new Conversation(bg);
-
-            return conv;
+            return new Conversation(bg);
         }
     }
 }

@@ -29,7 +29,7 @@ namespace Brigit.Structure
 		/// Adds a node to the end of the LinkedList and sets it as the Tail
 		/// </summary>
 		/// <param name="node"></param>
-		public void Add(Node node)
+		public void AddNode(Node node)
 		{
 			if(Head == null)
 			{
@@ -59,7 +59,7 @@ namespace Brigit.Structure
 		/// tails to the tail of this linked list
 		/// </summary>
 		/// <param name="ll"></param>
-		public void Add(BrigitGraph ll)
+		public void AddGraph(BrigitGraph ll)
 		{
 			// this means that this linked list is 
 			// empty

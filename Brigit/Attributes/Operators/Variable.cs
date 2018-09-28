@@ -35,6 +35,11 @@ namespace Brigit.Attributes.Operators
             {
                 return Flag.True;
             }
+            else if(variableName == "FALSE")
+            {
+                return Flag.False;
+
+            }
 			else if (locals != null && locals.ContainsKey(variableName))
 			{
 				return locals[variableName];

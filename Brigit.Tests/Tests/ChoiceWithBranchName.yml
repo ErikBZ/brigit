@@ -1,4 +1,4 @@
-brightGraph:
+graph:
 - descsion:
   - choice: This goes to a branch name
     gotoBranch: SomeName
