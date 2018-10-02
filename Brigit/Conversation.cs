@@ -203,7 +203,7 @@ namespace Brigit
             {
                 return true;
             }
-            else if(curr.Data is Decision)
+            else if(curr.Data is Decision && (curr.Data as Decision).Interactive)
             {
                 var data = curr.Data as Decision;
                 return data.Interactive;

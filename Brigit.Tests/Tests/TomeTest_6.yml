@@ -1,6 +1,6 @@
 branches:
-- branch: &pearl
-  graph:
+- branch:
+  graph: &pearl
     - dialog: 
       character: Pearl
       speech:
@@ -10,7 +10,7 @@ graph:
 - dialog:
   character: Spongebob
   speech:
-  - text: I'm Ready
+  - text: I'm ready
 
 - decision:
   - choice: Path 1

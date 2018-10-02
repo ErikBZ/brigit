@@ -54,7 +54,7 @@ namespace Brigit.Parser
                         graph.AddGraph(subGraph);
                         break;
                     case "fork":
-                        var forkGraph = CreateFork((YamlSequenceNode)node);
+                        var forkGraph = CreateFork((YamlMappingNode)node);
                         graph.AddGraph(forkGraph);
                         break;
                     default:
@@ -116,7 +116,7 @@ namespace Brigit.Parser
             return graph;
         }
 
-        public BrigitGraph CreateFork(YamlSequenceNode yamlSequence)
+        public BrigitGraph CreateFork(YamlMappingNode yamlNode)
         {
             var forkingGraph = new BrigitGraph();
             var nonInteractiveDecision = new Decision();
@@ -124,9 +124,10 @@ namespace Brigit.Parser
             var baseNode = new Node(nonInteractiveDecision);
             forkingGraph.AddNode(baseNode);
 
-            foreach(YamlMappingNode node in yamlSequence)
+            foreach(YamlMappingNode node in (YamlSequenceNode)yamlNode.Children[new YamlScalarNode("fork")])
             {
                 var choice = new Choice();
+                choice.NextNode = -1;
                 string expression = GetScalarYamlNodeValue("path", node);
                 choice.Attributes.Expression = BrigitExpressionParser.Parse(expression);
 
@@ -136,6 +137,8 @@ namespace Brigit.Parser
                     forkingGraph.AddBranch(baseNode, subGraph);
                     choice.NextNode = baseNode.Next.Count - 1;
                 }
+
+                nonInteractiveDecision.Choices.Add(choice);
             }
 
             foreach( Choice choice in nonInteractiveDecision.Choices.Where(x => x.NextNode == -1))

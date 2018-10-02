@@ -196,9 +196,9 @@ namespace Brigit.Test
             string result = TraverseGraph(conv, choices);
             string expected = "Spongebob: I'm ready\n" +
                               "0: Path 1\n" +
-                              "Pearl: Daddy\n" +
+                              "Pearl: Daddy!\n" +
                               "Sandy: Karate chop\n" +
-                              "MrKrabs: I like money\n";
+                              "Mr.Krabs: I like money\n";
 
             //assert
             Assert.AreEqual(expected, result);

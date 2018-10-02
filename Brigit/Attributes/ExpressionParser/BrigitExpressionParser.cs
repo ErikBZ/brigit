@@ -15,6 +15,11 @@ namespace Brigit.Attributes.ExpressionParser
 
 		public static IExpression Parse(string exp)
 		{
+            if(String.IsNullOrEmpty(exp))
+            {
+                return new Variable("TRUE");
+            }
+
 			string[] str = new String[0];
 			return Parse(exp, out str);
 		}
@@ -41,7 +46,7 @@ namespace Brigit.Attributes.ExpressionParser
             // expception handling
             if(opts.Count == 0 && vars.Count != 1)
             {
-                throw new Exception("An expression with multiple variables requires an operation");
+                throw new Exception(String.Format("An expression with multiple variables requires an operation: {0}", exp));
             }
 
             // whlie we still have operations to use
