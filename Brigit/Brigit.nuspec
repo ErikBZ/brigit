@@ -2,12 +2,11 @@
 <package >
   <metadata>
     <id>$id$</id>
-    <version>0.2.0</version>
+    <version>$version$</version>
     <title>Brigit</title>
     <authors>Erik Zapata</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>A language that helps create branching story lines and dialog trees</description>
-    <releaseNotes>Adds feature to serialize compiled tome files. Although it's faster to open the text file and compile it than deserializing the xml file.</releaseNotes>
+    <description>A library used for creating and managing branching dialog trees</description>
     <copyright>Copyright 2018</copyright>
   </metadata>
 </package>
